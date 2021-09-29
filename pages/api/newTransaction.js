@@ -2,15 +2,16 @@
 
 const fetcher = url => fetch(url).then(r => r.json());
 
-// need to add which testnet
-const etherscanAPI = address => `https://api.etherscan.io/api?apikey=${process.env.ETHERSCAN_API_KEY}&module=account&action=txlist&address=${address}&startblock=0&endblock=999999999&sort=asc`;
+const NETWORK = process.env.NETWORK;
+const ETHERSCAN_API_KEY = process.env.NETWORK;
+const APP_NAME = 'StarSheet Achievements';
+const etherscanNetworkString = process.env.NETWORK == "ethereum" ? "" : `${NETWORK}`;
 
-export default function handler(req, res) {
+const etherscanAPI = address => `https://api${etherscanNetworkString}.etherscan.io/api?apikey=${ETHERSCAN_API_KEY}&module=account&action=txlist&address=${address}&startblock=0&endblock=999999999&sort=asc`;
+
+export default async function handler(req, res) {
   console.log('query', req.query);
   console.log('body', req.body);
-
-  APP_NAME = 'StarSheet Achievements';
-  NETWORK = process.env.NETWORK;
 
   ({ app, network, activity } = req.body);
 
@@ -25,4 +26,4 @@ export default function handler(req, res) {
 
   res.status(200).json(req.body);
 }
-// https://api.etherscan.io/api?apikey={{etherscan api key}}&module=account&action=txlist&address={{brenner.eth addresss}}&startblock=0&endblock=999999999&sort=asc
+// https://api.etherscan.io/api?apikey={{etherscan api key}}&module=account&action=txlist&address={{brenner.eth addresss}}&startblock=0&endblock=999999999&sort=asc   

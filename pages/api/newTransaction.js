@@ -13,7 +13,7 @@ export default async function handler(req, res) {
   console.log('query', req.query);
   console.log('body', req.body);
 
-  ({ app, network, activity } = req.body);
+  const { app, network, activity } = req.body;
 
   const newUserAddress = activity.fromAddress;
   if(app==APP_NAME && network==NETWORK) {

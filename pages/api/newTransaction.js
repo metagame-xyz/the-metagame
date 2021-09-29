@@ -19,7 +19,7 @@ export default function handler(req, res) {
     const etherscanURL = etherscanAPI(newUserAddress);
 
     const data = await fetcher(etherscanURL);
-    // console.log
+    console.log('data', data);
   }
   
 

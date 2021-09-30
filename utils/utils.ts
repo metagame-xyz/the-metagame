@@ -2,6 +2,7 @@ import { createHmac } from 'crypto';
 import type { NextApiRequest } from 'next';
 import * as ethers from 'ethers';
 import fetch from 'node-fetch-retry';
+import Redis from 'ioredis';
 
 const fetchOptions = {
     retry: 12,
@@ -39,3 +40,5 @@ export const checkSignature = (message: string, joinedSignature: string, walletA
     const recoveredAddress = ethers.utils.recoverAddress(digest, signature);
     return walletAddress === recoveredAddress;
 };
+
+export const ioredisClient = new Redis(process.env.REDIS_URL);

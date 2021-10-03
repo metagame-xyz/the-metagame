@@ -42,3 +42,19 @@ export const checkSignature = (message: string, joinedSignature: string, walletA
 };
 
 export const ioredisClient = new Redis(process.env.REDIS_URL);
+
+export const timestampToDate = (ts: number): Record<string, number> => {
+    console.log(ts);
+    const date = new Date(ts * 1000);
+    console.log(date);
+    const dateObj = {
+        year: date.getFullYear(),
+        month: date.getMonth(),
+        day: date.getDate(),
+        hour: date.getHours(),
+        minute: date.getMinutes(),
+        second: date.getSeconds(),
+    };
+
+    return dateObj;
+};

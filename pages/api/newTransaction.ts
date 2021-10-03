@@ -1,4 +1,10 @@
-import { fetcher, isValidAlchemySignature, signMessage, ioredisClient } from '../../utils/utils';
+import {
+    fetcher,
+    isValidAlchemySignature,
+    signMessage,
+    ioredisClient,
+    timestampToDate,
+} from '../../utils/utils';
 import {
     ACHIEVEMENT_NAME,
     NETWORK,
@@ -8,7 +14,7 @@ import {
 } from '../../utils/constants';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-const etherscanNetworkString = process.env.NETWORK == 'ethereum' ? '' : `-${NETWORK}`;
+const etherscanNetworkString = process.env.NETWORK.toLowerCase() == 'ethereum' ? '' : `-${NETWORK}`;
 
 const etherscanAPIURLBuilder = (address: string) =>
     `https://api${etherscanNetworkString}.etherscan.io/api?apikey=${ETHERSCAN_API_KEY}&module=account&action=txlist&address=${address}&startblock=0&endblock=999999999&sort=asc&page=1&offset=1`;

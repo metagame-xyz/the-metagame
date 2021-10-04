@@ -11,6 +11,7 @@ import { formatUnits } from '@ethersproject/units';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method == 'GET') {
+        console.log('Logan were in here');
         const { address } = req.query;
         const newUserAddress = (Array.isArray(address) ? address[0] : address).toLowerCase();
 

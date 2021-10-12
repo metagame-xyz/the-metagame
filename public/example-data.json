@@ -1,0 +1,57 @@
+{
+    name: "eth age name? idk",
+    description: "",
+    image: "eth-age-service-dev.vercel.app/api/v1/image/1337",
+    external_url: "eth-age-service-dev.vercel.app/eth-age/1337",
+    attributes: [
+    {
+    trait_type: "year",
+    value: 2021
+    },
+    {
+    trait_type: "month",
+    value: 1
+    },
+    {
+    trait_type: "day",
+    value: 18
+    },
+    {
+    trait_type: "hour",
+    value: 22
+    },
+    {
+    trait_type: "minute",
+    value: 0
+    },
+    {
+    trait_type: "second",
+    value: 29
+    },
+    {
+    display_type: "date",
+    trait_type: "birthday",
+    value: "1613685629"
+    },
+    {
+    trait_type: "parent",
+    value: "0x12cfb4c913454ec561169aed56a980ee4abbc7e0"
+    },
+    {
+    trait_type: "eth recieved",
+    value: 5
+    },
+    {
+    trait_type: "block age",
+    value: 1466475
+    },
+    {
+    trait_type: "birthblock",
+    value: "11883362"
+    },
+    {
+    trait_type: "txn hash",
+    value: "0x644cffa979e485f956c5a87b6cd1e961ba9ecd58fc6cbb358a0f452b80d86eb2"
+    }
+    ]
+    }

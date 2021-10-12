@@ -1,0 +1,7 @@
+polygon {
+    position: relative;
+    left: 10%;
+    -webkit-transform: translateX(-20%);
+    -ms-transform: translateX(-20%);
+    transform: translateX(-20%);
+}

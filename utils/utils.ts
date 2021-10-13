@@ -56,7 +56,6 @@ export const getTokenIdForAddress = async (address: string, contractAddress: str
         `https://api${etherscanNetworkString}.etherscan.io/api?apikey=${ETHERSCAN_API_KEY}&module=account&action=tokennfttx&contractaddress=${contractAddress}&address=${address}&page=1&offset=100&sort=asc`,
     );
 
-
 export const timestampToDate = (ts: number): Record<string, number> => {
     console.log(ts);
     const date = new Date(ts * 1000);
@@ -81,54 +80,54 @@ export interface Metadata {
     external_url: string; // ethAge.com/ethAge/[tokenId]
     attributes: [
         {
-            trait_type: 'year',
-            value: number,
+            trait_type: 'year';
+            value: number;
         },
         {
-            trait_type: 'month',
-            value: number,
+            trait_type: 'month';
+            value: number;
         },
         {
-            trait_type: 'day',
-            value: number,
+            trait_type: 'day';
+            value: number;
         },
         {
-            trait_type: 'hour',
-            value: number,
+            trait_type: 'hour';
+            value: number;
         },
         {
-            trait_type: 'minute',
-            value: number,
+            trait_type: 'minute';
+            value: number;
         },
         {
-            trait_type: 'second',
-            value: number,
+            trait_type: 'second';
+            value: number;
         },
         {
-            display_type: 'date',
-            trait_type: 'birthday',
-            value: number, // 1546360800
+            display_type: 'date';
+            trait_type: 'birthday';
+            value: number; // 1546360800
         },
-        
+
         {
-            trait_type: 'parent',
-            value: string,
-        },
-        {
-            trait_type: 'eth recieved',
-            value: number, // 0.08 eth
+            trait_type: 'parent';
+            value: string;
         },
         {
-            trait_type: 'block age',
-            value: number,
+            trait_type: 'eth recieved';
+            value: number; // 0.08 eth
         },
         {
-            trait_type: 'birthblock',
-            value: number,
+            trait_type: 'block age';
+            value: number;
         },
         {
-            trait_type: 'txn hash',
-            value: string,
+            trait_type: 'birthblock';
+            value: number;
         },
-    ]
+        {
+            trait_type: 'txn hash';
+            value: string;
+        },
+    ];
 }

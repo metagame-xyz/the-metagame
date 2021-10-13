@@ -6,6 +6,7 @@ import {
     Metadata,
     getOldestTransaction,
     getTokenIdForAddress,
+    zodiac,
 } from '../../../utils/utils';
 import {
     NETWORK,
@@ -142,6 +143,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             {
                 trait_type: 'txn hash',
                 value: oldestTxnData.hash,
+            },
+            {
+                trait_type: 'zodiac',
+                value: zodiac(dateObj.day, dateObj.month),
             },
         ],
     };

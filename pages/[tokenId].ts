@@ -1,4 +1,3 @@
-import { writeFileSync } from 'fs';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { ioredisClient } from '../utils/utils';
 
@@ -125,7 +124,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     svgData.push(timeSvg);
     svgData.push(closingSvgTag);
     const svgString = svgData.join('');
-    writeFileSync(`./public/${addressString.substr(0, 8)}.svg`, svgString);
+    // writeFileSync(`./public/${addressString.substr(0, 8)}.svg`, svgString);
 
     const svgBuffer = Buffer.from(svgString, 'utf-8');
     res.setHeader('Content-Type', 'image/svg+xml');

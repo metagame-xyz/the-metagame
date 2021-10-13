@@ -57,9 +57,7 @@ export const getTokenIdForAddress = async (address: string, contractAddress: str
     );
 
 export const timestampToDate = (ts: number): Record<string, number> => {
-    console.log(ts);
     const date = new Date(ts * 1000);
-    console.log(date);
     const dateObj = {
         year: date.getFullYear(),
         month: date.getMonth(),
@@ -70,6 +68,28 @@ export const timestampToDate = (ts: number): Record<string, number> => {
     };
 
     return dateObj;
+};
+
+// returns the zodiac sign according to day and month ( https://coursesweb.net/javascript/zodiac-signs_cs )
+export const zodiac = (day: number, month: number) => {
+    var zodiac = [
+        '',
+        'Capricorn',
+        'Aquarius',
+        'Pisces',
+        'Aries',
+        'Taurus',
+        'Gemini',
+        'Cancer',
+        'Leo',
+        'Virgo',
+        'Libra',
+        'Scorpio',
+        'Sagittarius',
+        'Capricorn',
+    ];
+    var last_day = ['', 19, 18, 20, 20, 21, 21, 22, 22, 21, 22, 21, 20, 19];
+    return day > last_day[month] ? zodiac[month * 1 + 1] : zodiac[month];
 };
 
 // ethAge.com/api/v1/metadata/[tokenId]
@@ -127,6 +147,10 @@ export interface Metadata {
         },
         {
             trait_type: 'txn hash';
+            value: string;
+        },
+        {
+            trait_type: 'zodiac';
             value: string;
         },
     ];

@@ -4,6 +4,7 @@ import {
     Metadata,
     getOldestTransaction,
     getTokenIdForAddress,
+    zodiac,
 } from '../../../../../utils/utils';
 import { CONTRACT_ADDRESS, CONTRACT_BIRTHBLOCK, VERCEL_URL } from '../../../../../utils/constants';
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -11,7 +12,6 @@ import { formatUnits } from '@ethersproject/units';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method == 'GET') {
-        console.log('Logan were in here');
         const { address } = req.query;
         const newUserAddress = (Array.isArray(address) ? address[0] : address).toLowerCase();
 
@@ -53,7 +53,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const metadata: Metadata = {
             name: `eth age name? idk`,
             description: ``,
-            image: `${VERCEL_URL}/api/v1/image/${tokenId}`,
+            image: `${VERCEL_URL}/api/v1/image/${address}`,
             external_url: `${VERCEL_URL}/eth-age/${tokenId}`,
             attributes: [
                 {
@@ -105,15 +105,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     trait_type: 'txn hash',
                     value: oldestTxnData.hash,
                 },
+                {
+                    trait_type: 'zodiac',
+                    value: zodiac(dateObj.day, dateObj.month),
+                },
             ],
         };
-
-        //         // returns the zodiac sign according to day and month ( https://coursesweb.net/javascript/zodiac-signs_cs )
-        // function zodiac(day, month) {
-        //     var zodiac =['', 'Capricorn', 'Aquarius', 'Pisces', 'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn'];
-        //     var last_day =['', 19, 18, 20, 20, 21, 21, 22, 22, 21, 22, 21, 20, 19];
-        //     return (day > last_day[month]) ? zodiac[month*1 + 1] : zodiac[month];
-        //   }
 
         // index by wallet address
         await ioredisClient.hset(newUserAddress, { tokenId, metadata: JSON.stringify(metadata) });

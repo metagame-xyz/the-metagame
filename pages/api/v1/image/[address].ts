@@ -1,11 +1,10 @@
-import { fstat, fsync, writeFileSync } from 'fs';
+import { writeFileSync } from 'fs';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { ioredisClient } from '../../../../utils/utils';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const { tokenId } = req.query;
-    const addressString: string = Array.isArray(tokenId) ? tokenId[0] : tokenId;
-    // const addressString = '0x17A059B6B0C8af433032d554B0392995155452E6';
+    const { address } = req.query;
+    const addressString: string = Array.isArray(address) ? address[0] : address;
     const data = await ioredisClient.hgetall(addressString.toLowerCase());
 
     const metadata = JSON.parse(data.metadata);
@@ -24,15 +23,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     /* Tree Trunk */
     /**************/
     const currentBlock = 13_411_560;
-    // const blockAge = 11_000_000;
     const blockAge = metadata.attributes[9].value;
     const treeSvgArray = [];
 
     const maxRings = Math.floor(currentBlock / 10 ** 5);
     const rings = Math.floor(blockAge / 10 ** 5);
-    // const rings = 40;
     const ringSize = canvasRadius / maxRings;
-    console.log('ring size:', ringSize);
     const treeSize = ringSize * rings;
 
     // pick color
@@ -125,7 +121,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     svgData.push(timeSvg);
     svgData.push(closingSvgTag);
     const svgString = svgData.join('');
-    writeFileSync(`./public/${addressString.substr(0, 8)}.svg`, svgString);
 
     const svgBuffer = Buffer.from(svgString, 'utf-8');
     res.setHeader('Content-Type', 'image/svg+xml');

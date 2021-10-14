@@ -25,7 +25,6 @@ export const isValidAlchemySignature = (request: NextApiRequest) => {
     const token = ALCHEMY_AUTH_TOKEN;
     const headers = request.headers;
     const signature = headers['x-alchemy-signature'];
-    console.log('sig:', signature);
     const body = request.body;
     const hmac = createHmac('sha256', token); // Create a HMAC SHA256 hash using the auth token
     hmac.update(JSON.stringify(body), 'utf8'); // Update the token hash with the request body using utf8
@@ -58,10 +57,15 @@ export const getOldestTransaction = async (address: string) =>
         `https://api${etherscanNetworkString}.etherscan.io/api?apikey=${ETHERSCAN_API_KEY}&module=account&action=txlist&address=${address}&startblock=0&endblock=999999999&sort=asc&page=1&offset=1`,
     );
 
-export const getTokenIdForAddress = async (address: string, contractAddress: string) =>
-    await fetcher(
+export const getTokenIdForAddress = async (address: string, contractAddress: string) => {
+    console.log(
+        'url:',
         `https://api${etherscanNetworkString}.etherscan.io/api?apikey=${ETHERSCAN_API_KEY}&module=account&action=tokennfttx&contractaddress=${contractAddress}&address=${address}&page=1&offset=100&sort=asc`,
     );
+    return await fetcher(
+        `https://api${etherscanNetworkString}.etherscan.io/api?apikey=${ETHERSCAN_API_KEY}&module=account&action=tokennfttx&contractaddress=${contractAddress}&address=${address}&page=1&offset=100&sort=asc`,
+    );
+};
 
 export const timestampToDate = (ts: number): Record<string, number> => {
     const date = new Date(ts * 1000);

@@ -13,7 +13,7 @@ import {
 
 const fetchOptions = {
     retry: 12,
-    pause: 1000,
+    pause: 2000,
     callback: (retry: any) => {
         console.log(`Etherscan API Error. Retrying: ${retry}`);
     },

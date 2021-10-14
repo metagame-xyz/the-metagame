@@ -3,7 +3,13 @@ import type { NextApiRequest } from 'next';
 import * as ethers from 'ethers';
 import fetch from 'node-fetch-retry';
 import Redis from 'ioredis';
-import { ETHERSCAN_API_KEY, NETWORK } from './constants';
+import {
+    ALCHEMY_AUTH_TOKEN,
+    ETHERSCAN_API_KEY,
+    NETWORK,
+    PRIVATE_KEY,
+    REDIS_URL,
+} from './constants';
 
 const fetchOptions = {
     retry: 12,
@@ -16,9 +22,10 @@ const fetchOptions = {
 export const fetcher = (url: string) => fetch(url, fetchOptions).then((r: any) => r.json());
 
 export const isValidAlchemySignature = (request: NextApiRequest) => {
-    const token = process.env.ALCHEMY_AUTH_TOKEN;
+    const token = ALCHEMY_AUTH_TOKEN;
     const headers = request.headers;
     const signature = headers['x-alchemy-signature'];
+    console.log('sig:', signature);
     const body = request.body;
     const hmac = createHmac('sha256', token); // Create a HMAC SHA256 hash using the auth token
     hmac.update(JSON.stringify(body), 'utf8'); // Update the token hash with the request body using utf8
@@ -27,7 +34,7 @@ export const isValidAlchemySignature = (request: NextApiRequest) => {
 };
 
 export const signMessage = (message: string) => {
-    const privateKey = process.env.PRIVATE_KEY;
+    const privateKey = PRIVATE_KEY;
     const signingKey = new ethers.Wallet(privateKey)._signingKey();
     const digest = ethers.utils.id(message);
     const signature = signingKey.signDigest(digest);
@@ -42,9 +49,9 @@ export const checkSignature = (message: string, joinedSignature: string, walletA
     return walletAddress === recoveredAddress;
 };
 
-export const ioredisClient = new Redis(process.env.REDIS_URL);
+export const ioredisClient = new Redis(REDIS_URL);
 
-const etherscanNetworkString = process.env.NETWORK.toLowerCase() == 'ethereum' ? '' : `-${NETWORK}`;
+const etherscanNetworkString = NETWORK.toLowerCase() == 'ethereum' ? '' : `-${NETWORK}`;
 
 export const getOldestTransaction = async (address: string) =>
     await fetcher(

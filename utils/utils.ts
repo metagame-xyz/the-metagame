@@ -92,12 +92,12 @@ export const zodiac = (day: number, month: number) => {
     return day > last_day[month] ? zodiac[month * 1 + 1] : zodiac[month];
 };
 
-// ethAge.com/api/v1/metadata/[tokenId]
+// birthblock.art/api/v1/metadata/[tokenId]
 export interface Metadata {
     name: string;
     description: string;
-    image: string; // ethAge.com/api/v1/image/[tokenId]
-    external_url: string; // ethAge.com/ethAge/[tokenId]
+    image: string; // birthblock.art/api/v1/image/[tokenId]
+    external_url: string; // birthblock.art/birthblock/[tokenId]
     attributes: [
         {
             trait_type: 'year';
@@ -134,7 +134,7 @@ export interface Metadata {
             value: string;
         },
         {
-            trait_type: 'eth recieved';
+            trait_type: 'eth received';
             value: number; // 0.08 eth
         },
         {

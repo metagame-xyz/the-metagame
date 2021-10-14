@@ -1,6 +1,6 @@
-import { writeFileSync } from 'fs';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { ioredisClient } from '../../../../utils/utils';
+import { CONTRACT_BIRTHBLOCK } from '../../../utils/constants';
+import { ioredisClient } from '../../../utils/utils';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { address } = req.query;
@@ -22,11 +22,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     /**************/
     /* Tree Trunk */
     /**************/
-    const currentBlock = 13_411_560;
     const blockAge = metadata.attributes[9].value;
     const treeSvgArray = [];
 
-    const maxRings = Math.floor(currentBlock / 10 ** 5);
+    const maxRings = Math.floor(CONTRACT_BIRTHBLOCK / 10 ** 5);
     const rings = Math.floor(blockAge / 10 ** 5);
     const ringSize = canvasRadius / maxRings;
     const treeSize = ringSize * rings;

@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { ioredisClient } from '../../../../utils/utils';
+import { ioredisClient } from '../../../utils/utils';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     // const { tokenId } = req.query;

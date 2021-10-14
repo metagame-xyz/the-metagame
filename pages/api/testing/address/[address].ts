@@ -5,8 +5,8 @@ import {
     getOldestTransaction,
     getTokenIdForAddress,
     zodiac,
-} from '../../../../../utils/utils';
-import { CONTRACT_ADDRESS, CONTRACT_BIRTHBLOCK, VERCEL_URL } from '../../../../../utils/constants';
+} from '../../../../utils/utils';
+import { CONTRACT_ADDRESS, CONTRACT_BIRTHBLOCK, VERCEL_URL } from '../../../../utils/constants';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { formatUnits } from '@ethersproject/units';
 
@@ -54,7 +54,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             name: `eth age name? idk`,
             description: ``,
             image: `${VERCEL_URL}/api/v1/image/${address}`,
-            external_url: `${VERCEL_URL}/eth-age/${tokenId}`,
+            external_url: `${VERCEL_URL}/birthblock/${tokenId}`,
             attributes: [
                 {
                     trait_type: 'year',
@@ -90,7 +90,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     value: oldestTxnData.fromAddress,
                 },
                 {
-                    trait_type: 'eth recieved',
+                    trait_type: 'eth received',
                     value: oldestTxnData.value, // 0.08 eth
                 },
                 {

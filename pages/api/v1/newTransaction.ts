@@ -1,5 +1,4 @@
 import {
-    fetcher,
     isValidAlchemySignature,
     ioredisClient,
     timestampToDate,
@@ -68,7 +67,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         blockNumber: result[0].blockNumber,
         fromAddress: result[0].from,
         timeStamp: result[0].timeStamp,
-        hash: result[0].hash,
+        hash: String(result[0].hash),
         value: Number(formatUnits(result[0].value, 'ether')),
     };
 
@@ -90,10 +89,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const dateObj = timestampToDate(oldestTxnData.timeStamp);
 
     const metadata: Metadata = {
-        name: `eth age name? idk`,
-        description: ``,
+        name: `Birthblock ${oldestTxnData.blockNumber}: ${oldestTxnData.hash.substring(6)}`,
+        description: `A ${dateObj.year} ${zodiac(dateObj.day, dateObj.month)} wallet born at ${
+            dateObj.hour
+        }:${dateObj.minute}`,
         image: `${VERCEL_URL}/api/v1/image/${tokenId}`,
-        external_url: `${VERCEL_URL}/eth-age/${tokenId}`,
+        external_url: `${VERCEL_URL}/birthblock/${tokenId}`,
         attributes: [
             {
                 trait_type: 'year',
@@ -129,7 +130,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 value: oldestTxnData.fromAddress,
             },
             {
-                trait_type: 'eth recieved',
+                trait_type: 'eth received',
                 value: oldestTxnData.value, // 0.08 eth
             },
             {

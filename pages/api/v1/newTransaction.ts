@@ -93,7 +93,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const dateObj = timestampToDate(oldestTxnData.timeStamp);
 
         const metadata: Metadata = {
-            name: `Birthblock ${oldestTxnData.blockNumber}: ${oldestTxnData.hash.substring(6)}`,
+            name: `Birthblock ${oldestTxnData.blockNumber}: ${oldestTxnData.hash.substr(0, 6)}`,
             description: `A ${dateObj.year} ${zodiac(dateObj.day, dateObj.month)} wallet born at ${
                 dateObj.hour
             }:${dateObj.minute}`,

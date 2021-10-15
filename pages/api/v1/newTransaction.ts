@@ -112,7 +112,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(400).send({ message, errorType: 'etherscan API' });
         }
 
-        console.log('got past getTokenIdForAddress:', tokenIDsRawData);
+        console.log('got past getTokenIdForAddress:');
 
         const tokenId = tokenIDsRawData[0].tokenID;
 

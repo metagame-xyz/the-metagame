@@ -3,6 +3,7 @@ import { NETWORK, ALCHEMY_APP_NAME } from '../../../utils/constants';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    console.log('testing/newTransaction');
     if (req.method !== 'POST') {
         return res.status(404).send({ message: '404' });
     }

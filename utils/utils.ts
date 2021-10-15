@@ -21,6 +21,8 @@ const fetchOptions = {
 
 export const fetcher = (url: string) => fetch(url, fetchOptions).then((r: any) => r.json());
 
+export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 export const isValidAlchemySignature = (request: NextApiRequest) => {
     const token = ALCHEMY_AUTH_TOKEN;
     const headers = request.headers;

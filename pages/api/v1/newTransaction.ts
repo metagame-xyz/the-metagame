@@ -6,6 +6,7 @@ import {
     getOldestTransaction,
     getTokenIdForAddress,
     zodiac,
+    sleep,
 } from '../../../utils/utils';
 import {
     NETWORK,
@@ -18,6 +19,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { formatUnits } from '@ethersproject/units';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    console.log('newTransaction webhook initiated');
     if (req.method !== 'POST') {
         /**
          * During development, it's useful to un-comment this block
@@ -76,17 +78,41 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         };
 
         let tokenIDsRawData;
-        ({
-            status,
-            message,
-            result: tokenIDsRawData,
-        } = await getTokenIdForAddress(newUserAddress, CONTRACT_ADDRESS));
+
+        let callNeeded = true;
+        const maxRetry = 6;
+        let tryCounter = 1;
+        const wait = [0, 0, 2000, 3000, 4000, 5000, 6000];
+
+        status = 7;
+        message = 8;
+
+        while (callNeeded && tryCounter < maxRetry) {
+            await sleep(wait[tryCounter]);
+
+            console.log('try:', tryCounter, 'waited:', wait[tryCounter]);
+
+            ({
+                status,
+                message,
+                result: tokenIDsRawData,
+            } = await getTokenIdForAddress(newUserAddress, CONTRACT_ADDRESS));
+
+            console.log('status:', status);
+            console.log('message:', message);
+            console.log('tokenIDsRawData:', tokenIDsRawData);
+
+            callNeeded = status != 1;
+            tryCounter++;
+        }
 
         // check that etherscan API returned successfully
         if (status != 1) {
             console.log('Etherscan error getTokenIdForAddress. Message:', message);
             return res.status(400).send({ message, errorType: 'etherscan API' });
         }
+
+        console.log('got past getTokenIdForAddress:', tokenIDsRawData);
 
         const tokenId = tokenIDsRawData[0].tokenID;
 

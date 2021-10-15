@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const data = await ioredisClient.hget(tokenIdString.toLowerCase(), 'metadata');
 
     if (!data) {
-        res.status(404).send({ message: `Image for token id ${tokenId} not found.` });
+        return res.status(404).send({ message: `Image for token id ${tokenId} not found.` });
     }
 
     const metadata = JSON.parse(data);

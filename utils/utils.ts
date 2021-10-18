@@ -136,7 +136,10 @@ export interface Metadata {
             trait_type: 'birthday';
             value: number; // 1546360800
         },
-
+        // {
+        //     trait_type: 'address';
+        //     value: string;
+        // },
         {
             trait_type: 'parent';
             value: string;

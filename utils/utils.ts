@@ -59,15 +59,10 @@ export const getOldestTransaction = async (address: string) =>
         `https://api${etherscanNetworkString}.etherscan.io/api?apikey=${ETHERSCAN_API_KEY}&module=account&action=txlist&address=${address}&startblock=0&endblock=999999999&sort=asc&page=1&offset=1`,
     );
 
-export const getTokenIdForAddress = async (address: string, contractAddress: string) => {
-    console.log(
-        'url:',
+export const getTokenIdForAddress = async (address: string, contractAddress: string) =>
+    await fetcher(
         `https://api${etherscanNetworkString}.etherscan.io/api?apikey=${ETHERSCAN_API_KEY}&module=account&action=tokennfttx&contractaddress=${contractAddress}&address=${address}&page=1&offset=100&sort=asc`,
     );
-    return await fetcher(
-        `https://api${etherscanNetworkString}.etherscan.io/api?apikey=${ETHERSCAN_API_KEY}&module=account&action=tokennfttx&contractaddress=${contractAddress}&address=${address}&page=1&offset=100&sort=asc`,
-    );
-};
 
 export const timestampToDate = (ts: number): Record<string, number> => {
     const date = new Date(ts * 1000);

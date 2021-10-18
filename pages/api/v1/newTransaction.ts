@@ -20,6 +20,7 @@ import { formatUnits } from '@ethersproject/units';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     console.log('newTransaction webhook initiated');
+    console.log('req.body:', req.body);
     if (req.method !== 'POST') {
         /**
          * During development, it's useful to un-comment this block
@@ -79,18 +80,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         let tokenIDsRawData;
 
-        let callNeeded = true;
-        const maxRetry = 6;
+        const maxRetry = 4;
         let tryCounter = 1;
-        const wait = [0, 0, 2000, 3000, 4000, 5000, 6000];
+        // need to stay under 10s for now cuz Vercel lambda timeout
+        const wait = [0, 1000, 2000, 3000, 3000];
 
-        status = 7;
-        message = 8;
-
-        while (callNeeded && tryCounter < maxRetry) {
-            await sleep(wait[tryCounter]);
-
-            console.log('try:', tryCounter, 'waited:', wait[tryCounter]);
+        while (tryCounter <= maxRetry) {
+            console.log(`Try #${tryCounter} to get Token ID for ${newUserAddress}`);
 
             ({
                 status,
@@ -98,21 +94,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 result: tokenIDsRawData,
             } = await getTokenIdForAddress(newUserAddress, CONTRACT_ADDRESS));
 
-            console.log('status:', status);
-            console.log('message:', message);
-            console.log('tokenIDsRawData:', tokenIDsRawData);
-
-            callNeeded = status != 1;
-            tryCounter++;
+            // we got it!
+            if (status == 1) {
+                console.log(
+                    `Try #${tryCounter} successful. Token ID for ${newUserAddress}: ${tokenIDsRawData[0].tokenID}`,
+                );
+                break;
+            } else if (tryCounter != maxRetry) {
+                console.log(
+                    `try # ${tryCounter} to get Token ID for ${newUserAddress} failed. Waiting ${
+                        wait[tryCounter] / 1000
+                    } second(s)`,
+                );
+                await sleep(wait[tryCounter]);
+                tryCounter++;
+            } else {
+                console.warn(
+                    `Tried ${tryCounter} times. Either it's not a mint, or it's taking a really long time. Sending a 400 to Alchemy, which will trigger another hit to the newTransactin endpoint`,
+                );
+                return res.status(400).send({ message, errorType: 'etherscan API' });
+            }
         }
-
-        // check that etherscan API returned successfully
-        if (status != 1) {
-            console.log('Etherscan error getTokenIdForAddress. Message:', message);
-            return res.status(400).send({ message, errorType: 'etherscan API' });
-        }
-
-        console.log('got past getTokenIdForAddress:');
 
         const tokenId = tokenIDsRawData[0].tokenID;
 
@@ -190,8 +192,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             address: newUserAddress,
             metadata: JSON.stringify(metadata),
         });
-
-        const data = await ioredisClient.hgetall(tokenId);
     }
 
     res.status(200).send({ message: `${newUserAddressArray} added or updated` });

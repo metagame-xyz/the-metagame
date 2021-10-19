@@ -9,7 +9,7 @@ import {
     ALCHEMY_AUTH_TOKEN,
     ETHERSCAN_API_KEY,
     LOGFLARE_API_KEY,
-    LOGFLARE_SOURCE_TOKEN,
+    LOGFLARE_SOURCE_UUID,
     NETWORK,
     PRIVATE_KEY,
     REDIS_URL,
@@ -59,7 +59,7 @@ export const ioredisClient = new Redis(REDIS_URL);
 // create pino-logflare console stream for serverless functions and send function for browser logs
 const { stream, send } = logflarePinoVercel({
     apiKey: LOGFLARE_API_KEY,
-    sourceToken: LOGFLARE_SOURCE_TOKEN,
+    sourceToken: LOGFLARE_SOURCE_UUID,
 });
 
 // create pino loggger

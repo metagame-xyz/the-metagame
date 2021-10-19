@@ -3,9 +3,13 @@ import type { NextApiRequest } from 'next';
 import * as ethers from 'ethers';
 import fetch from 'node-fetch-retry';
 import Redis from 'ioredis';
+import pino from 'pino';
+import { logflarePinoVercel } from 'pino-logflare';
 import {
     ALCHEMY_AUTH_TOKEN,
     ETHERSCAN_API_KEY,
+    LOGFLARE_API_KEY,
+    LOGFLARE_SOURCE_TOKEN,
     NETWORK,
     PRIVATE_KEY,
     REDIS_URL,
@@ -51,6 +55,30 @@ export const checkSignature = (message: string, joinedSignature: string, walletA
 };
 
 export const ioredisClient = new Redis(REDIS_URL);
+
+// create pino-logflare console stream for serverless functions and send function for browser logs
+const { stream, send } = logflarePinoVercel({
+    apiKey: LOGFLARE_API_KEY,
+    sourceToken: LOGFLARE_SOURCE_TOKEN,
+});
+
+// create pino loggger
+export const logger = pino(
+    {
+        browser: {
+            transmit: {
+                level: 'info',
+                send: send,
+            },
+        },
+        level: 'debug',
+        base: {
+            env: process.env.NODE_ENV || 'unknown-env',
+            revision: process.env.VERCEL_GITHUB_COMMIT_SHA,
+        },
+    },
+    stream,
+);
 
 const etherscanNetworkString = NETWORK.toLowerCase() == 'ethereum' ? '' : `-${NETWORK}`;
 

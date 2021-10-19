@@ -7,6 +7,7 @@ import {
     getTokenIdForAddress,
     zodiac,
     sleep,
+    logger,
 } from '../../../utils/utils';
 import {
     NETWORK,
@@ -19,8 +20,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { formatUnits } from '@ethersproject/units';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    console.log('newTransaction webhook initiated');
-    console.log('req.body:', req.body);
+    logger.info({ request_body: req.body });
     if (req.method !== 'POST') {
         /**
          * During development, it's useful to un-comment this block
@@ -34,25 +34,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // check the message is coming from the right Alchemy account
     if (!isValidAlchemySignature(req)) {
-        const message = 'invalid Alchemy Signature';
-        console.log(message);
-        return res.status(400).send({ message });
+        const error = 'invalid Alchemy Signature';
+        logger.error({ error });
+        return res.status(400).send({ error });
     }
 
     const { app, network, activity } = req.body;
 
     // check the message is coming from the right network in regards to what environment we're in (prod vs dev)
     if (network.toLowerCase() !== NETWORK.toLowerCase()) {
-        const message = `expected the request's network (${network}) to match the environment's network (${NETWORK})`;
-        console.log(message);
-        return res.status(400).send({ message });
+        const error = `expected the request's network (${network}) to match the environment's network (${NETWORK})`;
+        logger.error({ error });
+        return res.status(400).send({ error });
     }
 
     // check the message is for the app we're building for
     if (!app.includes(ALCHEMY_APP_NAME)) {
-        const message = `expected the request for (${app}) to match the environment's app (${ALCHEMY_APP_NAME})`;
-        console.log(message);
-        return res.status(400).send({ message });
+        const error = `expected the request for (${app}) to match the environment's app (${ALCHEMY_APP_NAME})`;
+        logger.error({ error });
+        return res.status(400).send({ error });
     }
 
     const newUserAddressArray = [];
@@ -65,7 +65,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         // check that etherscan API returned successfully
         if (status != 1) {
-            console.log('Etherscan error getOldestTransaction. Message:', message);
+            logger.error({ error: 'Etherscan error getOldestTransaction', message });
             return res.status(400).send({ message, errorType: 'etherscan API' });
         }
 
@@ -86,7 +86,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const wait = [0, 1000, 2000, 3000, 3000];
 
         while (tryCounter <= maxRetry) {
-            console.log(`Try #${tryCounter} to get Token ID for ${newUserAddress}`);
+            logger.info({ message: `Try #${tryCounter} to get Token ID for ${newUserAddress}` });
 
             ({
                 status,
@@ -96,22 +96,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             // we got it!
             if (status == 1) {
-                console.log(
-                    `Try #${tryCounter} successful. Token ID for ${newUserAddress}: ${tokenIDsRawData[0].tokenID}`,
-                );
+                logger.info({
+                    message: `Try #${tryCounter} successful. Token ID for ${newUserAddress}: ${tokenIDsRawData[0].tokenID}`,
+                });
                 break;
             } else if (tryCounter != maxRetry) {
-                console.log(
-                    `try # ${tryCounter} to get Token ID for ${newUserAddress} failed. Waiting ${
+                logger.info({
+                    message: `try # ${tryCounter} to get Token ID for ${newUserAddress} failed. Waiting ${
                         wait[tryCounter] / 1000
                     } second(s)`,
-                );
+                });
                 await sleep(wait[tryCounter]);
                 tryCounter++;
             } else {
-                console.warn(
-                    `Tried ${tryCounter} times. Either it's not a mint, or it's taking a really long time. Sending a 400 to Alchemy, which will trigger another hit to the newTransactin endpoint`,
-                );
+                logger.warn({
+                    message: `Tried ${tryCounter} times. Either it's not a mint, or it's taking a really long time. Sending a 400 to Alchemy, which will trigger another hit to the newTransactin endpoint`,
+                });
                 return res.status(400).send({ message, errorType: 'etherscan API' });
             }
         }

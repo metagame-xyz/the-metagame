@@ -38,8 +38,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const metadata: Metadata = {
             name: `eth age name? idk`,
             description: ``,
-            image: `${VERCEL_URL}/api/v1/image/${address}`,
-            external_url: `${VERCEL_URL}/birthblock/${tokenId}`,
+            image: `https://${VERCEL_URL}/api/v1/image/${address}`,
+            external_url: `https://${VERCEL_URL}/birthblock/${tokenId}`,
             attributes: [
                 {
                     trait_type: 'year',

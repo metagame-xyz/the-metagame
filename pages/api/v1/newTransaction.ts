@@ -57,8 +57,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         description: `A ${dateObj.year} ${zodiac(dateObj.day, dateObj.month)} address born at ${
             dateObj.hour
         }:${dateObj.minute}`,
-        image: `${VERCEL_URL}/api/v1/image/${tokenId}`,
-        external_url: `${VERCEL_URL}/birthblock/${tokenId}`,
+        image: `https://${VERCEL_URL}/api/v1/image/${tokenId}`,
+        external_url: `https://${VERCEL_URL}/birthblock/${tokenId}`,
         attributes: [
             {
                 trait_type: 'year',

@@ -6,7 +6,7 @@ import Redis from 'ioredis';
 import pino from 'pino';
 import { logflarePinoVercel } from 'pino-logflare';
 import {
-    ALCHEMY_AUTH_TOKEN,
+    EVENT_FORWARDER_AUTH_TOKEN,
     ETHERSCAN_API_KEY,
     LOGFLARE_API_KEY,
     LOGFLARE_SOURCE_UUID,
@@ -26,7 +26,7 @@ const fetchOptions = {
 export const fetcher = (url: string) => fetch(url, fetchOptions).then((r: any) => r.json());
 
 export const isValidEventForwarderSignature = (request: NextApiRequest) => {
-    const token = ALCHEMY_AUTH_TOKEN;
+    const token = EVENT_FORWARDER_AUTH_TOKEN;
     const headers = request.headers;
     const signature = headers['x-event-forwarder-signature'];
     const body = request.body;

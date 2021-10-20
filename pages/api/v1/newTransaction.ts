@@ -7,13 +7,7 @@ import {
     zodiac,
     logger,
 } from '../../../utils/utils';
-import {
-    NETWORK,
-    ALCHEMY_APP_NAME,
-    CONTRACT_ADDRESS,
-    CONTRACT_BIRTHBLOCK,
-    VERCEL_URL,
-} from '../../../utils/constants';
+import { CONTRACT_BIRTHBLOCK, VERCEL_URL } from '../../../utils/constants';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { formatUnits } from '@ethersproject/units';
 

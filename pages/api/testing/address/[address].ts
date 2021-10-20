@@ -3,10 +3,9 @@ import {
     timestampToDate,
     Metadata,
     getOldestTransaction,
-    getTokenIdForAddress,
     zodiac,
 } from '../../../../utils/utils';
-import { CONTRACT_ADDRESS, CONTRACT_BIRTHBLOCK, VERCEL_URL } from '../../../../utils/constants';
+import { CONTRACT_BIRTHBLOCK, VERCEL_URL } from '../../../../utils/constants';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { formatUnits } from '@ethersproject/units';
 
@@ -32,20 +31,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             value: Number(formatUnits(result[0].value, 'ether')),
         };
 
-        // let tokenIDsRawData;
-        // ({
-        //     status,
-        //     message,
-        //     result: tokenIDsRawData,
-        // } = await getTokenIdForAddress(newUserAddress, CONTRACT_ADDRESS));
-
-        // // check that etherscan API returned successfully
-        // if (status != 1) {
-        //     console.log('Etherscan error getTokenIdForAddress. Message:', message);
-        //     return res.status(400).send({ message, errorType: 'etherscan API' });
-        // }
-
-        // const tokenId = tokenIDsRawData[0].tokenID;
         const tokenId = 1337;
 
         const dateObj = timestampToDate(oldestTxnData.timeStamp);

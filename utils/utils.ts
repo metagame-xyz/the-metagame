@@ -19,18 +19,16 @@ const fetchOptions = {
     retry: 12,
     pause: 2000,
     callback: (retry: any) => {
-        console.log(`Etherscan API Error. Retrying: ${retry}`);
+        console.log(`Retrying: ${retry}`);
     },
 };
 
 export const fetcher = (url: string) => fetch(url, fetchOptions).then((r: any) => r.json());
 
-export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
-export const isValidAlchemySignature = (request: NextApiRequest) => {
+export const isValidEventForwarderSignature = (request: NextApiRequest) => {
     const token = ALCHEMY_AUTH_TOKEN;
     const headers = request.headers;
-    const signature = headers['x-alchemy-signature'];
+    const signature = headers['x-event-forwarder-signature'];
     const body = request.body;
     const hmac = createHmac('sha256', token); // Create a HMAC SHA256 hash using the auth token
     hmac.update(JSON.stringify(body), 'utf8'); // Update the token hash with the request body using utf8
@@ -84,12 +82,7 @@ const etherscanNetworkString = NETWORK.toLowerCase() == 'ethereum' ? '' : `-${NE
 
 export const getOldestTransaction = async (address: string) =>
     await fetcher(
-        `https://api${etherscanNetworkString}.etherscan.io/api?apikey=${ETHERSCAN_API_KEY}&module=account&action=txlist&address=${address}&startblock=0&endblock=999999999&sort=asc&page=1&offset=1`,
-    );
-
-export const getTokenIdForAddress = async (address: string, contractAddress: string) =>
-    await fetcher(
-        `https://api${etherscanNetworkString}.etherscan.io/api?apikey=${ETHERSCAN_API_KEY}&module=account&action=tokennfttx&contractaddress=${contractAddress}&address=${address}&page=1&offset=100&sort=asc`,
+        `https://api${etherscanNetworkString}.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=999999999&sort=asc&page=1&offset=1&apikey=${ETHERSCAN_API_KEY}`,
     );
 
 export const timestampToDate = (ts: number): Record<string, number> => {
@@ -164,10 +157,10 @@ export interface Metadata {
             trait_type: 'birthday';
             value: number; // 1546360800
         },
-        // {
-        //     trait_type: 'address';
-        //     value: string;
-        // },
+        {
+            trait_type: 'address';
+            value: string;
+        },
         {
             trait_type: 'parent';
             value: string;

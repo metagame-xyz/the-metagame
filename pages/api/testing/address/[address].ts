@@ -86,6 +86,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     value: oldestTxnData.timeStamp, // 1546360800
                 },
                 {
+                    trait_type: 'address',
+                    value: newUserAddress,
+                },
+                {
                     trait_type: 'parent',
                     value: oldestTxnData.fromAddress,
                 },

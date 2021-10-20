@@ -12,5 +12,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const metadata = JSON.parse(data);
-    res.send({ metadata });
+    res.send(metadata);
 }

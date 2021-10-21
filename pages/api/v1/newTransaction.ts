@@ -24,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(404).send({ message: '404' });
     }
 
-    // check the message is coming from the right Alchemy account
+    // check the message is coming from the event-forwarder
     if (!isValidEventForwarderSignature(req)) {
         const error = 'invalid event-forwarder Signature';
         logger.error({ error });

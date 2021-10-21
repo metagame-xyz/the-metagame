@@ -55,7 +55,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const dateObj = timestampToDate(oldestTxnData.timeStamp);
 
     const metadata: Metadata = {
-        name: `${oldestTxnData.hash.substr(0, 6)}'s Birthblock: ${oldestTxnData.blockNumber} `,
+        name: `${minterAddress.substr(0, 6)}'s Birthblock: ${oldestTxnData.blockNumber} `,
         description: `A ${dateObj.year} ${zodiac(dateObj.day, dateObj.month)} address born at ${
             dateObj.hour
         }:${dateObj.minute}`,

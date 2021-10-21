@@ -12,7 +12,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { formatUnits } from '@ethersproject/units';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    logger.info({ request_body: req.body });
+    logger.info(req.body);
     if (req.method !== 'POST') {
         /**
          * During development, it's useful to un-comment this block
@@ -21,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
          * return res.status(200).send({});
          */
 
-        return res.status(404).send({ message: '404' });
+        return res.status(404).send({ error: '404' });
     }
 
     // check the message is coming from the event-forwarder
@@ -38,7 +38,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // check that etherscan API returned successfully
     if (status != 1) {
         logger.error({ error: 'Etherscan error getOldestTransaction', message });
-        return res.status(400).send({ message, errorType: 'etherscan API' });
+        return res
+            .status(400)
+            .send({ error: `Etherscan getOldestTransaction had an issue: ${message}` });
     }
 
     const oldestTxnData = {
@@ -129,5 +131,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         metadata: JSON.stringify(metadata),
     });
 
-    res.status(200).send({ message: `${minterAddress} added or updated` });
+    res.status(200).send({ minterAddress, tokenId });
 }

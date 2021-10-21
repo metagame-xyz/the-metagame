@@ -19,7 +19,7 @@ const fetchOptions = {
     retry: 12,
     pause: 2000,
     callback: (retry: any) => {
-        console.log(`Retrying: ${retry}`);
+        logger.warn(`Retrying: ${retry}`);
     },
 };
 
@@ -29,7 +29,6 @@ export const isValidEventForwarderSignature = (request: NextApiRequest) => {
     const token = EVENT_FORWARDER_AUTH_TOKEN;
     const headers = request.headers;
     const signature = headers['x-event-forwarder-signature'];
-    console.log('signature:', signature);
     const body = request.body;
     const hmac = createHmac('sha256', token); // Create a HMAC SHA256 hash using the auth token
     hmac.update(JSON.stringify(body), 'utf8'); // Update the token hash with the request body using utf8
@@ -55,8 +54,8 @@ export const checkSignature = (message: string, joinedSignature: string, walletA
 
 export const ioredisClient = new Redis(REDIS_URL);
 
-// create pino-logflare console stream for serverless functions and send function for browser logs
-const { stream, send } = logflarePinoVercel({
+// create pino-logflare console stream for serverless functions
+const { stream } = logflarePinoVercel({
     apiKey: LOGFLARE_API_KEY,
     sourceToken: LOGFLARE_SOURCE_UUID,
 });
@@ -64,20 +63,15 @@ const { stream, send } = logflarePinoVercel({
 // create pino loggger
 export const logger = pino(
     {
-        browser: {
-            transmit: {
-                level: 'info',
-                send: send,
-            },
-        },
-        level: 'debug',
         base: {
-            env: process.env.NODE_ENV || 'unknown-env',
+            env: process.env.VERCEL_ENV || 'unknown-env',
             revision: process.env.VERCEL_GITHUB_COMMIT_SHA,
         },
     },
     stream,
 );
+
+export const localLogger = pino({}, stream);
 
 const etherscanNetworkString = NETWORK.toLowerCase() == 'ethereum' ? '' : `-${NETWORK}`;
 

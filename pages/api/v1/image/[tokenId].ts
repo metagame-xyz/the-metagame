@@ -35,7 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const rings = Math.floor(blockAge / 10 ** 5);
     // const rings = 40;
     const ringSize = canvasRadius / maxRings;
-    console.log('ring size:', ringSize);
+    // console.log('ring size:', ringSize);
     const treeSize = ringSize * rings;
 
     // pick color

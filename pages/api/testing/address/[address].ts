@@ -4,6 +4,7 @@ import {
     Metadata,
     getOldestTransaction,
     zodiac,
+    logger,
 } from '../../../../utils/utils';
 import { CONTRACT_BIRTHBLOCK, VERCEL_URL } from '../../../../utils/constants';
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -18,8 +19,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         // check that etherscan API returned successfully
         if (status != 1) {
-            console.log('Etherscan error getOldestTransaction. Message:', message);
-            return res.status(400).send({ message, errorType: 'etherscan API' });
+            logger.error({ error: 'Etherscan error getOldestTransaction', message });
+            return res
+                .status(400)
+                .send({ error: `Etherscan getOldestTransaction had an issue: ${message}` });
         }
 
         const oldestTxnData = {

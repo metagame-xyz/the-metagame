@@ -8,18 +8,19 @@ import { MetamaskIcon, WalletConnectIcon } from '../components/icons';
 import { Layout } from '../components/Layout';
 import Birthblock from '../birthblock.json';
 import { CONTRACT_ADDRESS, NETWORK } from '../utils/constants';
+import { getTruncatedAddress, getNetwork } from '../utils/frontend';
 const FREE_MINTS = 144;
 import { parseEther } from '@ethersproject/units';
 import { Contract } from 'ethers';
 
 const debug = (varObj) => {
     const str = Object.keys(varObj)[0];
-    console.log(`${str}: ${varObj[str]}`);
+    console.log(`${str}:`, varObj[str]);
 };
 
 const injected = new InjectedConnector({ supportedChainIds: [1, 3, 4, 5, 42] });
 const wcConnector = new WalletConnectConnector({
-    infuraId: '517bf3874a6848e58f99fa38ccf9fce4',
+    infuraId: '0e31bfbced264d04bc19f0d57972deec',
 });
 
 const ConnectorNames = {
@@ -31,22 +32,6 @@ const W3Operations = {
     Connect: 'connect',
     Disconnect: 'disconnect',
 };
-
-function getLibrary(provider) {
-    const library = new Web3Provider(provider);
-    console.log('getLibrary');
-    debug({ library });
-    // library.pollingInterval = 12000;
-    return library;
-}
-
-export default function HomeWrapper() {
-    return (
-        <Web3ReactProvider getLibrary={getLibrary}>
-            <Home />
-        </Web3ReactProvider>
-    );
-}
 
 function Home() {
     const web3React = useWeb3React();
@@ -77,7 +62,7 @@ function Home() {
 
         getMintedCount();
         console.log('getMintedCount effect end');
-    }, []);
+    }, [freeMintsLeft]);
 
     useEffect(() => {
         console.log('latestConnector');
@@ -98,29 +83,6 @@ function Home() {
         }
     }, []);
 
-    const getTruncatedAddress = (address) => {
-        if (address && address.startsWith('0x')) {
-            return address.substr(0, 4) + '...' + address.substr(address.length - 4);
-        }
-        return address;
-    };
-
-    const getNetwork = (chainId) => {
-        switch (chainId) {
-            case 1:
-                return 'Mainnet';
-            case 3:
-                return 'Ropsten';
-            case 4:
-                return 'Rinkeby';
-            case 5:
-                return 'Goerli';
-            case 42:
-                return 'Kovan';
-            default:
-                return `unknown network ${chainId}`;
-        }
-    };
 
     const claimToken = async () => {
         setMinting(true);
@@ -353,3 +315,5 @@ function Home() {
         </Layout>
     );
 }
+
+export default Home;

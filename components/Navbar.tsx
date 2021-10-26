@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, Container, HStack } from '@chakra-ui/react';
+import { Box, Button, Container, Heading, HStack } from '@chakra-ui/react';
 import Image from 'next/image';
 import discordIcon from '../images/icons/discord.png';
 import openSeaIcon from '../images/icons/open-sea.png';
@@ -8,8 +8,11 @@ import twitterIcon from '../images/icons/twitter.png';
 function Navbar(props) {
     return (
         <Box as="header" paddingTop="40px">
-            <Container>
-                <Box d="flex" width="100%" justifyContent="flex-end">
+            <Container maxW={1280}>
+                <Box d="flex" width="100%" justifyContent="space-between">
+                    <Heading as="h1" fontSize="50px" fontWeight="light">
+                        Birthblock
+                    </Heading>
                     <HStack align="center" spacing="41px">
                         <img height="51px" width="51px" src={discordIcon.src} />
                         <img height="60px" width="60px" src={twitterIcon.src} />

@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from 'react';
 import { useWeb3React, Web3ReactProvider } from '@web3-react/core';
 import { InjectedConnector } from '@web3-react/injected-connector';
+import WalletConnectProvider from '@walletconnect/web3-provider';
+import rainbowLogo from '../images/rainbow.png';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { Web3Provider, getDefaultProvider } from '@ethersproject/providers';
 // import useLocalStorage from '../hooks/useLocalStorage';
@@ -8,81 +10,60 @@ import { MetamaskIcon, WalletConnectIcon } from '../components/icons';
 import { Layout } from '../components/Layout';
 import Birthblock from '../birthblock.json';
 import { CONTRACT_ADDRESS, NETWORK } from '../utils/constants';
-import { getTruncatedAddress, getNetwork } from '../utils/frontend';
+import { getTruncatedAddress, getNetwork, debug } from '../utils/frontend';
 const FREE_MINTS = 144;
 import { parseEther } from '@ethersproject/units';
 import { Contract } from 'ethers';
-
-const debug = (varObj) => {
-    const str = Object.keys(varObj)[0];
-    console.log(`${str}:`, varObj[str]);
-};
-
-const injected = new InjectedConnector({ supportedChainIds: [1, 3, 4, 5, 42] });
-const wcConnector = new WalletConnectConnector({
-    infuraId: '0e31bfbced264d04bc19f0d57972deec',
-});
-
-const ConnectorNames = {
-    Injected: 'injected',
-    WalletConnect: 'walletconnect',
-};
-
-const W3Operations = {
-    Connect: 'connect',
-    Disconnect: 'disconnect',
-};
+import Web3Modal from 'web3modal';
+import Web3 from 'web3';
+import { useWeb3, providerOptions } from '../utils/web3Context';
 
 function Home() {
-    const web3React = useWeb3React();
-    debug({ web3React });
-    const { active, activate, error, library } = web3React;
-    const provider = getDefaultProvider(NETWORK);
-    // console.log('eth:', window.ethereum);
-    const birthblockContract = new Contract(CONTRACT_ADDRESS, Birthblock.abi, provider);
+    const { web3, openWeb3Modal } = useWeb3();
 
-    const [loaded, setLoaded] = useState(false);
+    const [accounts, setAccounts] = useState();
 
-    const [latestOp, setLatestOp] = useState('latest_op');
-    const [latestConnector, setLatestConnector] = useState('latest_connector');
+    useEffect(() => {
+        async function getAccounts() {
+            const data = await web3.eth.getAccounts();
+            console.log('accounts:', data);
+            setAccounts(data);
+        }
+        getAccounts();
+    }, []);
+
+    // const birthblockContract = new Contract(CONTRACT_ADDRESS, Birthblock.abi, provider);
+
     let [hasMinted, setHasMinted] = useState(true);
     let [minted, setMinted] = useState(false);
     let [minting, setMinting] = useState(false);
     let [freeMintsLeft, setFreeMintsLeft] = useState('?');
     // console.log(web3React);
 
-    useEffect(() => {
-        console.log('getMintedCount effect start');
-        const getMintedCount = async () => {
-            const data = await birthblockContract.MintedCount();
-            console.log('getMintedCount async finish');
-            console.log(data?.toNumber());
-            setFreeMintsLeft(FREE_MINTS - data.toNumber());
-        };
+    // async function openWeb3Modal() {
+    //     const web3Modal = new Web3Modal({
+    //         network: NETWORK, // optional
+    //         cacheProvider: false, // optional
+    //         providerOptions, // required
+    //     });
 
-        getMintedCount();
-        console.log('getMintedCount effect end');
-    }, [freeMintsLeft]);
+    //     const provider = await web3Modal.connect();
 
-    useEffect(() => {
-        console.log('latestConnector');
-        if (latestOp == 'connect' && latestConnector == 'injected') {
-            injected
-                .isAuthorized()
-                .then((isAuthorized) => {
-                    setLoaded(true);
-                    if (isAuthorized && !web3React.active && !web3React.error) {
-                        web3React.activate(injected);
-                    }
-                })
-                .catch(() => {
-                    setLoaded(true);
-                });
-        } else if (latestOp == 'connect' && latestConnector == 'walletconnect') {
-            web3React.activate(wcConnector);
-        }
-    }, []);
+    //     const web3 = new Web3(provider);
+    // }
 
+    // useEffect(() => {
+    //     // console.log('getMintedCount effect start');
+    //     const getMintedCount = async () => {
+    //         const data = await birthblockContract.MintedCount();
+    //         // console.log('getMintedCount async finish');
+    //         console.log(data?.toNumber());
+    //         setFreeMintsLeft(FREE_MINTS - data.toNumber());
+    //     };
+
+    //     getMintedCount();
+    //     // console.log('getMintedCount effect end');
+    // }, [freeMintsLeft]);
 
     const claimToken = async () => {
         setMinting(true);
@@ -129,82 +110,16 @@ function Home() {
                 <div className="connect-wallet-container">
                     <div className="connect-wallet-card">
                         <div className="wallet-header">{mintsLeftText()}</div>
+                        <div
+                            className="button walletconnect"
+                            onClick={() => {
+                                openWeb3Modal();
+                            }}>
+                            Web3Modal Button
+                        </div>
                     </div>
                 </div>
                 <br />
-                {!web3React.active ? (
-                    <div className="connect-wallet-container">
-                        <div className="connect-wallet-card">
-                            <div className="wallet-header">Connect your wallet</div>
-                            <div
-                                className="button metamask"
-                                onClick={() => {
-                                    setLatestConnector(ConnectorNames.Injected);
-                                    setLatestOp(W3Operations.Connect);
-                                    web3React.activate(injected);
-                                }}>
-                                Metamask
-                                <MetamaskIcon />
-                            </div>
-                            <div
-                                className="button walletconnect"
-                                onClick={() => {
-                                    setLatestConnector(ConnectorNames.WalletConnect);
-                                    setLatestOp(W3Operations.Connect);
-                                    web3React.activate(wcConnector);
-                                }}>
-                                WalletConnect
-                                <WalletConnectIcon />
-                            </div>
-                        </div>
-                    </div>
-                ) : null}
-
-                {web3React.active ? (
-                    <>
-                        <div className="connected-container">
-                            <div className="connected-card">
-                                <div className="row mint-section">
-                                    <div className="button" onClick={claimToken}>
-                                        {claimText()}
-                                    </div>
-                                </div>
-                                <hr className="divider" />
-                                <div className="row network-section">
-                                    <div className="row-title">Network</div>
-                                    <div className="row-subtitle">
-                                        {getNetwork(web3React.chainId)}
-                                    </div>
-                                </div>
-                                <hr className="divider" />
-                                <div className="row network-section">
-                                    <div className="row-title">Address</div>
-                                    <div className="row-subtitle">
-                                        {getTruncatedAddress(web3React.account)}
-                                    </div>
-                                </div>
-                                <hr className="divider" />
-                                <div
-                                    className="row disconnect-button"
-                                    onClick={() => {
-                                        setLatestOp(W3Operations.Disconnect);
-                                        web3React.deactivate();
-                                    }}>
-                                    Disconnect
-                                </div>
-                            </div>
-                        </div>
-                    </>
-                ) : null}
-
-                <div className="github">
-                    <a
-                        href="https://github.com/shivkanthb/web3-starter"
-                        target="_blank"
-                        rel="noreferrer">
-                        Github{' '}
-                    </a>
-                </div>
 
                 <style jsx>{`
           .container {

@@ -21,3 +21,8 @@ export const getNetwork = (chainId) => {
             return `unknown network ${chainId}`;
     }
 };
+
+export const debug = (varObj) => {
+    const str = Object.keys(varObj)[0];
+    console.log(`${str}:`, varObj[str]);
+};

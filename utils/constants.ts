@@ -11,3 +11,4 @@ export const EVENT_FORWARDER_AUTH_TOKEN = process.env.EVENT_FORWARDER_AUTH_TOKEN
 /* Frontend Constants */
 export const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
 export const NETWORK = process.env.NEXT_PUBLIC_NETWORK.toLowerCase();
+export const INFURA_ID = '0e31bfbced264d04bc19f0d57972deec';

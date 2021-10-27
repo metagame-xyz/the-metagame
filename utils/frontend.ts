@@ -1,11 +1,11 @@
-export const getTruncatedAddress = (address) => {
+export function getTruncatedAddress(address: string): string {
     if (address && address.startsWith('0x')) {
         return address.substr(0, 4) + '...' + address.substr(address.length - 4);
     }
     return address;
-};
+}
 
-export const getNetwork = (chainId) => {
+export function getNetwork(chainId: number): string {
     switch (chainId) {
         case 1:
             return 'Mainnet';
@@ -20,9 +20,10 @@ export const getNetwork = (chainId) => {
         default:
             return `unknown network ${chainId}`;
     }
-};
+}
 
-export const debug = (varObj) => {
-    const str = Object.keys(varObj)[0];
-    console.log(`${str}:`, varObj[str]);
-};
+export function debug(varObj: object): void {
+    Object.keys(varObj).forEach((str) => {
+        console.log(`${str}:`, varObj[str]);
+    });
+}

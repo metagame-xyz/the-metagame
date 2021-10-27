@@ -1,13 +1,14 @@
+import { parseEther } from '@ethersproject/units';
+import { Contract, BigNumber } from 'ethers';
 import { useEffect, useState } from 'react';
-import { Layout } from '../components/Layout';
+
 import Birthblock from '../birthblock.json';
+import { Layout } from '../components/Layout';
+import { useEthereum } from '../providers/EthereumProvider';
 import { CONTRACT_ADDRESS } from '../utils/constants';
 import { getTruncatedAddress, debug } from '../utils/frontend';
+
 const FREE_MINTS = 144;
-import { parseEther } from '@ethersproject/units';
-import { useEthereum } from '../providers/EthereumProvider';
-import { Contract } from '@ethersproject/contracts';
-import { BigNumber } from '@ethersproject/bignumber';
 
 function Home() {
     const { provider, signer, userAddress, ensName, openWeb3Modal } = useEthereum();

@@ -1,15 +1,16 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import { INFURA_ID, NETWORK } from '../utils/constants';
 import {
     BaseProvider,
     getDefaultProvider,
     JsonRpcSigner,
     Web3Provider,
 } from '@ethersproject/providers';
-import { Signer } from '@ethersproject/abstract-signer';
-import Web3Modal from 'web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
+import { Signer } from 'ethers';
+import { createContext, useContext, useEffect, useState } from 'react';
+import Web3Modal from 'web3modal';
+
 import rainbowLogo from '../images/rainbow.png';
+import { INFURA_ID, NETWORK } from '../utils/constants';
 import { debug } from '../utils/frontend';
 
 const EthereumContext = createContext(undefined);

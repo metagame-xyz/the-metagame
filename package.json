@@ -27,6 +27,7 @@
         "web3modal": "^1.9.4"
     },
     "devDependencies": {
+        "@trivago/prettier-plugin-sort-imports": "^3.0.0",
         "@types/ioredis": "^4.27.4",
         "@types/node": "^16.10.2",
         "@types/react": "^17.0.25",

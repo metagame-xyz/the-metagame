@@ -1,10 +1,11 @@
 import { createHmac } from 'crypto';
-import type { NextApiRequest } from 'next';
-import * as ethers from 'ethers';
-import fetch from 'node-fetch-retry';
+import { ethers } from 'ethers';
 import Redis from 'ioredis';
+import type { NextApiRequest } from 'next';
+import fetch from 'node-fetch-retry';
 import pino from 'pino';
 import { logflarePinoVercel } from 'pino-logflare';
+
 import {
     EVENT_FORWARDER_AUTH_TOKEN,
     ETHERSCAN_API_KEY,

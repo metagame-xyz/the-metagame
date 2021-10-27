@@ -7,8 +7,8 @@ import pino from 'pino';
 import { logflarePinoVercel } from 'pino-logflare';
 
 import {
-    EVENT_FORWARDER_AUTH_TOKEN,
     ETHERSCAN_API_KEY,
+    EVENT_FORWARDER_AUTH_TOKEN,
     LOGFLARE_API_KEY,
     LOGFLARE_SOURCE_UUID,
     NETWORK,

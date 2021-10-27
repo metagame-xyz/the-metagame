@@ -1,12 +1,12 @@
 import { parseEther } from '@ethersproject/units';
-import { Contract, BigNumber } from 'ethers';
+import { BigNumber, Contract } from 'ethers';
 import { useEffect, useState } from 'react';
 
 import Birthblock from '../birthblock.json';
 import { Layout } from '../components/Layout';
 import { useEthereum } from '../providers/EthereumProvider';
 import { CONTRACT_ADDRESS } from '../utils/constants';
-import { getTruncatedAddress, debug } from '../utils/frontend';
+import { debug, getTruncatedAddress } from '../utils/frontend';
 
 const FREE_MINTS = 144;
 

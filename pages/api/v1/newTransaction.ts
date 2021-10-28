@@ -1,15 +1,17 @@
-import {
-    isValidEventForwarderSignature,
-    ioredisClient,
-    timestampToDate,
-    Metadata,
-    getOldestTransaction,
-    zodiac,
-    logger,
-} from '../../../utils/utils';
-import { CONTRACT_BIRTHBLOCK, VERCEL_URL } from '../../../utils/constants';
+import { commify, formatUnits } from '@ethersproject/units';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { formatUnits } from '@ethersproject/units';
+
+import { CONTRACT_BIRTHBLOCK, VERCEL_URL } from '../../../utils/constants';
+import {
+    formatDateObjToShortTime,
+    getOldestTransaction,
+    ioredisClient,
+    isValidEventForwarderSignature,
+    logger,
+    Metadata,
+    timestampToDate,
+    zodiac,
+} from '../../../utils/utils';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     logger.info(req.body);
@@ -43,86 +45,35 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             .send({ error: `Etherscan getOldestTransaction had an issue: ${message}` });
     }
 
-    const oldestTxnData = {
-        address: minterAddress,
-        blockNumber: result[0].blockNumber,
-        fromAddress: result[0].from,
-        timeStamp: result[0].timeStamp,
-        hash: String(result[0].hash),
-        value: Number(formatUnits(result[0].value, 'ether')),
-    };
+    const { hash, timeStamp: timestamp, value, from, blockNumber } = result[0];
 
-    const dateObj = timestampToDate(oldestTxnData.timeStamp);
+    const dateObj = timestampToDate(timestamp);
+    const birthblock = commify(blockNumber);
+    const blockAge = CONTRACT_BIRTHBLOCK - Number(blockNumber);
+    const treeRingsLevel = Math.floor(blockAge / 10 ** 5);
+    const firstRecieved = Number(formatUnits(value, 'ether')) ? 'ether' : 'token(s)';
+    const shortTime = formatDateObjToShortTime(dateObj);
+    const zodiacSign = zodiac(dateObj.day, dateObj.month);
 
     const metadata: Metadata = {
-        name: `${minterAddress.substr(0, 6)}'s Birthblock: ${oldestTxnData.blockNumber} `,
-        description: `A ${dateObj.year} ${zodiac(dateObj.day, dateObj.month)} address born at ${
-            dateObj.hour
-        }:${dateObj.minute}`,
+        name: `${minterAddress.substr(0, 6)}'s Birthblock: ${birthblock} `,
+        description: `A ${dateObj.year} ${zodiacSign} address born at ${shortTime}. It's grown ${treeRingsLevel} rings.`,
         image: `https://${VERCEL_URL}/api/v1/image/${tokenId}`,
         external_url: `https://${VERCEL_URL}/birthblock/${tokenId}`,
-        attributes: [
-            {
-                trait_type: 'year',
-                value: dateObj.year,
-            },
-            {
-                trait_type: 'month',
-                value: dateObj.month,
-            },
-            {
-                trait_type: 'day',
-                value: dateObj.day,
-            },
-            {
-                trait_type: 'hour',
-                value: dateObj.hour,
-            },
-            {
-                trait_type: 'minute',
-                value: dateObj.minute,
-            },
-            {
-                trait_type: 'second',
-                value: dateObj.second,
-            },
-            {
-                display_type: 'date',
-                trait_type: 'birthday',
-                value: oldestTxnData.timeStamp, // 1546360800
-            },
-            {
-                trait_type: 'address',
-                value: minterAddress,
-            },
-            {
-                trait_type: 'parent',
-                value: oldestTxnData.fromAddress,
-            },
-            {
-                trait_type: 'eth received',
-                value: oldestTxnData.value, // 0.08 eth
-            },
-            {
-                trait_type: 'block age',
-                value: CONTRACT_BIRTHBLOCK - oldestTxnData.blockNumber,
-            },
-            {
-                trait_type: 'birthblock',
-                value: oldestTxnData.blockNumber,
-            },
-            {
-                trait_type: 'txn hash',
-                value: oldestTxnData.hash,
-            },
-            {
-                trait_type: 'zodiac',
-                value: zodiac(dateObj.day, dateObj.month),
-            },
-        ],
+        address: minterAddress,
+        parent: from,
+        firstRecieved,
+        treeRings: treeRingsLevel.toString(),
+        timestamp,
+        birthblock,
+        txnHash: String(hash),
+        zodiacSign,
+        blockAge,
+        treeRingsLevel,
     };
 
     // index by wallet address
+    console.log('adding new');
     await ioredisClient.hset(minterAddress, { tokenId, metadata: JSON.stringify(metadata) });
 
     // index by tokenId

@@ -1,100 +1,77 @@
-import { useEffect, useState, useRef } from 'react';
-import { useWeb3React, Web3ReactProvider } from '@web3-react/core';
-import { InjectedConnector } from '@web3-react/injected-connector';
-import WalletConnectProvider from '@walletconnect/web3-provider';
-import rainbowLogo from '../images/rainbow.png';
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
-import { Web3Provider, getDefaultProvider } from '@ethersproject/providers';
-// import useLocalStorage from '../hooks/useLocalStorage';
-import { MetamaskIcon, WalletConnectIcon } from '../components/icons';
-import { Layout } from '../components/Layout';
-import Birthblock from '../birthblock.json';
-import { CONTRACT_ADDRESS, NETWORK } from '../utils/constants';
-import { getTruncatedAddress, getNetwork, debug } from '../utils/frontend';
-const FREE_MINTS = 144;
 import { parseEther } from '@ethersproject/units';
-import { Contract } from 'ethers';
-import Web3Modal from 'web3modal';
-import Web3 from 'web3';
-import { useWeb3, providerOptions } from '../utils/web3Context';
+import { BigNumber, Contract } from 'ethers';
+import { useEffect, useState } from 'react';
+
+import Birthblock from '../birthblock.json';
+import { Layout } from '../components/Layout';
+import { useEthereum } from '../providers/EthereumProvider';
+import { CONTRACT_ADDRESS } from '../utils/constants';
+import { debug, getTruncatedAddress } from '../utils/frontend';
+
+const FREE_MINTS = 144;
 
 function Home() {
-    const { web3, openWeb3Modal } = useWeb3();
+    const { provider, signer, userAddress, ensName, openWeb3Modal } = useEthereum();
 
-    const [accounts, setAccounts] = useState();
+    const birthblockContract = new Contract(CONTRACT_ADDRESS, Birthblock.abi, provider);
 
-    useEffect(() => {
-        async function getAccounts() {
-            const data = await web3.eth.getAccounts();
-            console.log('accounts:', data);
-            setAccounts(data);
-        }
-        getAccounts();
-    }, []);
-
-    // const birthblockContract = new Contract(CONTRACT_ADDRESS, Birthblock.abi, provider);
-
-    let [hasMinted, setHasMinted] = useState(true);
     let [minted, setMinted] = useState(false);
     let [minting, setMinting] = useState(false);
-    let [freeMintsLeft, setFreeMintsLeft] = useState('?');
-    // console.log(web3React);
+    let [freeMintsLeft, setFreeMintsLeft] = useState<number>(null);
 
-    // async function openWeb3Modal() {
-    //     const web3Modal = new Web3Modal({
-    //         network: NETWORK, // optional
-    //         cacheProvider: false, // optional
-    //         providerOptions, // required
-    //     });
+    // Mint Count
+    useEffect(() => {
+        console.log('subscribe effect');
 
-    //     const provider = await web3Modal.connect();
+        async function getMintedCount() {
+            try {
+                console.log('via load');
+                const mintCount: BigNumber = await birthblockContract.MintedCount();
+                setFreeMintsLeft(FREE_MINTS - mintCount.toNumber());
+            } catch (error) {
+                debug({ error });
+            }
 
-    //     const web3 = new Web3(provider);
-    // }
+            // console.log('getMintedCount async finish');
+        }
+        getMintedCount();
 
-    // useEffect(() => {
-    //     // console.log('getMintedCount effect start');
-    //     const getMintedCount = async () => {
-    //         const data = await birthblockContract.MintedCount();
-    //         // console.log('getMintedCount async finish');
-    //         console.log(data?.toNumber());
-    //         setFreeMintsLeft(FREE_MINTS - data.toNumber());
-    //     };
+        birthblockContract.on('Mint', (address: string, tokenId: BigNumber) => {
+            console.log('via subscribe');
 
-    //     getMintedCount();
-    //     // console.log('getMintedCount effect end');
-    // }, [freeMintsLeft]);
+            debug({ address });
+            debug({ tokenId });
+            setFreeMintsLeft(FREE_MINTS - tokenId.toNumber());
+        });
+    }, []);
 
-    const claimToken = async () => {
+    const mint = async () => {
         setMinting(true);
         console.log('contract address:', CONTRACT_ADDRESS);
-        const birthblockContract = new Contract(
-            CONTRACT_ADDRESS,
-            Birthblock.abi,
-            library.getSigner(),
-        );
+        const birthblockContractWritable = birthblockContract.connect(signer);
         try {
-            const data = await birthblockContract.mint({
+            const data = await birthblockContractWritable.mint({
                 value: parseEther('0.01'),
             });
-            console.log(data);
             const moreData = await data.wait();
-            console.log(moreData);
+            debug({ moreData });
+            setMinting(false);
+            setMinted(true);
         } catch (error) {
-            // console.log(error);
-            console.log(error.error.message);
+            setMinting(false);
+            // no from specified
+            console.log(error);
+            console.log(error?.error?.message);
         }
-        setMinting(false);
-        setMinted(true);
     };
 
-    const claimText = () => {
+    const mintText = () => {
         if (!minting && !minted) {
-            return 'Claim';
+            return 'Mint';
         } else if (minting) {
-            return 'Claiming...';
+            return 'Minting...';
         } else if (minted) {
-            return 'Claimed';
+            return 'Minted';
         } else {
             return 'wtf';
         }
@@ -104,23 +81,33 @@ function Home() {
         return `${freeMintsLeft}/144 Free Mints Left`;
     };
 
+    const userName = ensName || getTruncatedAddress(userAddress);
+
     return (
         <Layout>
             <div className="container">
                 <div className="connect-wallet-container">
-                    <div className="connect-wallet-card">
-                        <div className="wallet-header">{mintsLeftText()}</div>
-                        <div
-                            className="button walletconnect"
-                            onClick={() => {
-                                openWeb3Modal();
-                            }}>
-                            Web3Modal Button
-                        </div>
+                    <div
+                        className="button walletconnect"
+                        onClick={() => {
+                            openWeb3Modal();
+                        }}>
+                        Web3Modal Button
                     </div>
                 </div>
                 <br />
-
+                <div className="connect-wallet-container">
+                    <div className="wallet-header">{mintsLeftText()}</div>
+                    <div className="button walletconnect" onClick={() => mint()}>
+                        {mintText()}
+                    </div>
+                </div>
+                <br />
+                <div className="connect-wallet-container">
+                    <div className="row-title">
+                        <div>user: {userName} </div>
+                    </div>
+                </div>
                 <style jsx>{`
           .container {
             min-height: 100vh;
@@ -134,8 +121,8 @@ function Home() {
           }
           .connect-wallet-container {
             display: flex;
-            width: 400px;
-            height: 300px;
+            width: 600px;
+            height: 200px;
             border-radius: 30px;
             background: #ffffff;
             justify-content: center;

@@ -74,11 +74,12 @@ export const logger = pino(
 
 export const localLogger = pino({}, stream);
 
-const etherscanNetworkString = NETWORK.toLowerCase() == 'ethereum' ? '' : `-${NETWORK}`;
+export const etherscanApiNetworkString = NETWORK.toLowerCase() == 'ethereum' ? '' : `-${NETWORK}`;
+
 
 export const getOldestTransaction = async (address: string) =>
     await fetcher(
-        `https://api${etherscanNetworkString}.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=999999999&sort=asc&page=1&offset=1&apikey=${ETHERSCAN_API_KEY}`,
+        `https://api${etherscanApiNetworkString}.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=999999999&sort=asc&page=1&offset=1&apikey=${ETHERSCAN_API_KEY}`,
     );
 
 export const timestampToDate = (ts: number): Record<string, number> => {

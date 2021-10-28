@@ -10,8 +10,6 @@ import { useEthereum } from '../providers/EthereumProvider';
 import { CONTRACT_ADDRESS } from '../utils/constants';
 import { debug } from '../utils/frontend';
 
-const FREE_MINTS = 144;
-
 function Ui() {
     const { provider, signer, userAddress, openWeb3Modal } = useEthereum();
 

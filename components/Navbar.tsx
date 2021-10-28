@@ -30,7 +30,16 @@ function Navbar() {
                             />
                         </Link>
                         <Image height="60px" width="60px" src={twitterIcon.src} alt="twitterIcon" />
-                        <Image height="55px" width="54px" src={openSeaIcon.src} alt="openSeaIcon" />
+                        <Link
+                            href="https://testnets.opensea.io/collection/birthblock-ywaqkwbxvq"
+                            isExternal>
+                            <Image
+                                height="55px"
+                                width="54px"
+                                src={openSeaIcon.src}
+                                alt="openSeaIcon"
+                            />
+                        </Link>
                         {!userAddress && (
                             <Button
                                 onClick={openWeb3Modal}

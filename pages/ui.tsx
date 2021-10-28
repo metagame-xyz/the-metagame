@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import Birthblock from '../birthblock.json';
 import { useEthereum } from '../providers/EthereumProvider';
 import { CONTRACT_ADDRESS } from '../utils/constants';
-import { debug, getTruncatedAddress } from '../utils/frontend';
+import { debug } from '../utils/frontend';
 
 const FREE_MINTS = 144;
 

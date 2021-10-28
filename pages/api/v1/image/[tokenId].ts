@@ -1,8 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { ioredisClient, Metadata } from '../../../../utils/utils';
+import { ioredisClient, Metadata, timestampToDate } from '../../../../utils/utils';
 
 export function generateSVG(metadata: Metadata): string {
+    const { blockAge, timestamp } = metadata;
+    const dateObj = timestampToDate(timestamp);
+    const { year, month } = dateObj;
+
     /**********/
     /* Canvas */
     /**********/
@@ -18,7 +22,6 @@ export function generateSVG(metadata: Metadata): string {
     /**************/
     const currentBlock = 13_411_560;
     // const blockAge = 11_000_000;
-    const blockAge = metadata.attributes[9].value;
     const treeSvgArray = [];
 
     const maxRings = Math.floor(currentBlock / 10 ** 5);
@@ -46,11 +49,7 @@ export function generateSVG(metadata: Metadata): string {
     /**************************************************/
     /* Time circles: Month, Day, Hour, Minute, Second */
     /**************************************************/
-    const timeMetadata = metadata.attributes.slice(1, 6);
     const timeSvgArray = [];
-    const year = metadata.attributes[0].value;
-    // TODO ask brent
-    const month = Number(timeMetadata[0].value);
 
     const timeData = {
         month: {
@@ -105,9 +104,9 @@ export function generateSVG(metadata: Metadata): string {
         return `<circle cx="${xCoord}" cy="${yCoord}" r="${radius}" stroke="hsl(${reverseHue}, 48%, 24%)" stroke-width="1" fill="hsl(${reverseHue}, 48%, ${l}%)"/>`;
     };
 
-    timeMetadata.forEach(({ trait_type, value }) =>
-        timeSvgArray.push(timeDataToSvg(trait_type, Number(value))),
-    );
+    for (const val in dateObj) {
+        timeSvgArray.push(timeDataToSvg(val, dateObj[val]));
+    }
     const timeSvg = timeSvgArray.join('');
 
     /**************/

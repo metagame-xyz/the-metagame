@@ -95,6 +95,25 @@ export const timestampToDate = (ts: number): Record<string, number> => {
     return dateObj;
 };
 
+export const formatDateObjToTime = (dateObj: Record<string, number>): string => {
+    const { hour, minute, second } = dateObj;
+    const ampm = hour >= 12 ? 'pm' : 'am';
+    let ampmHour = hour % 12;
+    ampmHour = ampmHour ? ampmHour : 12; // the hour '0' should be '12'
+    const minuteStr = minute < 10 ? '0' + minute : minute;
+    const secondStr = second < 10 ? '0' + second : second;
+    return `${ampmHour}:${minuteStr}:${secondStr} ${ampm}`;
+};
+
+export const formatDateObjToShortTime = (dateObj: Record<string, number>): string => {
+    const { hour, minute } = dateObj;
+    const ampm = hour >= 12 ? 'pm' : 'am';
+    let ampmHour = hour % 12;
+    ampmHour = ampmHour ? ampmHour : 12; // the hour '0' should be '12'
+    const minuteStr = minute < 10 ? '0' + minute : minute;
+    return `${ampmHour}:${minuteStr} ${ampm}`;
+};
+
 // returns the zodiac sign according to day and month ( https://coursesweb.net/javascript/zodiac-signs_cs )
 export const zodiac = (day: number, month: number) => {
     var zodiac = [
@@ -117,42 +136,33 @@ export const zodiac = (day: number, month: number) => {
     return day > last_day[month] ? zodiac[month * 1 + 1] : zodiac[month];
 };
 
+export type Metadata = {
+    name: string;
+    description: string;
+    image: string; // birthblock.art/api/v1/image/[tokenId]
+    external_url: string; // birthblock.art/birthblock/[tokenId]
+    address: string;
+    parent: string;
+    firstRecieved: 'Ether' | 'Token(s)';
+    treeRings: string;
+    timestamp: number;
+    // birthTime?: string;
+    // date?: number;
+    birthblock: string;
+    txnHash: string;
+    zodiacSign: string;
+    blockAge: number;
+    treeRingsLevel: number;
+};
+
 // birthblock.art/api/v1/metadata/[tokenId]
-export interface Metadata {
+export type OpenSeaMetadata = {
     name: string;
     description: string;
     image: string; // birthblock.art/api/v1/image/[tokenId]
     external_url: string; // birthblock.art/birthblock/[tokenId]
     attributes: [
-        {
-            trait_type: 'year';
-            value: number;
-        },
-        {
-            trait_type: 'month';
-            value: number;
-        },
-        {
-            trait_type: 'day';
-            value: number;
-        },
-        {
-            trait_type: 'hour';
-            value: number;
-        },
-        {
-            trait_type: 'minute';
-            value: number;
-        },
-        {
-            trait_type: 'second';
-            value: number;
-        },
-        {
-            display_type: 'date';
-            trait_type: 'birthday';
-            value: number; // 1546360800
-        },
+        // properties
         {
             trait_type: 'address';
             value: string;
@@ -162,24 +172,104 @@ export interface Metadata {
             value: string;
         },
         {
-            trait_type: 'eth received';
-            value: number; // 0.08 eth
+            trait_type: 'first recieved';
+            value: 'Ether' | 'Token(s)';
         },
         {
-            trait_type: 'block age';
-            value: number;
+            trait_type: 'tree rings';
+            value: string;
+        },
+        {
+            trait_type: 'birth time';
+            value: string;
         },
         {
             trait_type: 'birthblock';
-            value: number;
+            value: string;
         },
         {
             trait_type: 'txn hash';
             value: string;
         },
         {
-            trait_type: 'zodiac';
+            trait_type: 'zodiac sign';
             value: string;
         },
+        // levels
+        {
+            trait_type: 'block age';
+            value: number;
+        },
+        {
+            trait_type: 'tree rings level';
+            value: number;
+        },
+        // Date
+        {
+            display_type: 'date';
+            trait_type: 'birthday';
+            value: number; // 1546360800
+        },
     ];
+};
+
+export function metadataToOpenSeaMetadata(metadata: Metadata): OpenSeaMetadata {
+    const openseaMetadata: OpenSeaMetadata = {
+        name: metadata.name,
+        description: metadata.description,
+        image: metadata.image,
+        external_url: metadata.external_url,
+        attributes: [
+            // properties
+            {
+                trait_type: 'address',
+                value: metadata.address,
+            },
+            {
+                trait_type: 'parent',
+                value: metadata.parent,
+            },
+            {
+                trait_type: 'first recieved',
+                value: metadata.firstRecieved,
+            },
+            {
+                trait_type: 'tree rings',
+                value: Math.floor(metadata.blockAge / 10 ** 5).toString(),
+            },
+            {
+                trait_type: 'birth time',
+                value: formatDateObjToTime(timestampToDate(metadata.timestamp)),
+            },
+            {
+                trait_type: 'birthblock',
+                value: metadata.birthblock,
+            },
+            {
+                trait_type: 'txn hash',
+                value: metadata.txnHash,
+            },
+            {
+                trait_type: 'zodiac sign',
+                value: metadata.zodiacSign,
+            },
+            // levels
+            {
+                trait_type: 'block age',
+                value: metadata.blockAge,
+            },
+            {
+                trait_type: 'tree rings level',
+                value: metadata.treeRingsLevel,
+            },
+            // Date
+            {
+                display_type: 'date',
+                trait_type: 'birthday',
+                value: metadata.timestamp, // 1546360800
+            },
+        ],
+    };
+
+    return openseaMetadata;
 }

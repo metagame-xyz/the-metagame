@@ -3,7 +3,6 @@ import Image from 'next/image';
 import { generateSVG } from 'pages/api/v1/image/[tokenId]';
 import { Metadata } from 'utils/utils';
 
-import Example from '../../images/example.svg';
 import { ioredisClient } from '../../utils/utils';
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {

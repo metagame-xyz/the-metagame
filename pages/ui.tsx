@@ -1,8 +1,88 @@
-import React from 'react';
 import { Box, Button, Container, Grid, Heading, Text, VStack } from '@chakra-ui/react';
 import Navbar from '@components/Navbar';
+import { parseEther } from '@ethersproject/units';
+import { BigNumber, Contract } from 'ethers';
+import React from 'react';
+import { useEffect, useState } from 'react';
+
+import Birthblock from '../birthblock.json';
+import { useEthereum } from '../providers/EthereumProvider';
+import { CONTRACT_ADDRESS } from '../utils/constants';
+import { debug, getTruncatedAddress } from '../utils/frontend';
+
+const FREE_MINTS = 144;
 
 function Ui() {
+    const { provider, signer, userAddress, openWeb3Modal } = useEthereum();
+
+    const birthblockContract = new Contract(CONTRACT_ADDRESS, Birthblock.abi, provider);
+
+    let [minted, setMinted] = useState(false);
+    let [minting, setMinting] = useState(false);
+    let [freeMintsLeft, setFreeMintsLeft] = useState<number>(null);
+
+    // Mint Count
+    useEffect(() => {
+        console.log('subscribe effect');
+
+        async function getMintedCount() {
+            try {
+                console.log('via load');
+                const mintCount: BigNumber = await birthblockContract.MintedCount();
+                setFreeMintsLeft(FREE_MINTS - mintCount.toNumber());
+            } catch (error) {
+                debug({ error });
+            }
+
+            // console.log('getMintedCount async finish');
+        }
+        getMintedCount();
+
+        birthblockContract.on('Mint', (address: string, tokenId: BigNumber) => {
+            console.log('via subscribe');
+
+            debug({ address });
+            debug({ tokenId });
+            setFreeMintsLeft(FREE_MINTS - tokenId.toNumber());
+        });
+    }, []);
+
+    const mint = async () => {
+        setMinting(true);
+        console.log('contract address:', CONTRACT_ADDRESS);
+        const birthblockContractWritable = birthblockContract.connect(signer);
+        try {
+            const data = await birthblockContractWritable.mint({
+                value: parseEther('0.01'),
+            });
+            const moreData = await data.wait();
+            debug({ moreData });
+            setMinting(false);
+            setMinted(true);
+        } catch (error) {
+            setMinting(false);
+            // no from specified
+            console.log(error);
+            console.log(error?.error?.message);
+        }
+    };
+
+    const mintText = () => {
+        if (!minting && !minted) {
+            return 'Mint';
+        } else if (minting) {
+            return 'Minting...';
+        } else if (minted) {
+            return 'Minted';
+        } else {
+            return 'wtf';
+        }
+    };
+
+    const mintsLeftText = () => {
+        return `${freeMintsLeft}/144 Free Mints Left`;
+    };
+
     return (
         <Box backgroundColor="#B9EBEB">
             <Navbar />
@@ -52,9 +132,11 @@ function Ui() {
 
             <VStack justifyContent="center" mt={20} py={10} bgColor="#00B8B6">
                 <Text fontWeight="light" fontSize="54px">
-                    89/144 free mints left
+                    {freeMintsLeft}/{FREE_MINTS} free mints left
                 </Text>
+
                 <Button
+                    onClick={userAddress ? mint : openWeb3Modal}
                     mt={10}
                     fontWeight={'300'}
                     colorScheme="teal"
@@ -63,7 +145,7 @@ function Ui() {
                     boxShadow="0px 3px 6px rgba(0, 0, 0, 0.160784);"
                     fontSize={32}
                     borderRadius={56}>
-                    Connect
+                    {userAddress ? mintText() : 'Connect Wallet'}
                 </Button>
             </VStack>
         </Box>

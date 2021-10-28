@@ -1,6 +1,7 @@
 import NextHead from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
+
 import { VERCEL_URL } from '../utils/constants';
 
 /**
@@ -26,7 +27,7 @@ export const Head = ({ customMeta }: { customMeta?: MetaProps }): JSX.Element =>
     const meta: MetaProps = {
         title: 'Birthblock NFT',
         description: 'A NFT created using the data from your first Ethereum transaction',
-        image: `${WEBSITE_HOST_URL}/images/site-preview.png`,
+        image: `https://${WEBSITE_HOST_URL}/images/site-preview.png`,
         type: 'website',
         ...customMeta,
     };

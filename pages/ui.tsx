@@ -4,7 +4,7 @@ import Navbar from '@components/Navbar';
 
 function Ui() {
     return (
-        <Box backgroundColor="#B9EBEB" backgroundSize="cover">
+        <Box backgroundColor="#B9EBEB">
             <Navbar />
             <Box mt={20} width="fit-content" mx="auto">
                 <Heading as="h1" fontSize={144} fontWeight="normal" textAlign="center">

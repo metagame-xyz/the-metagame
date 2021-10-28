@@ -1,79 +1,66 @@
 <svg width="1920" height="1922" viewBox="0 0 1920 1922" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<mask id="mask0_1:35" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-1032" y="-881" width="3984" height="3984">
-<g style="mix-blend-mode:soft-light">
-<rect x="2951.63" y="1282.41" width="2831" height="2823" transform="rotate(140 2951.63 1282.41)" fill="black"/>
-</g>
-</mask>
-<g mask="url(#mask0_1:35)">
 <g style="mix-blend-mode:soft-light" opacity="0.335324">
 <rect x="2951.63" y="1282.41" width="2831" height="2823" transform="rotate(140 2951.63 1282.41)" fill="url(#pattern0)"/>
 </g>
-</g>
 <g opacity="0.444021">
-<mask id="mask1_1:35" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-1096" y="298" width="2151" height="2151">
+<mask id="mask0_1:35" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-1096" y="298" width="2151" height="2151">
 <rect x="1054.15" y="1298.81" width="1524" height="1524" transform="rotate(131 1054.15 1298.81)" fill="black"/>
 </mask>
-<g mask="url(#mask1_1:35)">
+<g mask="url(#mask0_1:35)">
 <rect opacity="0.541923" x="1054.15" y="1298.81" width="1524" height="1524" transform="rotate(131 1054.15 1298.81)" fill="url(#pattern1)"/>
 </g>
-<mask id="mask2_1:35" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-952" y="72" width="2013" height="2013">
+<mask id="mask1_1:35" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-952" y="72" width="2013" height="2013">
 <rect x="441.133" y="2084.9" width="1524" height="1524" transform="rotate(-156 441.133 2084.9)" fill="black"/>
 </mask>
-<g mask="url(#mask2_1:35)">
+<g mask="url(#mask1_1:35)">
 <rect opacity="0.585384" x="441.133" y="2084.9" width="1524" height="1524" transform="rotate(-156 441.133 2084.9)" fill="url(#pattern2)"/>
 </g>
 </g>
 <g opacity="0.493756">
-<mask id="mask3_1:35" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="195" y="909" width="2151" height="2151">
+<mask id="mask2_1:35" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="195" y="909" width="2151" height="2151">
 <rect x="2345.45" y="1909.02" width="1524" height="1524" transform="rotate(131 2345.45 1909.02)" fill="black"/>
 </mask>
-<g mask="url(#mask3_1:35)">
+<g mask="url(#mask2_1:35)">
 <rect opacity="0.316099" x="2345.45" y="1909.02" width="1524" height="1524" transform="rotate(131 2345.45 1909.02)" fill="url(#pattern3)"/>
 </g>
-<mask id="mask4_1:35" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="400" y="876" width="2013" height="2013">
+<mask id="mask3_1:35" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="400" y="876" width="2013" height="2013">
 <rect x="1792.69" y="2888.19" width="1524" height="1524" transform="rotate(-156 1792.69 2888.19)" fill="black"/>
 </mask>
-<g mask="url(#mask4_1:35)">
+<g mask="url(#mask3_1:35)">
 <rect opacity="0.316099" x="1792.69" y="2888.19" width="1524" height="1524" transform="rotate(-156 1792.69 2888.19)" fill="url(#pattern4)"/>
 </g>
 </g>
-<mask id="mask5_1:35" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-160" y="-193" width="526" height="526">
+<mask id="mask4_1:35" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-160" y="-193" width="526" height="526">
 <rect x="-160" y="-193" width="526" height="526" fill="black"/>
 </mask>
-<g mask="url(#mask5_1:35)">
+<g mask="url(#mask4_1:35)">
 <rect x="-160" y="-193" width="526" height="526" fill="url(#pattern5)"/>
 </g>
-<mask id="mask6_1:35" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="1211" y="-457" width="1580" height="1580">
+<mask id="mask5_1:35" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="1211" y="-457" width="1580" height="1580">
 <rect x="2438.43" y="-456.142" width="1276" height="1276" transform="rotate(74 2438.43 -456.142)" fill="black"/>
 </mask>
-<g mask="url(#mask6_1:35)">
+<g mask="url(#mask5_1:35)">
 <rect opacity="0.708631" x="2438.43" y="-456.142" width="1276" height="1276" transform="rotate(74 2438.43 -456.142)" fill="url(#pattern6)"/>
 </g>
 <g clip-path="url(#clip0_1:35)">
-<mask id="mask7_1:35" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="1420" y="-48" width="944" height="945">
+<mask id="mask6_1:35" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="1420" y="-48" width="944" height="945">
 <rect x="1585.84" y="-47.2974" width="795.417" height="795.417" transform="rotate(12 1585.84 -47.2974)" fill="black"/>
 </mask>
-<g mask="url(#mask7_1:35)">
+<g mask="url(#mask6_1:35)">
 <rect opacity="0.708631" x="1585.84" y="-47.2974" width="795.417" height="795.417" transform="rotate(12 1585.84 -47.2974)" fill="url(#pattern7)"/>
 </g>
-<mask id="mask8_1:35" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="1295" y="-110" width="1285" height="1285">
+<mask id="mask7_1:35" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="1295" y="-110" width="1285" height="1285">
 <rect x="1295.02" y="728.891" width="950.012" height="950.012" transform="rotate(-62 1295.02 728.891)" fill="black"/>
 </mask>
-<g mask="url(#mask8_1:35)">
+<g mask="url(#mask7_1:35)">
 <rect x="1295.02" y="728.891" width="950.012" height="950.012" transform="rotate(-62 1295.02 728.891)" fill="url(#pattern8)"/>
 </g>
 </g>
-<mask id="mask9_1:35" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="1399" y="100" width="861" height="861">
+<mask id="mask8_1:35" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="1399" y="100" width="861" height="861">
 <rect x="1399" y="100" width="861" height="861" fill="black"/>
 </mask>
-<g mask="url(#mask9_1:35)">
+<g mask="url(#mask8_1:35)">
 <rect opacity="0.585384" x="1399" y="100" width="861" height="861" fill="url(#pattern9)"/>
-</g>
-<mask id="mask10_1:35" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-701" y="96" width="1524" height="1524">
-<rect x="-701" y="96" width="1524" height="1524" fill="black"/>
-</mask>
-<g mask="url(#mask10_1:35)">
-<rect opacity="0.501661" x="-701" y="96" width="1524" height="1524" fill="url(#pattern10)"/>
 </g>
 <defs>
 <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
@@ -104,9 +91,6 @@
 <use xlink:href="#image1_1:35" transform="scale(0.001)"/>
 </pattern>
 <pattern id="pattern9" patternContentUnits="objectBoundingBox" width="1" height="1">
-<use xlink:href="#image1_1:35" transform="scale(0.001)"/>
-</pattern>
-<pattern id="pattern10" patternContentUnits="objectBoundingBox" width="1" height="1">
 <use xlink:href="#image1_1:35" transform="scale(0.001)"/>
 </pattern>
 <clipPath id="clip0_1:35">

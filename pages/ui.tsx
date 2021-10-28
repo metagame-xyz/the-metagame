@@ -1,10 +1,10 @@
 import React from 'react';
-import { Box, Button, Container, Grid, Heading, HStack, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Container, Grid, Heading, Text, VStack } from '@chakra-ui/react';
 import Navbar from '@components/Navbar';
 
-function Ui(props) {
+function Ui() {
     return (
-        <Box>
+        <Box backgroundColor="#B9EBEB" backgroundSize="cover">
             <Navbar />
             <Box mt={20} width="fit-content" mx="auto">
                 <Heading as="h1" fontSize={144} fontWeight="normal" textAlign="center">

@@ -45,18 +45,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             .send({ error: `Etherscan getOldestTransaction had an issue: ${message}` });
     }
 
-    const { hash, timestamp, value, from, blockNumber } = result[0];
+    const { hash, timeStamp: timestamp, value, from, blockNumber } = result[0];
 
     const dateObj = timestampToDate(timestamp);
-    const birthblock = commify(blockNumber); //commafy
-    const treeRingsLevel = Math.floor(blockNumber / 10 ** 5);
-    const firstRecieved = Number(formatUnits(value, 'ether')) ? 'Ether' : 'Token(s)';
+    const birthblock = commify(blockNumber);
+    const blockAge = CONTRACT_BIRTHBLOCK - Number(blockNumber);
+    const treeRingsLevel = Math.floor(blockAge / 10 ** 5);
+    const firstRecieved = Number(formatUnits(value, 'ether')) ? 'ether' : 'token(s)';
     const shortTime = formatDateObjToShortTime(dateObj);
     const zodiacSign = zodiac(dateObj.day, dateObj.month);
 
     const metadata: Metadata = {
         name: `${minterAddress.substr(0, 6)}'s Birthblock: ${birthblock} `,
-        description: `A ${dateObj.year} ${zodiacSign} address born at ${shortTime}`,
+        description: `A ${dateObj.year} ${zodiacSign} address born at ${shortTime}. It's grown ${treeRingsLevel} rings.`,
         image: `https://${VERCEL_URL}/api/v1/image/${tokenId}`,
         external_url: `https://${VERCEL_URL}/birthblock/${tokenId}`,
         address: minterAddress,
@@ -67,11 +68,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         birthblock,
         txnHash: String(hash),
         zodiacSign,
-        blockAge: CONTRACT_BIRTHBLOCK - Number(blockNumber),
+        blockAge,
         treeRingsLevel,
     };
 
     // index by wallet address
+    console.log('adding new');
     await ioredisClient.hset(minterAddress, { tokenId, metadata: JSON.stringify(metadata) });
 
     // index by tokenId

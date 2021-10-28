@@ -13,6 +13,8 @@ import rainbowLogo from '../images/rainbow.png';
 import { INFURA_ID, NETWORK } from '../utils/constants';
 import { debug } from '../utils/frontend';
 
+const ethersNetworkString = NETWORK == 'ethereum' ? 'homestead' : NETWORK;
+
 const EthereumContext = createContext(undefined);
 
 const providerOptions = {
@@ -122,7 +124,7 @@ function EthereumProvider(props): JSX.Element {
     const [ensName, setEnsName] = useState<string>('');
 
     function setInitialProvider() {
-        const defaultProvider = getDefaultProvider(NETWORK, { infura: INFURA_ID });
+        const defaultProvider = getDefaultProvider(ethersNetworkString, { infura: INFURA_ID });
         setProvider(defaultProvider);
     }
 

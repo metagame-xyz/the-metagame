@@ -143,7 +143,7 @@ export type Metadata = {
     external_url: string; // birthblock.art/birthblock/[tokenId]
     address: string;
     parent: string;
-    firstRecieved: 'Ether' | 'Token(s)';
+    firstRecieved: 'ether' | 'token(s)';
     treeRings: string;
     timestamp: number;
     // birthTime?: string;
@@ -173,7 +173,7 @@ export type OpenSeaMetadata = {
         },
         {
             trait_type: 'first recieved';
-            value: 'Ether' | 'Token(s)';
+            value: 'ether' | 'token(s)';
         },
         {
             trait_type: 'tree rings';

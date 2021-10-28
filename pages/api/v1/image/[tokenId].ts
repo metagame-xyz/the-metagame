@@ -105,7 +105,9 @@ export function generateSVG(metadata: Metadata): string {
     };
 
     for (const val in dateObj) {
-        timeSvgArray.push(timeDataToSvg(val, dateObj[val]));
+        if (val !== 'year') {
+            timeSvgArray.push(timeDataToSvg(val, dateObj[val]));
+        }
     }
     const timeSvg = timeSvgArray.join('');
 

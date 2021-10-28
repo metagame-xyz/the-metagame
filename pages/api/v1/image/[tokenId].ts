@@ -1,19 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { ioredisClient } from '../../../../utils/utils';
+import { ioredisClient, Metadata } from '../../../../utils/utils';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const { tokenId } = req.query;
-    const tokenIdString: string = Array.isArray(tokenId) ? tokenId[0] : tokenId;
-    // const tokenIdString = '0x17A059B6B0C8af433032d554B0392995155452E6';
-    const data = await ioredisClient.hget(tokenIdString.toLowerCase(), 'metadata');
-
-    if (!data) {
-        return res.status(404).send({ message: `Image for token id ${tokenId} not found.` });
-    }
-
-    const metadata = JSON.parse(data);
-
+export function generateSVG(metadata: Metadata): string {
     /**********/
     /* Canvas */
     /**********/
@@ -60,7 +49,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const timeMetadata = metadata.attributes.slice(1, 6);
     const timeSvgArray = [];
     const year = metadata.attributes[0].value;
-    const month = timeMetadata[0].value;
+    // TODO ask brent
+    const month = Number(timeMetadata[0].value);
 
     const timeData = {
         month: {
@@ -116,7 +106,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     };
 
     timeMetadata.forEach(({ trait_type, value }) =>
-        timeSvgArray.push(timeDataToSvg(trait_type, value)),
+        timeSvgArray.push(timeDataToSvg(trait_type, Number(value))),
     );
     const timeSvg = timeSvgArray.join('');
 
@@ -129,6 +119,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     svgData.push(timeSvg);
     svgData.push(closingSvgTag);
     const svgString = svgData.join('');
+
+    return svgString;
+}
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    const { tokenId } = req.query;
+    const tokenIdString: string = Array.isArray(tokenId) ? tokenId[0] : tokenId;
+    // const tokenIdString = '0x17A059B6B0C8af433032d554B0392995155452E6';
+    const data = await ioredisClient.hget(tokenIdString.toLowerCase(), 'metadata');
+
+    if (!data) {
+        return res.status(404).send({ message: `Image for token id ${tokenId} not found.` });
+    }
+
+    const metadata = JSON.parse(data);
+
+    const svgString = generateSVG(metadata);
+
     // writeFileSync(`./public/${addressString.substr(0, 8)}.svg`, svgString);
 
     const svgBuffer = Buffer.from(svgString, 'utf-8');

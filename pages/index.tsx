@@ -3,7 +3,7 @@ import { BigNumber, Contract } from 'ethers';
 import { useEffect, useState } from 'react';
 
 import Birthblock from '../birthblock.json';
-import { Layout } from '../components/Layout';
+import { Layout } from '../components/OldLayout';
 import { useEthereum } from '../providers/EthereumProvider';
 import { CONTRACT_ADDRESS } from '../utils/constants';
 import { debug, getTruncatedAddress } from '../utils/frontend';

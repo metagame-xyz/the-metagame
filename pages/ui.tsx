@@ -20,6 +20,7 @@ function Ui() {
     let [minted, setMinted] = useState(false);
     let [minting, setMinting] = useState(false);
     let [freeMintsLeft, setFreeMintsLeft] = useState<number>(null);
+    let [freeMints, setFreeMints] = useState<number>(null);
 
     // Mint Count
     useEffect(() => {
@@ -28,8 +29,10 @@ function Ui() {
         async function getMintedCount() {
             try {
                 console.log('via load');
-                const mintCount: BigNumber = await birthblockContract.MintedCount();
-                setFreeMintsLeft(FREE_MINTS - mintCount.toNumber());
+                const mintCount: BigNumber = await birthblockContract.mintedCount();
+                const freeMints: BigNumber = await birthblockContract.freeMints();
+                setFreeMints(freeMints.toNumber());
+                setFreeMintsLeft(freeMints.toNumber() - mintCount.toNumber());
             } catch (error) {
                 debug({ error });
             }
@@ -132,7 +135,7 @@ function Ui() {
 
             <VStack justifyContent="center" mt={20} py={10} bgColor="#00B8B6">
                 <Text fontWeight="light" fontSize="54px">
-                    {freeMintsLeft}/{FREE_MINTS} free mints left
+                    {freeMintsLeft}/{freeMints} free mints left
                 </Text>
 
                 <Button

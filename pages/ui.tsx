@@ -46,7 +46,7 @@ function Ui() {
 
             debug({ address });
             debug({ tokenId });
-            setFreeMintsLeft(FREE_MINTS - tokenId.toNumber());
+            setFreeMintsLeft(freeMints - tokenId.toNumber());
         });
     }, []);
 
@@ -54,10 +54,9 @@ function Ui() {
         setMinting(true);
         console.log('contract address:', CONTRACT_ADDRESS);
         const birthblockContractWritable = birthblockContract.connect(signer);
+        const value = freeMintsLeft ? '0' : parseEther('0.01');
         try {
-            const data = await birthblockContractWritable.mint({
-                value: parseEther('0.01'),
-            });
+            const data = await birthblockContractWritable.mint({ value });
             const moreData = await data.wait();
             debug({ moreData });
             setMinting(false);

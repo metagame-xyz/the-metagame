@@ -20,7 +20,13 @@ function Ui() {
     let [minted, setMinted] = useState(false);
     let [minting, setMinting] = useState(false);
     let [freeMintsLeft, setFreeMintsLeft] = useState<number>(null);
-    let [freeMints, setFreeMints] = useState<number>(null);
+    let [freeMints, _setFreeMints] = useState<number>(null);
+
+    const freeMintsRef = React.useRef<number>(freeMints);
+    const setFreeMints = (value: number) => {
+        freeMintsRef.current = value;
+        _setFreeMints(value);
+    };
 
     // Mint Count
     useEffect(() => {
@@ -46,7 +52,10 @@ function Ui() {
 
             debug({ address });
             debug({ tokenId });
-            setFreeMintsLeft(freeMints - tokenId.toNumber());
+            console.log('freeMints', freeMintsRef.current);
+            console.log('tokenId', tokenId.toNumber());
+            console.log('math', freeMints - tokenId.toNumber());
+            setFreeMintsLeft(freeMintsRef.current - tokenId.toNumber());
         });
     }, []);
 

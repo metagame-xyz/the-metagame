@@ -95,15 +95,20 @@ function Ui() {
     };
 
     return (
-        <Box backgroundColor="#B9EBEB">
-            <Navbar />
-            <Box mt={20} width="fit-content" mx="auto">
-                <Heading as="h1" fontSize={144} fontWeight="normal" textAlign="center">
+        <Box
+            align="center"
+            justify={{ base: 'center', md: 'space-around', xl: 'space-between' }}
+            direction={{ base: 'column-reverse', md: 'row' }}
+            wrap="no-wrap"
+            // minH="70vh"
+            px={8}
+            backgroundColor="#B9EBEB">
+            <Box pt={8} width="fit-content" mx="auto">
+                <Heading as="h1" fontSize={144} fontWeight="bold" textAlign="center">
                     Birthblock
                 </Heading>
                 <Text fontSize={36} fontWeight="light">
-                    An NFT with art and attributes based on the data from your first transaction on{' '}
-                    <br />
+                    An NFT with art and attributes based on the data from your first transaction on
                     Ethereum
                 </Text>
             </Box>

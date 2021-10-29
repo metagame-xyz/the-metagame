@@ -1,6 +1,8 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import type { AppProps } from 'next/app';
 
+import Layout from '@components/Layout';
+
 import EthereumProvider from '../providers/EthereumProvider';
 import '../styles/globals.css';
 
@@ -17,14 +19,16 @@ const theme = extendTheme({
     },
 });
 
-function MyApp({ Component, pageProps }: AppProps): JSX.Element {
+function App({ Component, pageProps }: AppProps): JSX.Element {
     return (
         <EthereumProvider>
             <ChakraProvider theme={theme}>
-                <Component {...pageProps} />
+                <Layout>
+                    <Component {...pageProps} />
+                </Layout>
             </ChakraProvider>
         </EthereumProvider>
     );
 }
 
-export default MyApp;
+export default App;

@@ -1,14 +1,16 @@
 import { Box, Button, Container, Grid, Heading, Text, VStack } from '@chakra-ui/react';
-import Navbar from '@components/Navbar';
 import { parseEther } from '@ethersproject/units';
 import { BigNumber, Contract } from 'ethers';
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { useEthereum } from '@providers/EthereumProvider';
+
+import Navbar from '@components/Navbar';
+
+import { CONTRACT_ADDRESS } from '@utils/constants';
+import { debug } from '@utils/frontend';
 
 import Birthblock from '../birthblock.json';
-import { useEthereum } from '../providers/EthereumProvider';
-import { CONTRACT_ADDRESS } from '../utils/constants';
-import { debug } from '../utils/frontend';
 
 function Ui() {
     const { provider, signer, userAddress, openWeb3Modal } = useEthereum();

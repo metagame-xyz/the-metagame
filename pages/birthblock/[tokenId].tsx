@@ -1,9 +1,9 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
-import { generateSVG } from 'pages/api/v1/image/[tokenId]';
-import { Metadata } from 'utils/utils';
 
-import { ioredisClient } from '../../utils/utils';
+import { generateSVG } from '@api/image/[tokenId]';
+
+import { ioredisClient, Metadata } from '@utils';
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     const { tokenId } = params;

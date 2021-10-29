@@ -9,9 +9,10 @@ import { Signer } from 'ethers';
 import { createContext, useContext, useEffect, useState } from 'react';
 import Web3Modal from 'web3modal';
 
+import { INFURA_ID, NETWORK } from '@utils/constants';
+import { debug } from '@utils/frontend';
+
 import rainbowLogo from '../images/rainbow.png';
-import { INFURA_ID, NETWORK } from '../utils/constants';
-import { debug } from '../utils/frontend';
 
 const ethersNetworkString = NETWORK == 'ethereum' ? 'homestead' : NETWORK;
 

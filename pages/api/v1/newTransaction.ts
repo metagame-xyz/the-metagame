@@ -1,7 +1,6 @@
 import { commify, formatUnits } from '@ethersproject/units';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { CONTRACT_BIRTHBLOCK, VERCEL_URL } from '../../../utils/constants';
 import {
     formatDateObjToShortTime,
     getOldestTransaction,
@@ -11,7 +10,8 @@ import {
     Metadata,
     timestampToDate,
     zodiac,
-} from '../../../utils/utils';
+} from '@utils';
+import { CONTRACT_BIRTHBLOCK, VERCEL_URL } from '@utils/constants';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     logger.info(req.body);

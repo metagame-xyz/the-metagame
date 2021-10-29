@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { ioredisClient, Metadata, timestampToDate } from '../../../../utils/utils';
+import { ioredisClient, Metadata, timestampToDate } from '@utils';
 
 export function generateSVG(metadata: Metadata): string {
     const { blockAge, timestamp } = metadata;

@@ -2,7 +2,7 @@ import NextHead from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { VERCEL_URL } from '../utils/constants';
+import { VERCEL_URL } from '@utils/constants';
 
 /**
  * Constants & Helpers

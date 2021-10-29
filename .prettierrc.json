@@ -5,7 +5,14 @@
     "singleQuote": true,
     "jsxBracketSameLine": true,
     "trailingComma": "all",
-    "importOrder": ["<THIRD_PARTY_MODULES>", "^[./]"],
+    "importOrder": [
+        "<THIRD_PARTY_MODULES>",
+        "^@api/(.*)$",
+        "^@providers/(.*)$",
+        "^@components/(.*)$",
+        "^@utils(.*)$",
+        "^[./]"
+    ],
     "importOrderSeparation": true,
     "importOrderSortSpecifiers": true,
     "importOrderCaseInsensitive": true

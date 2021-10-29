@@ -20,6 +20,7 @@ import {
 // import blockies from 'blockies-ts';
 import NextLink from 'next/link';
 import React from 'react';
+
 // import { getErrorMessage } from '../../lib/utils';
 // import { Balance } from '../Balance';
 // import { ConnectWallet } from '../ConnectWallet';

@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { ioredisClient } from '../../../../utils/utils';
+import { ioredisClient } from '@utils';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     // const [cursor, keys] = await ioredisClient.keys

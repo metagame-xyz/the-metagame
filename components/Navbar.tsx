@@ -1,14 +1,11 @@
 import { Box, Button, Container, HStack, Link, Text } from '@chakra-ui/react';
-// import { Etherscan, Opensea, Twitter } from 'images/icons';
-import Image from 'next/image';
+import { Etherscan, Opensea, Twitter } from 'images/icons';
 import React from 'react';
 
-import etherscanIcon from '../images/icons/etherscan.svg';
-import openseaIcon from '../images/icons/opensea.svg';
-import twitterIcon from '../images/icons/twitter.svg';
-import { useEthereum } from '../providers/EthereumProvider';
-import { CONTRACT_ADDRESS, NETWORK } from '../utils/constants';
-import { getTruncatedAddress } from '../utils/frontend';
+import { useEthereum } from '@providers/EthereumProvider';
+
+import { CONTRACT_ADDRESS, NETWORK } from '@utils/constants';
+import { getTruncatedAddress } from '@utils/frontend';
 
 export const etherscanNetworkString = NETWORK.toLowerCase() == 'ethereum' ? '' : `${NETWORK}.`;
 
@@ -16,6 +13,12 @@ function Navbar() {
     const { userAddress, ensName, openWeb3Modal } = useEthereum();
 
     const userName = ensName || getTruncatedAddress(userAddress);
+
+    const etherscanUrl = `https://${etherscanNetworkString}etherscan.io/address/${CONTRACT_ADDRESS}`;
+    const twitterUrl = 'https://twitter.com/brennerspear';
+    const openseaUrl = `https://testnets.opensea.io/collection/birthblock-ywaqkwbxvq`;
+
+    const iconSize = 12;
 
     return (
         <Box as="header" paddingTop="40px">
@@ -25,25 +28,15 @@ function Navbar() {
                         Birthblock
                     </Text>
                     <HStack align="center" spacing="20px">
-                        <Link
-                            href={`https://${etherscanNetworkString}etherscan.io/address/${CONTRACT_ADDRESS}`}
-                            isExternal>
-                            <Image
-                                height="48px"
-                                width="48px"
-                                src={etherscanIcon}
-                                alt="etherscanIcon"
-                            />
+                        <Link href={twitterUrl} isExternal>
+                            <Twitter h={iconSize} w={iconSize} />
                         </Link>
-                        <Link href="https://twitter.com/brennerspear" isExternal>
-                            <Image height="48px" width="48px" src={twitterIcon} alt="twitterIcon" />
+                        <Link href={openseaUrl} isExternal>
+                            <Opensea h={iconSize} w={iconSize} />
                         </Link>
-                        <Link
-                            href="https://testnets.opensea.io/collection/birthblock-ywaqkwbxvq"
-                            isExternal>
-                            <Image height="48px" width="48px" src={openseaIcon} alt="openseaIcon" />
+                        <Link href={etherscanUrl} isExternal>
+                            <Etherscan h={iconSize} w={iconSize} />
                         </Link>
-                        {/* <Twitter h={48} w={48} href="https://twitter.com/brennerspear" /> */}
                         {!userAddress && (
                             <Button
                                 onClick={openWeb3Modal}

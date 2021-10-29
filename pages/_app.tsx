@@ -1,6 +1,5 @@
-import '../styles/globals.css';
-import type { AppProps } from 'next/app';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import type { AppProps } from 'next/app';
 
 import EthereumProvider from '../providers/EthereumProvider';
 import '../styles/globals.css';
@@ -8,7 +7,7 @@ import '../styles/globals.css';
 const theme = extendTheme({
     colors: {
         teal: {
-            500: "#007B7A"
+            500: '#007B7A',
         },
     },
     fonts: {

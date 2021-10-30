@@ -1,5 +1,6 @@
 import {
     Box,
+    Center,
     chakra,
     Container,
     Link,
@@ -10,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 
-import { Twitter } from './Icons';
+import { TwelveCircles } from './Icons';
 
 const Logo = (props: any) => {
     return (
@@ -61,27 +62,22 @@ const SocialButton = ({
 export default function SmallWithLogoLeft({ maxW }) {
     return (
         <Box
-            bottom={0}
             w={'100%'}
             maxW={maxW}
             bg={useColorModeValue('gray.50', 'gray.900')}
             as={Stack}
-            py={4}
+            p={4}
             color={useColorModeValue('gray.700', 'gray.200')}>
-            <Logo />
-            {/* <Container
+            <Container
                 maxW={maxW}
                 direction={{ base: 'column', sm: 'row' }}
                 justify={{ base: 'center', sm: 'space-between' }}
                 align={{ base: 'center', sm: 'center' }}>
-                <Logo />
-                <Text>The Meta Game</Text>
-                <Stack direction={'row'} spacing={6}>
-                    <SocialButton label={'Twitter'} href={'#'}>
-                        <Twitter />
-                    </SocialButton>
+                <Stack direction={'row'} spacing={2}>
+                    <TwelveCircles h={12} w={12} />
+                    <Center fontSize="xl">The Meta Game</Center>
                 </Stack>
-            </Container> */}
+            </Container>
         </Box>
     );
 }

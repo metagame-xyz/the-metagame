@@ -1,6 +1,7 @@
-import { Box, Button, Container, Grid, Heading, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Heading, Stack, StackDivider, Text, VStack } from '@chakra-ui/react';
 import { parseEther } from '@ethersproject/units';
 import { BigNumber, Contract } from 'ethers';
+import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
 import { useEthereum } from '@providers/EthereumProvider';
@@ -11,6 +12,28 @@ import { CONTRACT_ADDRESS } from '@utils/constants';
 import { debug } from '@utils/frontend';
 
 import Birthblock from '../birthblock.json';
+import BirthblockImage from '../images/example-birthblock.svg';
+
+const heading1 = 'Unlimited Total Mints, One Mint per Wallet';
+const text1 =
+    'As fair of a mint process as possible. No need to rush to mint, no gas wars, open to literally every wallet on Ethereum.';
+const heading2 = 'Natural Scarcity';
+const text2 =
+    'The number of possible Birthblock NFTs with 100+ rings is set by existing on-chain data, not artificially set.';
+const heading3 = 'Earned';
+const text3 =
+    'Part of the infant category of earned NFTs. You earn attributes based on your actions. The older your wallet is, the bigger your tree will be.';
+
+function About({ heading, text }) {
+    return (
+        <VStack maxW={['md', 'sm', 'md', 'full']}>
+            <Heading as="h2" fontSize="24px">
+                {heading}
+            </Heading>
+            <Text>{text}</Text>
+        </VStack>
+    );
+}
 
 function Ui() {
     const { provider, signer, userAddress, openWeb3Modal } = useEthereum();
@@ -97,54 +120,40 @@ function Ui() {
     return (
         <Box
             align="center"
-            justify={{ base: 'center', md: 'space-around', xl: 'space-between' }}
+            // justify={{ base: 'center', md: 'space-around', xl: 'space-between' }}
             direction={{ base: 'column-reverse', md: 'row' }}
             wrap="no-wrap"
-            // minH="70vh"
+            minH="70vh"
             px={8}
             backgroundColor="#B9EBEB">
             <Box pt={8} width="fit-content" mx="auto">
-                <Heading as="h1" fontSize={144} fontWeight="bold" textAlign="center">
+                <Heading as="h1" fontSize={[72, 84, 144]} fontWeight="bold" textAlign="center">
                     Birthblock
                 </Heading>
-                <Text fontSize={36} fontWeight="light">
+                <Text fontSize={[24, 24, 36]} fontWeight="light">
                     An NFT with art and attributes based on the data from your first transaction on
                     Ethereum
                 </Text>
+                <Image
+                    src={BirthblockImage.src}
+                    alt="birthblock image"
+                    width="432px"
+                    height="432px"
+                />
             </Box>
 
-            <Container maxW={1280} mt={20}>
-                <Grid
-                    fontSize="24px"
-                    fontWeight="light"
-                    rowGap="10px"
-                    justifyContent="space-between"
-                    templateRows="repeat(2, auto)"
-                    templateColumns="repeat(3, 30%)"
-                    gridAutoFlow="column">
-                    <Heading as="h2" fontSize="24px">
-                        Unlimited Total Mints, One Mint per Wallet
-                    </Heading>
-                    <Text>
-                        As fair of a mint process as possible. No need to rush to mint, no gas wars,
-                        open to literally every wallet on Ethereum.
-                    </Text>
-                    <Heading as="h2" fontSize="24px">
-                        Natural Scarcity
-                    </Heading>
-                    <Text>
-                        The number of possible Birthblock NFTs with 100+ rings is set by existing
-                        on-chain data, not artificially set.
-                    </Text>
-                    <Heading as="h2" fontSize="24px">
-                        Earned
-                    </Heading>
-                    <Text>
-                        Part of the infant category of earned NFTs. You earn attributes based on
-                        your actions. The older your wallet is, the bigger your tree will be.
-                    </Text>
-                </Grid>
-            </Container>
+            <Box mx={4} mt={20}>
+                <Stack
+                    direction={['column', 'column', 'column', 'row']}
+                    align="center"
+                    spacing={8}
+                    // shouldWrapChildren
+                >
+                    <About heading={heading1} text={text1} />
+                    <About heading={heading2} text={text2} />
+                    <About heading={heading3} text={text3} />
+                </Stack>
+            </Box>
 
             <VStack justifyContent="center" mt={20} py={10} bgColor="#00B8B6">
                 <Text fontWeight="light" fontSize="54px">

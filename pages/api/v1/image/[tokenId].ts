@@ -3,7 +3,9 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { ioredisClient, Metadata, timestampToDate } from '@utils';
 
 export function generateSVG(metadata: Metadata): string {
-    const { blockAge, timestamp } = metadata;
+    // const { blockAge, timestamp } = metadata;
+    const blockAge = 7000000;
+    const timestamp = 1633768207;
     const dateObj = timestampToDate(timestamp);
     const { year, month } = dateObj;
 

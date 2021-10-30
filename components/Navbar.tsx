@@ -1,9 +1,9 @@
-import { Box, Button, Container, Flex, HStack, Link, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, HStack, Link, Stack, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import { useEthereum } from '@providers/EthereumProvider';
 
-import { Etherscan, Opensea, Twitter } from '@components/Icons';
+import { Etherscan, Logo, Opensea, Twitter } from '@components/Icons';
 
 import { CONTRACT_ADDRESS, NETWORK } from '@utils/constants';
 import { getTruncatedAddress } from '@utils/frontend';
@@ -21,6 +21,14 @@ function Navbar(props) {
 
     const iconSize = 12;
 
+    function IconLink({ Icon, url }) {
+        return (
+            <Link href={url} isExternal>
+                <Icon boxSize={8} />
+            </Link>
+        );
+    }
+
     return (
         <Flex
             as="navbar"
@@ -29,28 +37,26 @@ function Navbar(props) {
             align="center"
             wrap="wrap"
             py={4}
-            px={8}
+            px={4}
             {...props}>
-            <Text align="center" as="h1" fontSize="50px" fontWeight="light">
-                Birthblock
-            </Text>
-            <HStack align="center" spacing="20px">
-                <Link href={twitterUrl} isExternal>
-                    <Twitter h={iconSize} w={iconSize} />
-                </Link>
-                <Link href={openseaUrl} isExternal>
-                    <Opensea h={iconSize} w={iconSize} />
-                </Link>
-                <Link href={etherscanUrl} isExternal>
-                    <Etherscan h={iconSize} w={iconSize} />
-                </Link>
+            <HStack spacing={4} align="center" pr={2}>
+                <Logo h={iconSize} w={iconSize} />
+                <Text align="center" as="h1" fontSize="50px" fontWeight="light">
+                    Birthblock
+                </Text>
+            </HStack>
+            <Stack wrap="wrap" direction={['column', 'row', 'row', 'row']}>
+                <HStack align="center" spacing={4}>
+                    <IconLink Icon={Twitter} url={twitterUrl} />
+                    <IconLink Icon={Opensea} url={openseaUrl} />
+                    <IconLink Icon={Etherscan} url={etherscanUrl} />
+                </HStack>
                 {!userAddress && (
                     <Button
                         onClick={openWeb3Modal}
                         fontWeight={'300'}
                         colorScheme="teal"
-                        width={209}
-                        height={59}
+                        size="lg"
                         fontSize={28}
                         borderRadius={30}>
                         Connect
@@ -61,7 +67,7 @@ function Navbar(props) {
                         {userName}
                     </Text>
                 )}
-            </HStack>
+            </Stack>
         </Flex>
     );
 }

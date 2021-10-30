@@ -1,4 +1,4 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, Spacer } from '@chakra-ui/react';
 import React from 'react';
 
 import Footer from './Footer';
@@ -10,16 +10,10 @@ const maxW = { xl: '1280px' };
 
 export default function Layout(props) {
     return (
-        <Flex
-            // minH="full"
-            // h="full"
-            direction="column"
-            align="center"
-            maxW={maxW}
-            m="0 auto"
-            {...props}>
-            <Navbar />
-            <Box h="full">{props.children}</Box>
+        <Flex direction="column" align="center" m="0 auto" {...props}>
+            <Navbar maxW={maxW} />
+            <Flex maxW={maxW}>{props.children}</Flex>
+            <Spacer />
             <Footer maxW={maxW} />
         </Flex>
     );

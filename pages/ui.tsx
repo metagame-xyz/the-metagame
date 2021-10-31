@@ -1,4 +1,4 @@
-import { Box, Button, Heading, Stack, StackDivider, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Stack, StackDivider, Text, VStack } from '@chakra-ui/react';
 import { parseEther } from '@ethersproject/units';
 import { BigNumber, Contract } from 'ethers';
 import Image from 'next/image';
@@ -6,12 +6,13 @@ import React, { useEffect, useState } from 'react';
 
 import { useEthereum } from '@providers/EthereumProvider';
 
-import Navbar from '@components/Navbar';
+import { maxW } from '@components/Layout';
 
 import { CONTRACT_ADDRESS } from '@utils/constants';
 import { debug } from '@utils/frontend';
 
 import Birthblock from '../birthblock.json';
+import bg from '../images/background.png';
 import BirthblockImage from '../images/example-birthblock.svg';
 
 const heading1 = 'Unlimited Total Mints, One Mint per Wallet';
@@ -35,7 +36,7 @@ function About({ heading, text }) {
     );
 }
 
-function Ui() {
+function Ui({}) {
     const { provider, signer, userAddress, openWeb3Modal } = useEthereum();
 
     const birthblockContract = new Contract(CONTRACT_ADDRESS, Birthblock.abi, provider);
@@ -118,15 +119,8 @@ function Ui() {
     };
 
     return (
-        <Box
-            align="center"
-            // justify={{ base: 'center', md: 'space-around', xl: 'space-between' }}
-            direction={{ base: 'column-reverse', md: 'row' }}
-            wrap="no-wrap"
-            minH="70vh"
-            px={8}
-            backgroundColor="#B9EBEB">
-            <Box pt={8} width="fit-content" mx="auto">
+        <Box align="center">
+            <Box px={8} pt={8} width="fit-content" mx="auto" maxW={maxW}>
                 <Heading as="h1" fontSize={[72, 84, 144]} fontWeight="bold" textAlign="center">
                     Birthblock
                 </Heading>
@@ -142,20 +136,15 @@ function Ui() {
                 />
             </Box>
 
-            <Box mx={4} mt={20}>
-                <Stack
-                    direction={['column', 'column', 'column', 'row']}
-                    align="center"
-                    spacing={8}
-                    // shouldWrapChildren
-                >
+            <Box px={8} width="fit-content" margin="auto" maxW={maxW}>
+                <Stack direction={['column', 'column', 'column', 'row']} align="center" spacing={8}>
                     <About heading={heading1} text={text1} />
                     <About heading={heading2} text={text2} />
                     <About heading={heading3} text={text3} />
                 </Stack>
             </Box>
 
-            <VStack justifyContent="center" mt={20} py={10} bgColor="#00B8B6">
+            <VStack justifyContent="center" mt={20} p={8} bgColor="#00B8B6">
                 <Text fontWeight="light" fontSize="54px">
                     {freeMintsLeft}/{freeMints} free mints left
                 </Text>

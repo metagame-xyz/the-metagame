@@ -6,13 +6,15 @@ import Navbar from './Navbar';
 
 // import Footer from "../sections/Footer" // will add this in the part 2
 
-const maxW = { xl: '1280px' };
+export const maxW = { xl: '1280px' };
 
 export default function Layout(props) {
     return (
-        <Flex direction="column" align="center" m="0 auto" {...props}>
+        <Flex direction="column" width="100%" {...props}>
             <Navbar maxW={maxW} />
-            <Flex maxW={maxW}>{props.children}</Flex>
+            <Box width="100%" justify="center">
+                {props.children}
+            </Box>
             <Spacer />
             <Footer maxW={maxW} />
         </Flex>

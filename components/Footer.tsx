@@ -63,7 +63,6 @@ export default function SmallWithLogoLeft({ maxW }) {
     return (
         <Box
             w={'100%'}
-            maxW={maxW}
             bg={useColorModeValue('gray.50', 'gray.900')}
             as={Stack}
             p={4}

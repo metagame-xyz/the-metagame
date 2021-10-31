@@ -1,4 +1,4 @@
-import { Box, Button, Flex, HStack, Link, Stack, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, HStack, Link, Spacer, Stack, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import { useEthereum } from '@providers/EthereumProvider';
@@ -30,27 +30,27 @@ function Navbar(props) {
     }
 
     return (
-        <Flex
+        <Stack
+            direction={['column', 'column', 'row', 'row']}
             as="navbar"
             width="100%"
-            justify="space-between"
+            justify="center"
             align="center"
-            wrap="wrap"
             py={4}
             px={4}
             {...props}>
-            <HStack spacing={4} align="center" pr={2}>
+            <HStack align="center" spacing={4} pr={2}>
                 <Logo h={iconSize} w={iconSize} />
                 <Text align="center" as="h1" fontSize="50px" fontWeight="light">
                     Birthblock
                 </Text>
             </HStack>
-            <Stack wrap="wrap" direction={['column', 'row', 'row', 'row']}>
-                <HStack align="center" spacing={4}>
-                    <IconLink Icon={Twitter} url={twitterUrl} />
-                    <IconLink Icon={Opensea} url={openseaUrl} />
-                    <IconLink Icon={Etherscan} url={etherscanUrl} />
-                </HStack>
+            <Spacer Stack={[0, 0, 1, 1]} />
+            {/* <Stack wrap="wrap" direction={['column', 'row', 'row', 'row']}> */}
+            <HStack align="center" spacing={4}>
+                <IconLink Icon={Twitter} url={twitterUrl} />
+                <IconLink Icon={Opensea} url={openseaUrl} />
+                <IconLink Icon={Etherscan} url={etherscanUrl} />
                 {!userAddress && (
                     <Button
                         onClick={openWeb3Modal}
@@ -67,8 +67,9 @@ function Navbar(props) {
                         {userName}
                     </Text>
                 )}
-            </Stack>
-        </Flex>
+            </HStack>
+            {/* </Stack> */}
+        </Stack>
     );
 }
 

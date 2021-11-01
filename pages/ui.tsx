@@ -1,4 +1,5 @@
-import { Box, Button, Flex, Heading, Stack, StackDivider, Text, VStack } from '@chakra-ui/react';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
+import { Box, Button, Flex, Heading, Link, Stack, Text, VStack } from '@chakra-ui/react';
 import { parseEther } from '@ethersproject/units';
 import { BigNumber, Contract } from 'ethers';
 import Image from 'next/image';
@@ -8,7 +9,7 @@ import { useEthereum } from '@providers/EthereumProvider';
 
 import { maxW } from '@components/Layout';
 
-import { CONTRACT_ADDRESS } from '@utils/constants';
+import { CONTRACT_ADDRESS, NETWORK } from '@utils/constants';
 import { debug } from '@utils/frontend';
 
 import Birthblock from '../birthblock.json';
@@ -36,6 +37,11 @@ function About({ heading, text }) {
     );
 }
 
+function openseaLink(tokenId: number) {
+    const network = NETWORK == 'ethereum' ? '' : 'testnets.';
+    return `https://${network}opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId}`;
+}
+
 function Ui({}) {
     const { provider, signer, userAddress, openWeb3Modal } = useEthereum();
 
@@ -43,6 +49,8 @@ function Ui({}) {
 
     let [minted, setMinted] = useState(false);
     let [minting, setMinting] = useState(false);
+    let [userTokenId, setUserTokenId] = useState<number>(null);
+
     let [freeMintsLeft, setFreeMintsLeft] = useState<number>(null);
     let [freeMints, _setFreeMints] = useState<number>(null);
 
@@ -71,6 +79,8 @@ function Ui({}) {
         }
         getMintedCount();
 
+        birthblockContract.removeAllListeners();
+
         birthblockContract.on('Mint', (address: string, tokenId: BigNumber) => {
             console.log('via subscribe');
 
@@ -92,6 +102,10 @@ function Ui({}) {
             const data = await birthblockContractWritable.mint({ value });
             const moreData = await data.wait();
             debug({ moreData });
+            const [_, address, tokenId] = moreData.events.find((e) => (e.event = 'Mint')).args;
+            console.log('minted', address, tokenId);
+            setUserTokenId(tokenId.toNumber());
+
             setMinting(false);
             setMinted(true);
         } catch (error) {
@@ -144,23 +158,35 @@ function Ui({}) {
                 </Stack>
             </Box>
 
-            <VStack justifyContent="center" mt={20} p={8} bgColor="#00B8B6">
-                <Text fontWeight="light" fontSize="54px">
-                    {freeMintsLeft}/{freeMints} free mints left
-                </Text>
-
-                <Button
-                    onClick={userAddress ? mint : openWeb3Modal}
-                    mt={10}
-                    fontWeight={'300'}
-                    colorScheme="teal"
-                    width={250}
-                    height={20}
-                    boxShadow="0px 3px 6px rgba(0, 0, 0, 0.160784);"
-                    fontSize={32}
-                    borderRadius={56}>
-                    {userAddress ? mintText() : 'Connect Wallet'}
-                </Button>
+            <VStack minH="xs" justifyContent="center" mt={20} p={8} bgColor="#00B8B6">
+                {!minted && !userTokenId ? (
+                    <Button
+                        onClick={userAddress ? mint : openWeb3Modal}
+                        isLoading={minting}
+                        loadingText="Minting..."
+                        isDisabled={minted}
+                        fontWeight={'300'}
+                        colorScheme="teal"
+                        size="lg"
+                        height="60px"
+                        boxShadow="0px 3px 6px rgba(0, 0, 0, 0.160784);"
+                        fontSize="4xl"
+                        borderRadius={60}>
+                        {userAddress ? mintText() : 'Connect Wallet'}
+                    </Button>
+                ) : (
+                    <Text fontSize={[24, 24, 36]}>
+                        {`Birthblock #${userTokenId} Minted. `}
+                        <Link isExternal href={openseaLink(userTokenId)}>
+                            View on Opensea <ExternalLinkIcon />
+                        </Link>
+                    </Text>
+                )}
+                {!userTokenId && (
+                    <Text fontWeight="light" fontSize="54px">
+                        {freeMintsLeft}/{freeMints} free mints left
+                    </Text>
+                )}
             </VStack>
         </Box>
     );

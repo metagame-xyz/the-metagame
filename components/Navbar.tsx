@@ -31,7 +31,7 @@ function Navbar(props) {
         <Flex width="100%" borderBottom="1px" borderColor="black">
             <Stack
                 direction={['column', 'column', 'row', 'row']}
-                as="navbar"
+                as="nav"
                 width="100%"
                 margin="auto"
                 justify="center"

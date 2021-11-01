@@ -29,8 +29,7 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
                     backgroundImage={bg.src}
                     bgPosition="center"
                     bgSize="cover"
-                    bgRepeat="no-repeat"
-                    height="100%">
+                    bgRepeat="no-repeat">
                     <Layout>
                         <Component {...pageProps} />
                     </Layout>

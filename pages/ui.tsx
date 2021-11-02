@@ -28,7 +28,7 @@ const text3 =
 
 function About({ heading, text }) {
     return (
-        <VStack maxW={['md', 'sm', 'md', 'full']}>
+        <VStack maxW={['sm', 'md', 'md', 'full']}>
             <Heading as="h2" fontSize="24px">
                 {heading}
             </Heading>
@@ -51,8 +51,8 @@ function Ui({}) {
     let [minting, setMinting] = useState(false);
     let [userTokenId, setUserTokenId] = useState<number>(null);
 
-    let [freeMintsLeft, setFreeMintsLeft] = useState<number>(null);
-    let [freeMints, _setFreeMints] = useState<number>(null);
+    let [freeMintsLeft, setFreeMintsLeft] = useState<number>(0);
+    let [freeMints, _setFreeMints] = useState<number>(144);
 
     const freeMintsRef = React.useRef<number>(freeMints);
     const setFreeMints = (value: number) => {
@@ -77,7 +77,7 @@ function Ui({}) {
 
             // console.log('getMintedCount async finish');
         }
-        getMintedCount();
+        // getMintedCount();
 
         birthblockContract.removeAllListeners();
 
@@ -151,24 +151,28 @@ function Ui({}) {
             </Box>
 
             <Box px={8} width="fit-content" margin="auto" maxW={maxW}>
-                <Stack direction={['column', 'column', 'column', 'row']} align="center" spacing={8}>
+                <Stack
+                    direction={['column', 'column', 'column', 'row']}
+                    align="center"
+                    spacing={16}>
                     <About heading={heading1} text={text1} />
                     <About heading={heading2} text={text2} />
                     <About heading={heading3} text={text3} />
                 </Stack>
             </Box>
 
-            <VStack minH="xs" justifyContent="center" mt={20} p={8} bgColor="#00B8B6">
+            <VStack minH="xs" justifyContent="center" spacing={4} mt={12} bgColor="#00B8B6">
                 {!minted && !userTokenId ? (
                     <Button
                         onClick={userAddress ? mint : openWeb3Modal}
                         isLoading={minting}
                         loadingText="Minting..."
                         isDisabled={minted}
-                        fontWeight={'300'}
+                        fontWeight="normal"
                         colorScheme="teal"
                         size="lg"
                         height="60px"
+                        minW="xs"
                         boxShadow="0px 3px 6px rgba(0, 0, 0, 0.160784);"
                         fontSize="4xl"
                         borderRadius={60}>
@@ -182,10 +186,19 @@ function Ui({}) {
                         </Link>
                     </Text>
                 )}
-                {!userTokenId && (
-                    <Text fontWeight="light" fontSize="54px">
-                        {freeMintsLeft}/{freeMints} free mints left
+                {!userTokenId && freeMintsLeft ? (
+                    <Text fontWeight="light" fontSize={['2xl', '3xl']}>
+                        {`${freeMintsLeft}/${freeMints} free mints left`}
                     </Text>
+                ) : (
+                    <div>
+                        <Text fontWeight="light" fontSize={['2xl', '3xl']}>
+                            0.01 ETH to mint
+                        </Text>
+                        <Text fontWeight="light" fontSize={['sm', 'md']}>
+                            {`(All ${freeMintsRef.current} free mints have been minted)`}
+                        </Text>
+                    </div>
                 )}
             </VStack>
         </Box>

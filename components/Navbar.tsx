@@ -1,4 +1,4 @@
-import { Box, Button, Center, Flex, HStack, Link, Spacer, Stack, Text } from '@chakra-ui/react';
+import { Button, Center, Flex, Heading, HStack, Link, Spacer, Stack, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import { useEthereum } from '@providers/EthereumProvider';
@@ -38,9 +38,9 @@ function Navbar(props) {
                 {...props}>
                 <HStack align="center" spacing={4} pr={2}>
                     <Logo boxSize={12} />
-                    <Text align="center" as="h1" fontSize="48px" fontWeight="light">
+                    <Heading as="h1" fontSize="40px">
                         Birthblock
-                    </Text>
+                    </Heading>
                 </HStack>
                 <Spacer Stack={[0, 0, 1, 1]} />
                 <HStack align="center" spacing={4}>

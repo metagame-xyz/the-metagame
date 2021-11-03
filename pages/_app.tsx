@@ -1,5 +1,5 @@
 import { Box, ChakraProvider, extendTheme, Flex } from '@chakra-ui/react';
-import { url } from 'inspector';
+import '@fontsource/lato';
 import type { AppProps } from 'next/app';
 
 import Layout from '@components/Layout';
@@ -15,9 +15,8 @@ const theme = extendTheme({
         },
     },
     fonts: {
-        heading:
-            '-apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Ubuntu, roboto, noto, arial, sans-serif;',
-        body: '-apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Ubuntu, roboto, noto, arial, sans-serif;',
+        heading: 'Lato',
+        body: 'Lato',
     },
 });
 

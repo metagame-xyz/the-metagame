@@ -182,7 +182,7 @@ function Ui({}) {
     return (
         <Box align="center">
             <Box px={8} pt={8} width="fit-content" mx="auto" maxW={maxW}>
-                <Heading as="h1" fontSize={[72, 84, 144]} fontWeight="bold" textAlign="center">
+                <Heading as="h1" fontSize={[72, 84, 144]} textAlign="center">
                     Birthblock
                 </Heading>
                 <Text fontSize={[24, 24, 36]} fontWeight="light">

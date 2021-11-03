@@ -10,7 +10,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import Web3Modal from 'web3modal';
 
 import { INFURA_ID, NETWORK } from '@utils/constants';
-import { debug } from '@utils/frontend';
+import { debug, getTruncatedAddress } from '@utils/frontend';
 
 import rainbowLogo from '../images/rainbow.png';
 
@@ -46,7 +46,13 @@ const providerOptions = {
 };
 
 //web3Var: ReactiveVar<Web3>
-async function openWeb3ModalGenerator(setProvider, setSigner, setUserAddress, setEnsName) {
+async function openWeb3ModalGenerator(
+    setProvider,
+    setSigner,
+    setUserAddress,
+    setEnsName,
+    setUserName,
+) {
     const web3Modal = new Web3Modal({
         network: NETWORK, // optional
         cacheProvider: false, // optional TODO true or ternary
@@ -57,6 +63,7 @@ async function openWeb3ModalGenerator(setProvider, setSigner, setUserAddress, se
         let signer: JsonRpcSigner = null;
         let userAddress: string = null;
         let ensName: string = null;
+        let userName: string = null;
 
         try {
             const ethersProvider = new Web3Provider(providerFromModal);
@@ -69,12 +76,15 @@ async function openWeb3ModalGenerator(setProvider, setSigner, setUserAddress, se
                 userAddress = await signer.getAddress();
                 console.log('accounts:', userAddress);
                 ensName = await ethersProvider.lookupAddress(userAddress);
+                userName = ensName || getTruncatedAddress(userAddress);
+                console.log('userName:', userName);
             }
 
             setProvider(ethersProvider);
             setSigner(signer);
             setUserAddress(userAddress);
             setEnsName(ensName);
+            setUserName(userName);
         } catch (error) {
             console.log('UPDATE PROVIDER VARIABLES ERROR');
             console.log(error);
@@ -123,6 +133,7 @@ function EthereumProvider(props): JSX.Element {
     const [signer, setSigner] = useState<Signer>();
     const [userAddress, setUserAddress] = useState<string>();
     const [ensName, setEnsName] = useState<string>('');
+    const [userName, setUserName] = useState<string>('');
 
     function setInitialProvider() {
         const defaultProvider = getDefaultProvider(ethersNetworkString, { infura: INFURA_ID });
@@ -135,9 +146,15 @@ function EthereumProvider(props): JSX.Element {
     }, []);
 
     const openWeb3Modal = async () =>
-        await openWeb3ModalGenerator(setProvider, setSigner, setUserAddress, setEnsName);
+        await openWeb3ModalGenerator(
+            setProvider,
+            setSigner,
+            setUserAddress,
+            setEnsName,
+            setUserName,
+        );
 
-    const variables = { provider, signer, userAddress, ensName };
+    const variables = { provider, signer, userAddress, ensName, userName };
     const functions = { openWeb3Modal };
 
     const value = { ...variables, ...functions };

@@ -43,7 +43,10 @@ function openseaLink(tokenId: number) {
 }
 
 function Ui({}) {
-    const { provider, signer, userAddress, openWeb3Modal } = useEthereum();
+    const { provider, signer, userAddress, userName, openWeb3Modal } = useEthereum();
+
+    console.log('userName', userName);
+    console.log('userAddress', userAddress);
 
     const birthblockContract = new Contract(CONTRACT_ADDRESS, Birthblock.abi, provider);
 
@@ -59,6 +62,27 @@ function Ui({}) {
         freeMintsRef.current = value;
         _setFreeMints(value);
     };
+
+    useEffect(() => {
+        console.log('getUserMintedTokenId');
+        async function getUserMintedTokenId() {
+            try {
+                if (userAddress) {
+                    const filter = birthblockContract.filters.Mint(userAddress);
+                    const data = await birthblockContract.queryFilter(filter);
+                    for (const event of data) {
+                        console.log('event:', event.args);
+                        const tokenId = event.args[1].toNumber();
+                        setUserTokenId(tokenId);
+                        break;
+                    }
+                }
+            } catch (error) {
+                debug({ error });
+            }
+        }
+        getUserMintedTokenId();
+    }, [userAddress]);
 
     // Mint Count
     useEffect(() => {
@@ -128,6 +152,29 @@ function Ui({}) {
         }
     };
 
+    const textUnderButton = () => {
+        if (userTokenId) {
+            return <></>;
+        } else if (freeMintsLeft) {
+            return (
+                <Text fontWeight="light" fontSize={['2xl', '3xl']}>
+                    {`${freeMintsLeft}/${freeMints} free mints left`}
+                </Text>
+            );
+        } else {
+            return (
+                <div>
+                    <Text fontWeight="light" fontSize={['xl', '2xl']}>
+                        0.01 ETH to mint
+                    </Text>
+                    <Text fontWeight="light" fontSize={['sm', 'md']}>
+                        {`(All ${freeMintsRef.current} free mints have been minted)`}
+                    </Text>
+                </div>
+            );
+        }
+    };
+
     const mintsLeftText = () => {
         return `${freeMintsLeft}/144 Free Mints Left`;
     };
@@ -161,7 +208,7 @@ function Ui({}) {
                 </Stack>
             </Box>
 
-            <VStack minH="xs" justifyContent="center" spacing={4} mt={12} bgColor="#00B8B6">
+            <VStack minH="xs" justifyContent="center" spacing={4} mt={12} px={4} bgColor="#00B8B6">
                 {!minted && !userTokenId ? (
                     <Button
                         onClick={userAddress ? mint : openWeb3Modal}
@@ -180,26 +227,13 @@ function Ui({}) {
                     </Button>
                 ) : (
                     <Text fontSize={[24, 24, 36]}>
-                        {`Birthblock #${userTokenId} Minted. `}
+                        {`${userName}'s Birthblock (#${userTokenId}) has been minted. `}
                         <Link isExternal href={openseaLink(userTokenId)}>
                             View on Opensea <ExternalLinkIcon />
                         </Link>
                     </Text>
                 )}
-                {!userTokenId && freeMintsLeft ? (
-                    <Text fontWeight="light" fontSize={['2xl', '3xl']}>
-                        {`${freeMintsLeft}/${freeMints} free mints left`}
-                    </Text>
-                ) : (
-                    <div>
-                        <Text fontWeight="light" fontSize={['2xl', '3xl']}>
-                            0.01 ETH to mint
-                        </Text>
-                        <Text fontWeight="light" fontSize={['sm', 'md']}>
-                            {`(All ${freeMintsRef.current} free mints have been minted)`}
-                        </Text>
-                    </div>
-                )}
+                {textUnderButton()}
             </VStack>
         </Box>
     );

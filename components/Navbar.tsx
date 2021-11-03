@@ -11,9 +11,7 @@ import { getTruncatedAddress } from '@utils/frontend';
 export const etherscanNetworkString = NETWORK.toLowerCase() == 'ethereum' ? '' : `${NETWORK}.`;
 
 function Navbar(props) {
-    const { userAddress, ensName, openWeb3Modal } = useEthereum();
-
-    const userName = ensName || getTruncatedAddress(userAddress);
+    const { userName, openWeb3Modal } = useEthereum();
 
     const etherscanUrl = `https://${etherscanNetworkString}etherscan.io/address/${CONTRACT_ADDRESS}`;
     const twitterUrl = 'https://twitter.com/brennerspear';
@@ -49,7 +47,7 @@ function Navbar(props) {
                     <IconLink Icon={Twitter} url={twitterUrl} />
                     <IconLink Icon={Opensea} url={openseaUrl} />
                     <IconLink Icon={Etherscan} url={etherscanUrl} />
-                    {userAddress ? (
+                    {userName ? (
                         <Center as="h1" fontSize="32px" fontWeight="light">
                             {userName}
                         </Center>

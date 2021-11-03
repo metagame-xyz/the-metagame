@@ -12,6 +12,7 @@ const theme = extendTheme({
     colors: {
         teal: {
             500: '#007B7A',
+            100: '#B9EBEB',
         },
     },
     fonts: {
@@ -22,10 +23,11 @@ const theme = extendTheme({
 
 function App({ Component, pageProps }: AppProps): JSX.Element {
     return (
-        <EthereumProvider>
-            <ChakraProvider theme={theme}>
+        <ChakraProvider theme={theme}>
+            <EthereumProvider>
                 <Flex
-                    backgroundImage={bg.src}
+                    // backgroundImage={bg.src}
+                    bgColor="teal.100"
                     bgPosition="center"
                     bgSize="cover"
                     bgRepeat="no-repeat">
@@ -33,8 +35,8 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
                         <Component {...pageProps} />
                     </Layout>
                 </Flex>
-            </ChakraProvider>
-        </EthereumProvider>
+            </EthereumProvider>
+        </ChakraProvider>
     );
 }
 

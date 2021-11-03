@@ -42,7 +42,7 @@ function Navbar(props) {
                         Birthblock
                     </Heading>
                 </HStack>
-                <Spacer Stack={[0, 0, 1, 1]} />
+                <Spacer />
                 <HStack align="center" spacing={4}>
                     <IconLink Icon={Twitter} url={twitterUrl} />
                     <IconLink Icon={Opensea} url={openseaUrl} />

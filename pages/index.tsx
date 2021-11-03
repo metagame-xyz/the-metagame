@@ -1,11 +1,11 @@
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { Box, Button, Flex, Heading, Link, Stack, Text, VStack } from '@chakra-ui/react';
 import { parseEther } from '@ethersproject/units';
-import { BigNumber, Contract } from 'ethers';
+import { BigNumber, Contract, ethers } from 'ethers';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
-import { useEthereum } from '@providers/EthereumProvider';
+import { ethersNetworkString, toastData, useEthereum } from '@providers/EthereumProvider';
 
 import { maxW } from '@components/Layout';
 
@@ -42,8 +42,8 @@ function openseaLink(tokenId: number) {
     return `https://${network}opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId}`;
 }
 
-function Ui({}) {
-    const { provider, signer, userAddress, userName, openWeb3Modal } = useEthereum();
+function Home({}) {
+    const { provider, signer, userAddress, userName, openWeb3Modal, toast } = useEthereum();
 
     console.log('userName', userName);
     console.log('userAddress', userAddress);
@@ -118,6 +118,12 @@ function Ui({}) {
     }, []);
 
     const mint = async () => {
+        const network = await provider.getNetwork();
+        if (network.name != ethersNetworkString) {
+            toast(toastData);
+            return;
+        }
+
         setMinting(true);
         console.log('contract address:', CONTRACT_ADDRESS);
         const birthblockContractWritable = birthblockContract.connect(signer);
@@ -209,34 +215,34 @@ function Ui({}) {
             </Box>
 
             <VStack minH="xs" justifyContent="center" spacing={4} mt={12} px={4} bgColor="#00B8B6">
-                {!minted && !userTokenId ? (
-                    <Button
-                        onClick={userAddress ? mint : openWeb3Modal}
-                        isLoading={minting}
-                        loadingText="Minting..."
-                        isDisabled={minted}
-                        fontWeight="normal"
-                        colorScheme="teal"
-                        size="lg"
-                        height="60px"
-                        minW="xs"
-                        boxShadow="0px 3px 6px rgba(0, 0, 0, 0.160784);"
-                        fontSize="4xl"
-                        borderRadius={60}>
-                        {userAddress ? mintText() : 'Connect Wallet'}
-                    </Button>
-                ) : (
-                    <Text fontSize={[24, 24, 36]}>
-                        {`${userName}'s Birthblock (#${userTokenId}) has been minted. `}
-                        <Link isExternal href={openseaLink(userTokenId)}>
-                            View on Opensea <ExternalLinkIcon />
-                        </Link>
-                    </Text>
-                )}
+                {/* {!minted && !userTokenId ? ( */}
+                <Button
+                    onClick={userAddress ? mint : openWeb3Modal}
+                    isLoading={minting}
+                    loadingText="Minting..."
+                    isDisabled={minted}
+                    fontWeight="normal"
+                    colorScheme="teal"
+                    size="lg"
+                    height="60px"
+                    minW="xs"
+                    boxShadow="0px 3px 6px rgba(0, 0, 0, 0.160784);"
+                    fontSize="4xl"
+                    borderRadius={60}>
+                    {userAddress ? mintText() : 'Connect Wallet'}
+                </Button>
+                {/* ) : ( */}
+                <Text fontSize={[24, 24, 36]}>
+                    {`${userName}'s Birthblock (#${userTokenId}) has been minted. `}
+                    <Link isExternal href={openseaLink(userTokenId)}>
+                        View on Opensea <ExternalLinkIcon />
+                    </Link>
+                </Text>
+                {/* )} */}
                 {textUnderButton()}
             </VStack>
         </Box>
     );
 }
 
-export default Ui;
+export default Home;

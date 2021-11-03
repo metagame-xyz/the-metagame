@@ -61,18 +61,14 @@ const SocialButton = ({
 
 export default function SmallWithLogoLeft({ maxW }) {
     return (
-        <Box
-            w={'100%'}
-            bg={useColorModeValue('gray.50', 'gray.900')}
-            p={4}
-            color={useColorModeValue('gray.700', 'gray.200')}>
+        <Box w={'100%'} bgColor="teal.100" p={4} color={useColorModeValue('gray.700', 'gray.200')}>
             <Container
                 maxW={maxW}
                 direction={{ base: 'column', sm: 'row' }}
                 justify={{ base: 'center', sm: 'space-between' }}
                 align={{ base: 'center', sm: 'center' }}>
                 <Stack direction={'row'} spacing={2}>
-                    <TwelveCircles h={12} w={12} />
+                    <TwelveCircles boxSize={8} />
                     <Center fontSize="xl">The Meta Game</Center>
                 </Stack>
             </Container>

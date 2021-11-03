@@ -1,3 +1,4 @@
+import { useToast } from '@chakra-ui/react';
 import {
     BaseProvider,
     getDefaultProvider,
@@ -14,7 +15,18 @@ import { debug, getTruncatedAddress } from '@utils/frontend';
 
 import rainbowLogo from '../images/rainbow.png';
 
-const ethersNetworkString = NETWORK == 'ethereum' ? 'homestead' : NETWORK;
+export const ethersNetworkString = NETWORK == 'ethereum' ? 'homestead' : NETWORK;
+
+export const toastData = {
+    title: 'Wrong Network.',
+    description: `You must be on ${ethersNetworkString} to mint`,
+    status: 'warning',
+    position: 'top',
+    duration: 4000,
+    isClosable: true,
+};
+
+const defaultProvider = getDefaultProvider(ethersNetworkString, { infura: INFURA_ID });
 
 const EthereumContext = createContext(undefined);
 
@@ -52,6 +64,7 @@ async function openWeb3ModalGenerator(
     setUserAddress,
     setEnsName,
     setUserName,
+    toast,
 ) {
     const web3Modal = new Web3Modal({
         network: NETWORK, // optional
@@ -60,6 +73,7 @@ async function openWeb3ModalGenerator(
     });
 
     async function updateVariables(providerFromModal) {
+        let provider: BaseProvider = defaultProvider;
         let signer: JsonRpcSigner = null;
         let userAddress: string = null;
         let ensName: string = null;
@@ -67,10 +81,20 @@ async function openWeb3ModalGenerator(
 
         try {
             const ethersProvider = new Web3Provider(providerFromModal);
+            const network = await ethersProvider.getNetwork();
+
+            // check if network is correct for the given env (prod vs dev)
+            if (network.name !== ethersNetworkString) {
+                toast(toastData);
+                throw new Error('Wrong Network');
+            }
+
             const accounts = await ethersProvider.listAccounts();
             debug({ accounts });
 
+            // check if there is an account
             if (accounts.length) {
+                provider = ethersProvider;
                 signer = ethersProvider.getSigner();
                 debug({ signer });
                 userAddress = await signer.getAddress();
@@ -79,15 +103,17 @@ async function openWeb3ModalGenerator(
                 userName = ensName || getTruncatedAddress(userAddress);
                 console.log('userName:', userName);
             }
+        } catch (error) {
+            console.log('UPDATE PROVIDER VARIABLES ERROR');
+            console.log(error);
 
-            setProvider(ethersProvider);
+            // update variables either with the new provider or the default provider
+        } finally {
+            setProvider(provider);
             setSigner(signer);
             setUserAddress(userAddress);
             setEnsName(ensName);
             setUserName(userName);
-        } catch (error) {
-            console.log('UPDATE PROVIDER VARIABLES ERROR');
-            console.log(error);
         }
     }
 
@@ -102,9 +128,10 @@ async function openWeb3ModalGenerator(
         });
 
         // Subscribe to chainId change
-        providerFromModal.on('chainChanged', (chainId: number) => {
+        providerFromModal.on('chainChanged', async (chainId: number) => {
             debug({ chainId });
-            window.location.reload();
+            await updateVariables(providerFromModal);
+            // window.location.reload();
         });
 
         // Subscribe to provider connection
@@ -136,9 +163,10 @@ function EthereumProvider(props): JSX.Element {
     const [userName, setUserName] = useState<string>('');
 
     function setInitialProvider() {
-        const defaultProvider = getDefaultProvider(ethersNetworkString, { infura: INFURA_ID });
         setProvider(defaultProvider);
     }
+
+    const toast = useToast();
 
     useEffect(() => {
         setInitialProvider();
@@ -152,10 +180,11 @@ function EthereumProvider(props): JSX.Element {
             setUserAddress,
             setEnsName,
             setUserName,
+            toast,
         );
 
     const variables = { provider, signer, userAddress, ensName, userName };
-    const functions = { openWeb3Modal };
+    const functions = { openWeb3Modal, toast };
 
     const value = { ...variables, ...functions };
 

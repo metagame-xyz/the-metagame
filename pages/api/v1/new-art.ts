@@ -1,23 +1,24 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { Metadata, timestampToDate } from '@utils';
-import { debug } from '@utils/frontend';
 
 export function generateSVG(metadata: Metadata): string {
-    const { blockAge, timestamp } = metadata;
+    // const { blockAge, timestamp } = metadata;
+    const blockAge = 10000000;
+    const timestamp = 1633768207;
     const dateObj = timestampToDate(timestamp);
     const { year, month } = dateObj;
-
-    debug(dateObj);
 
     /**********/
     /* Canvas */
     /**********/
-    const canvasDiameter = 100;
+    const canvasDiameter = 1000;
     const canvasRadius = canvasDiameter / 2;
     const center = canvasRadius;
-    const canvasPartSize = canvasRadius / 24 / (34 / 134);
+    const canvasPartSize = canvasRadius / 24;
     const canvasSvg = `<svg width="${canvasDiameter}" height="${canvasDiameter}" viewBox="0 0 ${canvasDiameter} ${canvasDiameter}" fill="none" xmlns="http://www.w3.org/2000/svg">`;
+    const defsOpenTag = '<defs><radialGradient id="RadialGradient">';
+    const defsCloseTag = '</radialGradient></defs>';
     const closingSvgTag = `</svg>`;
 
     /**************/
@@ -25,24 +26,57 @@ export function generateSVG(metadata: Metadata): string {
     /**************/
     const currentBlock = 13_411_560;
     // const blockAge = 11_000_000;
-    const treeSvgArray = [];
 
     const maxRings = Math.floor(currentBlock / 10 ** 5);
     const rings = Math.floor(blockAge / 10 ** 5);
-    // const rings = 40;
-    const ringSize = canvasRadius / maxRings;
-    // console.log('ring size:', ringSize);
-    const treeSize = ringSize * rings;
+    const ringSize = (canvasRadius * 0.99) / rings; // size of 1 ring
+    const treeSize = canvasRadius * 0.99;
 
-    // pick color
-    const hue = Math.round((rings / maxRings) * 360); // 360 hues
-    const hslString = (saturation: number) => `hsl(${hue}, ${saturation}%, 72%)`;
+    const saturation = (rings / maxRings) * 50 + 50;
+    const hueMax = (rings / maxRings) * 360; // highest hue a given tree can get to (0-360)
 
-    // draw ring
-    const radius = rings * ringSize;
-    const str = `<circle cx="${center}" cy="${center}" r="${radius}" stroke="black" stroke-width="3" fill=""/>`;
-    treeSvgArray.push(str);
-    const treeSvg = treeSvgArray.join('');
+    /**************/
+    /*  Gradient  */
+    /**************/
+    const gradientArr = [];
+    // draw rings
+    for (let i = 1; i <= rings; i++) {
+        const ringAmount = i * ringSize;
+        // console.log('ringAmount', ringAmount);
+        const percentage = (ringAmount / treeSize) * 100;
+        // console.log('percentage', percentage);
+        const hue = Math.round((percentage * hueMax) / 100); // max 360 hues
+
+        const str = `<stop offset="${percentage}%" stop-color="hsl(${hue}, ${saturation}%, 72%)"/>`;
+        gradientArr.push(str);
+    }
+
+    const gradientSVG = gradientArr.join('');
+    // console.log('gradientSVG', gradientSVG);
+
+    /**************/
+    /*    Rings   */
+    /**************/
+    const treeSvgArray = [];
+    // draw rings
+    for (let i = 1; i <= rings; i++) {
+        const radius = i * ringSize;
+        const ringAmount = i * ringSize;
+        // console.log('ringAmount', ringAmount);
+        const percentage = (ringAmount / treeSize) * 100;
+
+        const hueMax = (rings / maxRings) * 360;
+
+        // console.log('percentage', percentage);
+        const hue = Math.round((percentage * hueMax) / 100); // 360 hues
+        const saturation = Math.round((i / rings) * 100);
+        // console.log(hue);
+        const str = `<circle cx="${center}" cy="${center}" r="${radius}" stroke="hsl(${hue}, 80%, 50%)" stroke-width="1" fillOpacity="0%"/>`;
+        treeSvgArray.push(str);
+    }
+
+    const tree = `<circle cx="${center}" cy="${center}" r="${treeSize}" stroke="black" stroke-width="1" fill="url(#RadialGradient)"/>`;
+    const treeSvg = tree + treeSvgArray.join('');
 
     /**************************************************/
     /* Time circles: Month, Day, Hour, Minute, Second */
@@ -62,7 +96,7 @@ export function generateSVG(metadata: Metadata): string {
         },
         hour: {
             radiusBase: 1.5,
-            max: 12,
+            max: 24,
             colorLightness: 60,
         },
         minute: {
@@ -77,10 +111,7 @@ export function generateSVG(metadata: Metadata): string {
         },
     };
 
-    // flip is how many rings are needed to be able to flip the time circles comfortably into the tree
-    // const flip = (timeData['month'].radiusBase * 2 * canvasPartSize) / ringSize;
-
-    const flip = 0;
+    const hue = Math.round((rings / maxRings) * 360); // 360 hues
     // function to place a time circle in it's appropriate place around the clock / tree
     const timeDataToSvg = (measurement: string, val: number) => {
         const { radiusBase, max, colorLightness: l } = timeData[measurement];
@@ -93,14 +124,15 @@ export function generateSVG(metadata: Metadata): string {
         const cos = Number(Math.cos(totalRadians).toFixed(12));
         const sin = Number(Math.sin(totalRadians).toFixed(12));
 
-        const totalSpace = rings > flip ? space - radius : space + radius;
+        const totalSpace = space - radius;
 
         const xCoord = cos * totalSpace + canvasDiameter / 2;
         const yCoord = sin * totalSpace + canvasDiameter / 2;
 
         const reverseHue = Math.abs(hue - 180);
 
-        return `<circle cx="${xCoord}" cy="${yCoord}" r="${radius}" stroke="black" stroke-width="3" fill=""/>`;
+        // return `<circle cx="${xCoord}" cy="${yCoord}" r="${radius}" stroke="hsl(${reverseHue}, 48%, 24%)" stroke-width="1" fill="hsl(${reverseHue}, 48%, ${l}%)"/>`;
+        return `<circle cx="${xCoord}" cy="${yCoord}" r="${radius}" stroke="hsl(${reverseHue}, 48%, 24%)" stroke-width="1" fill="url(#RadialGradient)"/>`;
     };
 
     for (const val in dateObj) {
@@ -115,10 +147,15 @@ export function generateSVG(metadata: Metadata): string {
     /**************/
     let svgData = [];
     svgData.push(canvasSvg);
+    svgData.push(defsOpenTag);
+    svgData.push(gradientSVG);
+    svgData.push(defsCloseTag);
     svgData.push(treeSvg);
     svgData.push(timeSvg);
     svgData.push(closingSvgTag);
     const svgString = svgData.join('');
+
+    // console.log(svgString);
 
     return svgString;
 }
@@ -137,7 +174,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         birthblock: '11,540,159',
         txnHash: '0xdc491d8018ccc49641f97f577433b444090531becb525b4f95db6d7be04e444c',
         zodiacSign: 'Sagittarius',
-        blockAge: 12900000,
+        blockAge: 1200000,
         treeRingsLevel: 18,
     };
 

@@ -5,7 +5,7 @@ import { BigNumber, Contract, ethers } from 'ethers';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
-import { ethersNetworkString, toastData, useEthereum } from '@providers/EthereumProvider';
+import { ethersNetworkString, useEthereum, wrongNetworkToast } from '@providers/EthereumProvider';
 
 import { maxW } from '@components/Layout';
 
@@ -13,7 +13,6 @@ import { CONTRACT_ADDRESS, NETWORK } from '@utils/constants';
 import { debug } from '@utils/frontend';
 
 import Birthblock from '../birthblock.json';
-import bg from '../images/background.png';
 import BirthblockImage from '../images/example-birthblock.svg';
 
 const heading1 = 'Unlimited Total Mints, One Mint per Wallet';
@@ -37,12 +36,21 @@ function About({ heading, text }) {
     );
 }
 
+const toastErrorData = (title: string, description: string) => ({
+    title,
+    description,
+    status: 'error',
+    position: 'top',
+    duration: 8000,
+    isClosable: true,
+});
+
 function openseaLink(tokenId: number) {
     const network = NETWORK == 'ethereum' ? '' : 'testnets.';
     return `https://${network}opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId}`;
 }
 
-function Home({}) {
+function Home() {
     const { provider, signer, userAddress, userName, openWeb3Modal, toast } = useEthereum();
 
     console.log('userName', userName);
@@ -120,7 +128,7 @@ function Home({}) {
     const mint = async () => {
         const network = await provider.getNetwork();
         if (network.name != ethersNetworkString) {
-            toast(toastData);
+            toast(wrongNetworkToast);
             return;
         }
 
@@ -139,10 +147,11 @@ function Home({}) {
             setMinting(false);
             setMinted(true);
         } catch (error) {
+            // { reason, code, error, method, transaction } = error
             setMinting(false);
-            // no from specified
-            console.log(error);
-            console.log(error?.error?.message);
+            if (error?.error?.message) {
+                toast(toastErrorData(error.reason, error.error.message));
+            }
         }
     };
 

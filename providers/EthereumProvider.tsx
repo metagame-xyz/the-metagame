@@ -17,7 +17,7 @@ import rainbowLogo from '../images/rainbow.png';
 
 export const ethersNetworkString = NETWORK == 'ethereum' ? 'homestead' : NETWORK;
 
-export const toastData = {
+export const wrongNetworkToast = {
     title: 'Wrong Network.',
     description: `You must be on ${ethersNetworkString} to mint`,
     status: 'warning',

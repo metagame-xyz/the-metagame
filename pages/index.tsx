@@ -53,9 +53,6 @@ function openseaLink(tokenId: number) {
 function Home() {
     const { provider, signer, userAddress, userName, openWeb3Modal, toast } = useEthereum();
 
-    console.log('userName', userName);
-    console.log('userAddress', userAddress);
-
     const birthblockContract = new Contract(CONTRACT_ADDRESS, Birthblock.abi, provider);
 
     let [minted, setMinted] = useState(false);
@@ -77,15 +74,14 @@ function Home() {
             try {
                 if (userAddress) {
                     const filter = birthblockContract.filters.Mint(userAddress);
-                    const data = await birthblockContract.queryFilter(filter);
-                    for (const event of data) {
-                        console.log('event:', event.args);
+                    const [event] = await birthblockContract.queryFilter(filter);
+                    if (event) {
                         const tokenId = event.args[1].toNumber();
                         setUserTokenId(tokenId);
-                        break;
                     }
                 }
             } catch (error) {
+                toast(toastErrorData('Get User Minted Token Error', JSON.stringify(error)));
                 debug({ error });
             }
         }
@@ -106,10 +102,8 @@ function Home() {
             } catch (error) {
                 debug({ error });
             }
-
-            // console.log('getMintedCount async finish');
         }
-        // getMintedCount();
+        getMintedCount();
 
         birthblockContract.removeAllListeners();
 
@@ -147,7 +141,7 @@ function Home() {
             setMinting(false);
             setMinted(true);
         } catch (error) {
-            // { reason, code, error, method, transaction } = error
+            // const { reason, code, error, method, transaction } = error
             setMinting(false);
             if (error?.error?.message) {
                 toast(toastErrorData(error.reason, error.error.message));
@@ -224,30 +218,30 @@ function Home() {
             </Box>
 
             <VStack minH="xs" justifyContent="center" spacing={4} mt={12} px={4} bgColor="#00B8B6">
-                {/* {!minted && !userTokenId ? ( */}
-                <Button
-                    onClick={userAddress ? mint : openWeb3Modal}
-                    isLoading={minting}
-                    loadingText="Minting..."
-                    isDisabled={minted}
-                    fontWeight="normal"
-                    colorScheme="teal"
-                    size="lg"
-                    height="60px"
-                    minW="xs"
-                    boxShadow="0px 3px 6px rgba(0, 0, 0, 0.160784);"
-                    fontSize="4xl"
-                    borderRadius={60}>
-                    {userAddress ? mintText() : 'Connect Wallet'}
-                </Button>
-                {/* ) : ( */}
-                <Text fontSize={[24, 24, 36]}>
-                    {`${userName}'s Birthblock (#${userTokenId}) has been minted. `}
-                    <Link isExternal href={openseaLink(userTokenId)}>
-                        View on Opensea <ExternalLinkIcon />
-                    </Link>
-                </Text>
-                {/* )} */}
+                {!minted && !userTokenId ? (
+                    <Button
+                        onClick={userAddress ? mint : openWeb3Modal}
+                        isLoading={minting}
+                        loadingText="Minting..."
+                        isDisabled={minted}
+                        fontWeight="normal"
+                        colorScheme="teal"
+                        size="lg"
+                        height="60px"
+                        minW="xs"
+                        boxShadow="0px 3px 6px rgba(0, 0, 0, 0.160784);"
+                        fontSize="4xl"
+                        borderRadius={60}>
+                        {userAddress ? mintText() : 'Connect Wallet'}
+                    </Button>
+                ) : (
+                    <Text fontSize={[24, 24, 36]}>
+                        {`${userName}'s Birthblock (#${userTokenId}) has been minted. `}
+                        <Link isExternal href={openseaLink(userTokenId)}>
+                            View on Opensea <ExternalLinkIcon />
+                        </Link>
+                    </Text>
+                )}
                 {textUnderButton()}
             </VStack>
         </Box>

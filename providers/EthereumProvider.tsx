@@ -85,7 +85,7 @@ async function openWeb3ModalGenerator(
 
             // check if network is correct for the given env (prod vs dev)
             if (network.name !== ethersNetworkString) {
-                toast(toastData);
+                toast(wrongNetworkToast);
                 throw new Error('Wrong Network');
             }
 
@@ -150,7 +150,8 @@ async function openWeb3ModalGenerator(
         // const web3 = web3Var();
         // web3.setProvider(providerVar());
     } catch (error) {
-        debug({ error });
+        // error seems to be undefined when the user rejects connecting to metamask
+        console.log('WEB3 MODAL ERROR:', error);
     }
 }
 

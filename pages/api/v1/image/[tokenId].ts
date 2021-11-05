@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { ioredisClient, Metadata, timestampToDate } from '@utils';
+import { CONTRACT_BIRTHBLOCK } from '@utils/constants';
 
 export function generateSVG(metadata: Metadata): string {
     const { blockAge, timestamp } = metadata;
@@ -22,21 +23,18 @@ export function generateSVG(metadata: Metadata): string {
     /**************/
     /* Tree Trunk */
     /**************/
-    const currentBlock = 13_411_560;
-    // const blockAge = 11_000_000;
-    const treeSvgArray = [];
+    
 
-    const maxRings = Math.floor(currentBlock / 10 ** 5);
+    const maxRings = Math.floor(CONTRACT_BIRTHBLOCK / 10 ** 5);
     const rings = Math.floor(blockAge / 10 ** 5);
-    // const rings = 40;
     const ringSize = canvasRadius / maxRings;
-    // console.log('ring size:', ringSize);
     const treeSize = ringSize * rings;
 
     // pick color
     const hue = Math.round((rings / maxRings) * 360); // 360 hues
     const hslString = (saturation: number) => `hsl(${hue}, ${saturation}%, 72%)`;
 
+    const treeSvgArray = [];
     // draw rings
     for (let i = rings; i > 0; i--) {
         const radius = i * ringSize;
@@ -59,7 +57,7 @@ export function generateSVG(metadata: Metadata): string {
         },
         day: {
             radiusBase: 2,
-            max: new Date(year, month, 0).getDate(), // it varies
+            max: new Date(year, month, 0).getDate(), // it varies 28,29,30,31
             colorLightness: 72,
         },
         hour: {
@@ -120,7 +118,6 @@ export function generateSVG(metadata: Metadata): string {
         }
     }
     const timeSvg = timeSvgArray.join('');
-
     const timeGradientSVG = timeGradientArr.join('');
     /**************/
     /* SVG concat */
@@ -141,7 +138,6 @@ export function generateSVG(metadata: Metadata): string {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { tokenId } = req.query;
     const tokenIdString: string = Array.isArray(tokenId) ? tokenId[0] : tokenId;
-    // const tokenIdString = '0x17A059B6B0C8af433032d554B0392995155452E6';
     const data = await ioredisClient.hget(tokenIdString.toLowerCase(), 'metadata');
 
     if (!data) {
@@ -149,10 +145,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const metadata = JSON.parse(data);
-
     const svgString = generateSVG(metadata);
-
-    // writeFileSync(`./public/${addressString.substr(0, 8)}.svg`, svgString);
 
     const svgBuffer = Buffer.from(svgString, 'utf-8');
     res.setHeader('Content-Type', 'image/svg+xml');

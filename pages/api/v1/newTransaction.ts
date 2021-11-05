@@ -49,7 +49,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const dateObj = timestampToDate(timestamp);
     const birthblock = commify(blockNumber);
-    const blockAge = CONTRACT_BIRTHBLOCK - Number(blockNumber);
+    const blockAge = Math.max(CONTRACT_BIRTHBLOCK - Number(blockNumber), 0); // Age is based on the contract's birthblock, not the current block, but we don't want negative ages
     const treeRingsLevel = Math.floor(blockAge / 10 ** 5);
     const firstRecieved = Number(formatUnits(value, 'ether')) ? 'ether' : 'token(s)';
     const shortTime = formatDateObjToShortTime(dateObj);
@@ -73,7 +73,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     };
 
     // index by wallet address
-    console.log('adding new');
     await ioredisClient.hset(minterAddress, { tokenId, metadata: JSON.stringify(metadata) });
 
     // index by tokenId

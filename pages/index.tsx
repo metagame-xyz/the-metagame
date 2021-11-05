@@ -59,7 +59,7 @@ function Home() {
     let [minting, setMinting] = useState(false);
     let [userTokenId, setUserTokenId] = useState<number>(null);
 
-    let [freeMintsLeft, setFreeMintsLeft] = useState<number>(0);
+    let [freeMintsLeft, setFreeMintsLeft] = useState<number>(null);
     let [freeMints, _setFreeMints] = useState<number>(144);
 
     const freeMintsRef = React.useRef<number>(freeMints);
@@ -71,18 +71,22 @@ function Home() {
     useEffect(() => {
         console.log('getUserMintedTokenId');
         async function getUserMintedTokenId() {
+            // userAddress has changed. TokenId defaults to null
+            let tokenId = null;
             try {
                 if (userAddress) {
                     const filter = birthblockContract.filters.Mint(userAddress);
-                    const [event] = await birthblockContract.queryFilter(filter);
+                    const [event] = await birthblockContract.queryFilter(filter); // get first event, should only be one
                     if (event) {
-                        const tokenId = event.args[1].toNumber();
-                        setUserTokenId(tokenId);
+                        tokenId = event.args[1].toNumber();
                     }
                 }
             } catch (error) {
                 toast(toastErrorData('Get User Minted Token Error', JSON.stringify(error)));
                 debug({ error });
+            } finally {
+                // set it either to null, or to the userAddres's tokenId
+                setUserTokenId(tokenId);
             }
         }
         getUserMintedTokenId();
@@ -164,10 +168,10 @@ function Home() {
     const textUnderButton = () => {
         if (userTokenId) {
             return <></>;
-        } else if (freeMintsLeft) {
+        } else if (freeMintsLeft === null || freeMintsLeft > 0) {
             return (
                 <Text fontWeight="light" fontSize={['2xl', '3xl']}>
-                    {`${freeMintsLeft}/${freeMints} free mints left`}
+                    {`${freeMintsLeft || '?'}/${freeMints} free mints left`}
                 </Text>
             );
         } else {
@@ -182,10 +186,6 @@ function Home() {
                 </div>
             );
         }
-    };
-
-    const mintsLeftText = () => {
-        return `${freeMintsLeft}/144 Free Mints Left`;
     };
 
     return (
@@ -218,30 +218,30 @@ function Home() {
             </Box>
 
             <VStack minH="xs" justifyContent="center" spacing={4} mt={12} px={4} bgColor="#00B8B6">
-                {!minted && !userTokenId ? (
-                    <Button
-                        onClick={userAddress ? mint : openWeb3Modal}
-                        isLoading={minting}
-                        loadingText="Minting..."
-                        isDisabled={minted}
-                        fontWeight="normal"
-                        colorScheme="teal"
-                        size="lg"
-                        height="60px"
-                        minW="xs"
-                        boxShadow="0px 3px 6px rgba(0, 0, 0, 0.160784);"
-                        fontSize="4xl"
-                        borderRadius={60}>
-                        {userAddress ? mintText() : 'Connect Wallet'}
-                    </Button>
-                ) : (
-                    <Text fontSize={[24, 24, 36]}>
-                        {`${userName}'s Birthblock (#${userTokenId}) has been minted. `}
-                        <Link isExternal href={openseaLink(userTokenId)}>
-                            View on Opensea <ExternalLinkIcon />
-                        </Link>
-                    </Text>
-                )}
+                {/* {!minted && !userTokenId ? ( */}
+                <Button
+                    onClick={userAddress ? mint : openWeb3Modal}
+                    isLoading={minting}
+                    loadingText="Minting..."
+                    isDisabled={minted}
+                    fontWeight="normal"
+                    colorScheme="teal"
+                    size="lg"
+                    height="60px"
+                    minW="xs"
+                    boxShadow="0px 3px 6px rgba(0, 0, 0, 0.160784);"
+                    fontSize="4xl"
+                    borderRadius={60}>
+                    {userAddress ? mintText() : 'Connect Wallet'}
+                </Button>
+                {/* ) : ( */}
+                <Text fontSize={[24, 24, 36]}>
+                    {`${userName}'s Birthblock (#${userTokenId}) has been minted. `}
+                    <Link isExternal href={openseaLink(userTokenId)}>
+                        View on Opensea <ExternalLinkIcon />
+                    </Link>
+                </Text>
+                {/* )} */}
                 {textUnderButton()}
             </VStack>
         </Box>

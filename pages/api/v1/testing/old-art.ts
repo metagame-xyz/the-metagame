@@ -1,9 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { ioredisClient, Metadata, timestampToDate } from '@utils';
+import { Metadata, timestampToDate } from '@utils';
 
 export function generateSVG(metadata: Metadata): string {
-    const { blockAge, timestamp } = metadata;
+    // const { blockAge, timestamp } = metadata;
+    const blockAge = 300000;
+    const timestamp = 1600006000;
     const dateObj = timestampToDate(timestamp);
     const { year, month } = dateObj;
 
@@ -82,6 +84,9 @@ export function generateSVG(metadata: Metadata): string {
     // flip is how many rings are needed to be able to flip the time circles comfortably into the tree
     const flip = (timeData['month'].radiusBase * 2 * canvasPartSize) / ringSize;
 
+    /**************/
+    /*  Gradient  */
+    /**************/
     const timeGradientArr = [];
 
     // function to place a time circle in it's appropriate place around the clock / tree
@@ -139,16 +144,22 @@ export function generateSVG(metadata: Metadata): string {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const { tokenId } = req.query;
-    const tokenIdString: string = Array.isArray(tokenId) ? tokenId[0] : tokenId;
-    // const tokenIdString = '0x17A059B6B0C8af433032d554B0392995155452E6';
-    const data = await ioredisClient.hget(tokenIdString.toLowerCase(), 'metadata');
-
-    if (!data) {
-        return res.status(404).send({ message: `Image for token id ${tokenId} not found.` });
-    }
-
-    const metadata = JSON.parse(data);
+    const metadata: Metadata = {
+        name: "0x2e0e's Birthblock: 11,540,159 ",
+        description: 'A 2020 Sagittarius address born at 10:16 pm',
+        image: 'https://birthblock.loca.lt/api/v1/image/1',
+        external_url: 'https://birthblock.loca.lt/birthblock/1',
+        address: '0x2e0e3F06289627A0C26Fe84178fbB10adD0e7C4C',
+        parent: '0x4ade29fd887a0795db5ba72940a0803d15c4c3f0',
+        firstRecieved: 'ether',
+        treeRings: '18',
+        timestamp: 1517378400,
+        birthblock: '11,540,159',
+        txnHash: '0xdc491d8018ccc49641f97f577433b444090531becb525b4f95db6d7be04e444c',
+        zodiacSign: 'Sagittarius',
+        blockAge: 1200000,
+        treeRingsLevel: 18,
+    };
 
     const svgString = generateSVG(metadata);
 

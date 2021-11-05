@@ -17,8 +17,8 @@ export function generateSVG(metadata: Metadata): string {
     const center = canvasRadius;
     const canvasPartSize = canvasRadius / 24;
     const canvasSvg = `<svg width="${canvasDiameter}" height="${canvasDiameter}" viewBox="0 0 ${canvasDiameter} ${canvasDiameter}" fill="none" xmlns="http://www.w3.org/2000/svg">`;
-    const defsOpenTag = '<defs><radialGradient id="RadialGradient">';
-    const defsCloseTag = '</radialGradient></defs>';
+    const defsOpenTag = '<defs>';
+    const defsCloseTag = '</defs>';
     const closingSvgTag = `</svg>`;
 
     /**************/
@@ -39,6 +39,7 @@ export function generateSVG(metadata: Metadata): string {
     /*  Gradient  */
     /**************/
     const gradientArr = [];
+    gradientArr.push(`<radialGradient id="RadialGradient">`);
     // draw rings
     for (let i = 1; i <= rings; i++) {
         const ringAmount = i * ringSize;
@@ -50,9 +51,8 @@ export function generateSVG(metadata: Metadata): string {
         const str = `<stop offset="${percentage}%" stop-color="hsl(${hue}, ${saturation}%, 72%)"/>`;
         gradientArr.push(str);
     }
-
+    gradientArr.push(`</radialGradient>`);
     const gradientSVG = gradientArr.join('');
-    // console.log('gradientSVG', gradientSVG);
 
     /**************/
     /*    Rings   */
@@ -112,6 +112,11 @@ export function generateSVG(metadata: Metadata): string {
     };
 
     const hue = Math.round((rings / maxRings) * 360); // 360 hues
+    /**************/
+    /*  Gradient  */
+    /**************/
+    const timeGradientArr = [];
+
     // function to place a time circle in it's appropriate place around the clock / tree
     const timeDataToSvg = (measurement: string, val: number) => {
         const { radiusBase, max, colorLightness: l } = timeData[measurement];
@@ -131,8 +136,16 @@ export function generateSVG(metadata: Metadata): string {
 
         const reverseHue = Math.abs(hue - 180);
 
+        timeGradientArr.push(`<radialGradient id="${measurement}">`);
+        timeGradientArr.push(`<stop offset="0%" stop-color="hsl(${reverseHue}, 48%, ${l}%)"/>`);
+        timeGradientArr.push(
+            `<stop offset="100%" stop-color="hsl(${reverseHue + 90}, 48%, ${l}%)"/>`,
+        );
+
+        timeGradientArr.push(`</radialGradient>`);
+
         // return `<circle cx="${xCoord}" cy="${yCoord}" r="${radius}" stroke="hsl(${reverseHue}, 48%, 24%)" stroke-width="1" fill="hsl(${reverseHue}, 48%, ${l}%)"/>`;
-        return `<circle cx="${xCoord}" cy="${yCoord}" r="${radius}" stroke="hsl(${reverseHue}, 48%, 24%)" stroke-width="1" fill="url(#RadialGradient)"/>`;
+        return `<circle cx="${xCoord}" cy="${yCoord}" r="${radius}" stroke="hsl(${reverseHue}, 48%, 24%)" stroke-width="0" fill="url(#${measurement})"/>`;
     };
 
     for (const val in dateObj) {
@@ -142,6 +155,8 @@ export function generateSVG(metadata: Metadata): string {
     }
     const timeSvg = timeSvgArray.join('');
 
+    const timeGradientSVG = timeGradientArr.join('');
+
     /**************/
     /* SVG concat */
     /**************/
@@ -149,6 +164,7 @@ export function generateSVG(metadata: Metadata): string {
     svgData.push(canvasSvg);
     svgData.push(defsOpenTag);
     svgData.push(gradientSVG);
+    svgData.push(timeGradientSVG);
     svgData.push(defsCloseTag);
     svgData.push(treeSvg);
     svgData.push(timeSvg);

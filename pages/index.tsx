@@ -191,7 +191,7 @@ function Home() {
     return (
         <Box align="center">
             <Box px={8} pt={8} width="fit-content" mx="auto" maxW={maxW}>
-                <Heading as="h1" fontSize={[72, 84, 144]} textAlign="center">
+                <Heading as="h1" fontSize={[54, 72, 96]} textAlign="center">
                     Birthblock
                 </Heading>
                 <Text fontSize={[24, 24, 36]} fontWeight="light">
@@ -229,9 +229,9 @@ function Home() {
                     size="lg"
                     height="60px"
                     minW="xs"
-                    boxShadow="0px 3px 6px rgba(0, 0, 0, 0.160784);"
+                    boxShadow="dark-lg"
                     fontSize="4xl"
-                    borderRadius={60}>
+                    borderRadius="full">
                     {userAddress ? mintText() : 'Connect Wallet'}
                 </Button>
                 {/* ) : ( */}

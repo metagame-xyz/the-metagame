@@ -1,9 +1,13 @@
+import { NETWORK } from '@utils/constants';
+
 export function getTruncatedAddress(address: string): string {
     if (address && address.startsWith('0x')) {
         return address.substr(0, 4) + '...' + address.substr(address.length - 4);
     }
     return address;
 }
+
+export const etherscanNetworkString = NETWORK.toLowerCase() == 'ethereum' ? '' : `${NETWORK}.`;
 
 export function getNetwork(chainId: number): string {
     switch (chainId) {

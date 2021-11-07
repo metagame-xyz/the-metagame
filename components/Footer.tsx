@@ -3,6 +3,9 @@ import {
     Center,
     chakra,
     Container,
+    Flex,
+    Grid,
+    GridItem,
     Link,
     Stack,
     Text,
@@ -11,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 
-import { TwelveCircles } from './Icons';
+import { Etherscan, Opensea, TwelveCircles, Twitter } from './Icons';
 
 const Logo = (props: any) => {
     return (
@@ -61,17 +64,24 @@ const SocialButton = ({
 
 export default function SmallWithLogoLeft({ maxW }) {
     return (
-        <Box w={'100%'} bgColor="teal.100" p={4} color={useColorModeValue('gray.700', 'gray.200')}>
-            <Container
-                maxW={maxW}
-                direction={{ base: 'column', sm: 'row' }}
-                justify={{ base: 'center', sm: 'space-between' }}
-                align={{ base: 'center', sm: 'center' }}>
-                <Stack direction={'row'} spacing={2}>
-                    <TwelveCircles boxSize={8} />
-                    <Center fontSize="xl">The Meta Game</Center>
-                </Stack>
-            </Container>
-        </Box>
+        <Grid w={'100%'} bgColor="teal.100" p={4} gap={2} templateColumns="repeat(3, 1fr)">
+            <Flex align="center">
+                <Text fontSize="sm">
+                    {`code & art by `}
+                    <Link isExternal href="https://www.twitter.com/brennerspear">
+                        brenner.eth
+                    </Link>
+                </Text>
+            </Flex>
+            <Stack direction={['column', 'row']} spacing={2} align="center" justify="center">
+                <TwelveCircles boxSize={8} />
+                <Center fontSize={['sm', 'md', 'xl', 'xl']}>The Meta Game</Center>
+            </Stack>
+            <Stack direction={'row'} spacing={2} align="center" justify="right">
+                <Twitter boxSize={[6, 8]} />
+                <Opensea boxSize={[6, 8]} />
+                <Etherscan boxSize={[6, 8]} />
+            </Stack>
+        </Grid>
     );
 }

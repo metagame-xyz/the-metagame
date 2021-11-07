@@ -5,25 +5,12 @@ import { useEthereum } from '@providers/EthereumProvider';
 
 import { Etherscan, Logo, Opensea, Twitter } from '@components/Icons';
 
-import { CONTRACT_ADDRESS, NETWORK } from '@utils/constants';
-import { getTruncatedAddress } from '@utils/frontend';
+import { NETWORK } from '@utils/constants';
 
 export const etherscanNetworkString = NETWORK.toLowerCase() == 'ethereum' ? '' : `${NETWORK}.`;
 
 function Navbar(props) {
     const { userName, openWeb3Modal } = useEthereum();
-
-    const etherscanUrl = `https://${etherscanNetworkString}etherscan.io/address/${CONTRACT_ADDRESS}`;
-    const twitterUrl = 'https://twitter.com/brennerspear';
-    const openseaUrl = `https://testnets.opensea.io/collection/birthblock-ywaqkwbxvq`;
-
-    function IconLink({ Icon, url }) {
-        return (
-            <Link href={url} isExternal>
-                <Icon boxSize={[8, 8, 12, 12]} />
-            </Link>
-        );
-    }
 
     return (
         <Flex width="100%" borderBottom="1px" borderColor="black">
@@ -44,9 +31,9 @@ function Navbar(props) {
                 </HStack>
                 <Spacer />
                 <HStack align="center" spacing={4}>
-                    <IconLink Icon={Twitter} url={twitterUrl} />
-                    <IconLink Icon={Opensea} url={openseaUrl} />
-                    <IconLink Icon={Etherscan} url={etherscanUrl} />
+                    <Twitter />
+                    <Opensea />
+                    <Etherscan />
                     {userName ? (
                         <Center as="h1" fontSize="32px" fontWeight="light">
                             {userName}
@@ -54,11 +41,12 @@ function Navbar(props) {
                     ) : (
                         <Button
                             onClick={openWeb3Modal}
-                            fontWeight={'300'}
+                            fontWeight="normal"
                             colorScheme="teal"
                             size="lg"
-                            fontSize={28}
-                            borderRadius={30}>
+                            boxShadow="dark-lg"
+                            fontSize="2xl"
+                            borderRadius="full">
                             Connect
                         </Button>
                     )}

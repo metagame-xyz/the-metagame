@@ -1,11 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { Metadata, timestampToDate } from '@utils';
+import { CONTRACT_BIRTHBLOCK } from '@utils/constants';
 
 export function generateSVG(metadata: Metadata): string {
     // const { blockAge, timestamp } = metadata;
-    const blockAge = 300000;
-    const timestamp = 1600006000;
+    const blockAge = 0;
+    const timestamp = 1636143219;
     const dateObj = timestampToDate(timestamp);
     const { year, month } = dateObj;
 
@@ -24,21 +25,17 @@ export function generateSVG(metadata: Metadata): string {
     /**************/
     /* Tree Trunk */
     /**************/
-    const currentBlock = 13_411_560;
-    // const blockAge = 11_000_000;
-    const treeSvgArray = [];
 
-    const maxRings = Math.floor(currentBlock / 10 ** 5);
+    const maxRings = Math.floor(CONTRACT_BIRTHBLOCK / 10 ** 5);
     const rings = Math.floor(blockAge / 10 ** 5);
-    // const rings = 40;
     const ringSize = canvasRadius / maxRings;
-    // console.log('ring size:', ringSize);
     const treeSize = ringSize * rings;
 
     // pick color
     const hue = Math.round((rings / maxRings) * 360); // 360 hues
     const hslString = (saturation: number) => `hsl(${hue}, ${saturation}%, 72%)`;
 
+    const treeSvgArray = [];
     // draw rings
     for (let i = rings; i > 0; i--) {
         const radius = i * ringSize;
@@ -61,7 +58,7 @@ export function generateSVG(metadata: Metadata): string {
         },
         day: {
             radiusBase: 2,
-            max: new Date(year, month, 0).getDate(), // it varies
+            max: new Date(year, month, 0).getDate(), // it varies 28,29,30,31
             colorLightness: 72,
         },
         hour: {
@@ -84,9 +81,6 @@ export function generateSVG(metadata: Metadata): string {
     // flip is how many rings are needed to be able to flip the time circles comfortably into the tree
     const flip = (timeData['month'].radiusBase * 2 * canvasPartSize) / ringSize;
 
-    /**************/
-    /*  Gradient  */
-    /**************/
     const timeGradientArr = [];
 
     // function to place a time circle in it's appropriate place around the clock / tree
@@ -125,7 +119,6 @@ export function generateSVG(metadata: Metadata): string {
         }
     }
     const timeSvg = timeSvgArray.join('');
-
     const timeGradientSVG = timeGradientArr.join('');
     /**************/
     /* SVG concat */

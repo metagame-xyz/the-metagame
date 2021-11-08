@@ -15,15 +15,15 @@ import { debug } from '@utils/frontend';
 import Birthblock from '../birthblock.json';
 import BirthblockImage from '../images/example-birthblock.svg';
 
-const heading1 = 'Unlimited Total Mints, One Mint per Wallet';
+const heading1 = 'Fair';
 const text1 =
-    'As fair of a mint process as possible. No need to rush to mint, no gas wars, open to literally every wallet on Ethereum.';
-const heading2 = 'Natural Scarcity';
+    'Unlimited total mints with one mint per wallet. No rush to mint, no gas wars, and open to everyone.';
+const heading2 = 'Naturally Scarce';
 const text2 =
-    'The number of possible Birthblock NFTs with 100+ rings is set by existing on-chain data, not artificially set.';
+    'The number of possible Birthblock NFTs with 100+ rings is set by existing on-chain data instead of by an artificial limit.';
 const heading3 = 'Earned';
 const text3 =
-    'Part of the infant category of earned NFTs. You earn attributes based on your actions. The older your wallet is, the bigger your tree will be.';
+    'Part of the infant category of earned NFTs where you earn attributes based on your actions. The older your wallet, the bigger your tree.';
 
 function About({ heading, text }) {
     return (

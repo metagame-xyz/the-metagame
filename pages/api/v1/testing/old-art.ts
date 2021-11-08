@@ -5,8 +5,8 @@ import { CONTRACT_BIRTHBLOCK } from '@utils/constants';
 
 export function generateSVG(metadata: Metadata): string {
     // const { blockAge, timestamp } = metadata;
-    const blockAge = 0;
-    const timestamp = 1636143219;
+    const blockAge = 600000;
+    const timestamp = 1736453219;
     const dateObj = timestampToDate(timestamp);
     const { year, month } = dateObj;
 

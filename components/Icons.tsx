@@ -8,10 +8,10 @@ function IconLink({ Icon, url, ...props }) {
     return (
         <Link href={url} isExternal>
             <Icon
-                boxSize={[8, 8, 12, 12]}
+                boxSize={[8, 8, 10, 10]}
                 borderRadius={'50%'}
                 boxShadow={'1px 1px 2px #888'}
-                _hover={{ color: 'gray.700' }}
+                _hover={{ color: 'teal.600' }}
                 {...props}
             />
         </Link>
@@ -124,7 +124,7 @@ export const Logo = (props) => (
             cx="50"
             cy="50"
             r="48.13432835820896"
-            stroke="black"
+            stroke="currentColor"
             strokeWidth="3"
             fillOpacity="0%"
         />
@@ -132,7 +132,7 @@ export const Logo = (props) => (
             cx="50"
             cy="26.49802458296751"
             r="24.63235294117647"
-            stroke="black"
+            stroke="currentColor"
             strokeWidth="3"
             fillOpacity="0%"
         />
@@ -140,7 +140,7 @@ export const Logo = (props) => (
             cx="50"
             cy="18.28724026924202"
             r="16.42156862745098"
-            stroke="black"
+            stroke="currentColor"
             strokeWidth="3"
             fillOpacity="0%"
         />
@@ -148,7 +148,7 @@ export const Logo = (props) => (
             cx="50"
             cy="14.18184811237927"
             r="12.316176470588236"
-            stroke="black"
+            stroke="currentColor"
             strokeWidth="3"
             fillOpacity="0%"
         />
@@ -156,7 +156,7 @@ export const Logo = (props) => (
             cx="50"
             cy="10.07645595551653"
             r="8.21078431372549"
-            stroke="black"
+            stroke="currentColor"
             strokeWidth="3"
             fillOpacity="0%"
         />
@@ -164,7 +164,7 @@ export const Logo = (props) => (
             cx="50"
             cy="5.971063798653788"
             r="4.105392156862745"
-            stroke="black"
+            stroke="currentColor"
             strokeWidth="3"
             fillOpacity="0%"
         />
@@ -173,61 +173,56 @@ export const Logo = (props) => (
 
 export const TwelveCircles = (props) => (
     <Icon viewBox="0 0 336 338" {...props}>
-        <circle cx="167.9" cy="34.9" r="32.9" stroke="black" strokeWidth="4" fillOpacity="0%" />
-        <circle cx="34.9" cy="168.9" r="32.9" stroke="black" strokeWidth="4" fillOpacity="0%" />
-        <circle cx="51.9" cy="101.9" r="32.9" stroke="black" strokeWidth="4" fillOpacity="0%" />
-        <circle cx="100.9" cy="52.9" r="32.9" stroke="black" strokeWidth="4" fillOpacity="0%" />
-        <circle cx="34.9" cy="168.9" r="32.9" stroke="black" strokeWidth="4" fillOpacity="0%" />
-        <circle cx="51.9" cy="101.9" r="32.9" stroke="black" strokeWidth="4" fillOpacity="0%" />
-        <circle cx="100.9" cy="52.9" r="32.9" stroke="black" strokeWidth="4" fillOpacity="0%" />
         <circle
+            cx="167.9"
+            cy="34.9"
             r="32.9"
-            transform="matrix(-1 0 0 1 300.9 168.9)"
-            stroke="black"
+            stroke="currentColor"
             strokeWidth="4"
             fillOpacity="0%"
         />
         <circle
+            cx="100.9"
+            cy="52.9"
             r="32.9"
-            transform="matrix(-1 0 0 1 283.9 101.9)"
-            stroke="black"
+            stroke="currentColor"
             strokeWidth="4"
             fillOpacity="0%"
         />
         <circle
+            cx="51.9"
+            cy="101.9"
             r="32.9"
-            transform="matrix(-1 0 0 1 234.9 52.9)"
-            stroke="black"
+            stroke="currentColor"
             strokeWidth="4"
             fillOpacity="0%"
         />
         <circle
+            cx="34.9"
+            cy="168.9"
             r="32.9"
-            transform="matrix(1 0 0 -1 167.9 302.9)"
-            stroke="black"
+            stroke="currentColor"
             strokeWidth="4"
             fillOpacity="0%"
         />
         <circle
             r="32.9"
             transform="matrix(1 0 0 -1 51.9 235.9)"
-            stroke="black"
+            stroke="currentColor"
             strokeWidth="4"
             fillOpacity="0%"
         />
         <circle
             r="32.9"
             transform="matrix(1 0 0 -1 100.9 284.9)"
-            stroke="black"
+            stroke="currentColor"
             strokeWidth="4"
             fillOpacity="0%"
         />
         <circle
-            cx="283.9"
-            cy="235.9"
             r="32.9"
-            transform="rotate(-180 283.9 235.9)"
-            stroke="black"
+            transform="matrix(1 0 0 -1 167.9 302.9)"
+            stroke="currentColor"
             strokeWidth="4"
             fillOpacity="0%"
         />
@@ -236,10 +231,40 @@ export const TwelveCircles = (props) => (
             cy="284.9"
             r="32.9"
             transform="rotate(-180 234.9 284.9)"
-            stroke="black"
+            stroke="currentColor"
             strokeWidth="4"
             fillOpacity="0%"
         />
-        <circle cx="168" cy="169" r="98" stroke="black" strokeWidth="4" fillOpacity="0%" />
+        <circle
+            cx="283.9"
+            cy="235.9"
+            r="32.9"
+            transform="rotate(-180 283.9 235.9)"
+            stroke="currentColor"
+            strokeWidth="4"
+            fillOpacity="0%"
+        />
+        <circle
+            r="32.9"
+            transform="matrix(-1 0 0 1 300.9 168.9)"
+            stroke="currentColor"
+            strokeWidth="4"
+            fillOpacity="0%"
+        />
+        <circle
+            r="32.9"
+            transform="matrix(-1 0 0 1 283.9 101.9)"
+            stroke="currentColor"
+            strokeWidth="4"
+            fillOpacity="0%"
+        />
+        <circle
+            r="32.9"
+            transform="matrix(-1 0 0 1 234.9 52.9)"
+            stroke="currentColor"
+            strokeWidth="4"
+            fillOpacity="0%"
+        />
+        <circle cx="168" cy="169" r="98" stroke="currentColor" strokeWidth="4" fillOpacity="0%" />
     </Icon>
 );

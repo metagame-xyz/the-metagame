@@ -1,5 +1,7 @@
 import { Box, ChakraProvider, extendTheme, Flex } from '@chakra-ui/react';
+import '@fontsource/courier-prime';
 import '@fontsource/lato';
+import '@fontsource/major-mono-display';
 import type { AppProps } from 'next/app';
 
 import Layout from '@components/Layout';
@@ -10,10 +12,24 @@ import EthereumProvider from '../providers/EthereumProvider';
 import '../styles/globals.css';
 
 const theme = extendTheme({
+    styles: {
+        global: {
+            'html, body': {
+                color: 'teal.900',
+            },
+        },
+    },
     colors: {
+        white: '#E6FFFA',
+        black: '#000',
         teal: {
-            500: '#007B7A',
-            100: '#B9EBEB', // rgb(185, 235, 235)
+            // 100: '#B2F5EA', // rgb(178, 245, 234)
+            // 300: '#7ED6D6', // rgb(126, 214, 214)
+            // 400: '#00ADAB', // rgb(0, 173, 171)
+            // 500: '#007B7A',
+            900: 'rgb(29, 64, 68)',
+            '100opaque': 'rgb(178, 245, 234,.92)',
+            '700opaque': 'rgb(40, 94, 97, .7)',
         },
     },
     fonts: {
@@ -21,6 +37,17 @@ const theme = extendTheme({
         body: 'Lato',
     },
 });
+
+// --chakra-colors-teal-50: #E6FFFA; rgb(230, 255, 250)
+// --chakra-colors-teal-100: #B2F5EA; rgb(178, 245, 234)
+// --chakra-colors-teal-200: #81E6D9;
+// --chakra-colors-teal-300: #4FD1C5;
+// --chakra-colors-teal-400: #38B2AC;
+// --chakra-colors-teal-500: #319795;
+// --chakra-colors-teal-600: #2C7A7B;
+// --chakra-colors-teal-700: #285E61; rgb(40, 94, 97)
+// --chakra-colors-teal-800: #234E52;
+// --chakra-colors-teal-900: #1D4044; rgb(29, 64, 68)
 
 console.log(leftBg.src);
 const bgSize = ['100px', '120px', '220px', '300px'];
@@ -31,7 +58,6 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
             <EthereumProvider>
                 <Flex
                     backgroundImage={leftBg.src}
-                    // bgColor="teal.100"
                     bgBlendMode="overlay"
                     bgPosition={'left 0px top -70px'}
                     bgSize={bgSize}
@@ -39,12 +65,11 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
                     bgRepeat="no-repeat repeat">
                     <Flex
                         backgroundImage={rightBg.src}
-                        // bgColor="teal.100"
                         width="100%"
                         bgPosition={'right 0px top -70px'}
                         bgSize={bgSize}
                         bgRepeat="no-repeat repeat">
-                        <Flex bgColor="rgb(185, 235, 235,.92)" width="100%">
+                        <Flex bgColor="teal.100opaque" width="100%">
                             <Layout>
                                 <Component {...pageProps} />
                             </Layout>

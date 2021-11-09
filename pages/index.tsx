@@ -1,7 +1,18 @@
 import { ExternalLinkIcon } from '@chakra-ui/icons';
-import { Box, Button, Flex, Heading, Link, Stack, Text, VStack } from '@chakra-ui/react';
+import {
+    Box,
+    Button,
+    Container,
+    Flex,
+    Heading,
+    Link,
+    SimpleGrid,
+    Stack,
+    Text,
+    VStack,
+} from '@chakra-ui/react';
 import { parseEther } from '@ethersproject/units';
-import { BigNumber, Contract, ethers } from 'ethers';
+import { BigNumber, Contract } from 'ethers';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
@@ -24,6 +35,9 @@ const text2 =
 const heading3 = 'Earned';
 const text3 =
     'Part of the infant category of earned NFTs where you earn attributes based on your actions. The older your wallet, the bigger your tree.';
+const bottomSectonHeading = 'The Meta Game';
+const bottomSectionText =
+    'Birthblock is the first NFT in a infinite series of achievements you earn by playing a game many of us are already playing whether we know it or not: The Meta Game. These earned achievements will allow access to private spaces gated by shared experiences. Each achievement will contribute to leveling up your character.';
 
 function About({ heading, text }) {
     return (
@@ -31,7 +45,7 @@ function About({ heading, text }) {
             <Heading as="h2" fontSize="24px">
                 {heading}
             </Heading>
-            <Text>{text}</Text>
+            <Text align={['center', 'center', 'center', 'left']}>{text}</Text>
         </VStack>
     );
 }
@@ -170,18 +184,18 @@ function Home() {
             return <></>;
         } else if (freeMintsLeft === null || freeMintsLeft > 0) {
             return (
-                <Text fontWeight="light" fontSize={['2xl', '3xl']}>
+                <Text fontWeight="light" fontSize={['2xl', '3xl']} color="white">
                     {`${freeMintsLeft || '?'}/${freeMints} free mints left`}
                 </Text>
             );
         } else {
             return (
                 <div>
-                    <Text fontWeight="light" fontSize={['xl', '2xl']}>
+                    <Text fontWeight="light" fontSize={['xl', '2xl']} color="white">
                         0.01 ETH to mint
                     </Text>
-                    <Text fontWeight="light" fontSize={['sm', 'md']}>
-                        {`(All ${freeMintsRef.current} free mints have been minted)`}
+                    <Text fontWeight="light" fontSize={['sm', 'md']} color="white">
+                        {`${11} Birthblocks have been minted`}
                     </Text>
                 </div>
             );
@@ -191,10 +205,10 @@ function Home() {
     return (
         <Box align="center">
             <Box px={8} pt={8} width="fit-content" mx="auto" maxW={maxW}>
-                <Heading as="h1" fontSize={[54, 72, 96]} textAlign="center">
+                <Heading as="h1" fontSize={[54, 72, 96]} textAlign="center" color="teal.900">
                     Birthblock
                 </Heading>
-                <Text fontSize={[24, 24, 36]} fontWeight="light">
+                <Text fontSize={[16, 22, 30]} fontWeight="light" maxW={['container.md']}>
                     An NFT with art and attributes based on the data from your first transaction on
                     Ethereum
                 </Text>
@@ -206,44 +220,52 @@ function Home() {
                 />
             </Box>
 
-            <Box px={8} width="fit-content" margin="auto" maxW={maxW}>
-                <Stack
-                    direction={['column', 'column', 'column', 'row']}
-                    align="center"
-                    spacing={16}>
+            <Box px={8} py={8} width="fit-content" margin="auto" maxW={maxW}>
+                <SimpleGrid columns={[1, 1, 1, 3]} align="center" spacing={16}>
                     <About heading={heading1} text={text1} />
                     <About heading={heading2} text={text2} />
                     <About heading={heading3} text={text3} />
-                </Stack>
+                </SimpleGrid>
             </Box>
 
-            <VStack minH="xs" justifyContent="center" spacing={4} mt={12} px={4} bgColor="#00B8B6">
-                {/* {!minted && !userTokenId ? ( */}
-                <Button
-                    onClick={userAddress ? mint : openWeb3Modal}
-                    isLoading={minting}
-                    loadingText="Minting..."
-                    isDisabled={minted}
-                    fontWeight="normal"
-                    colorScheme="teal"
-                    size="lg"
-                    height="60px"
-                    minW="xs"
-                    boxShadow="dark-lg"
-                    fontSize="4xl"
-                    borderRadius="full">
-                    {userAddress ? mintText() : 'Connect Wallet'}
-                </Button>
-                {/* ) : ( */}
-                <Text fontSize={[24, 24, 36]}>
-                    {`${userName}'s Birthblock (#${userTokenId}) has been minted. `}
-                    <Link isExternal href={openseaLink(userTokenId)}>
-                        View on Opensea <ExternalLinkIcon />
-                    </Link>
-                </Text>
-                {/* )} */}
+            <VStack justifyContent="center" spacing={4} px={4} py={8} bgColor="teal.700">
+                {!minted && !userTokenId ? (
+                    <Button
+                        onClick={userAddress ? mint : openWeb3Modal}
+                        isLoading={minting}
+                        loadingText="Minting..."
+                        isDisabled={minted}
+                        fontWeight="normal"
+                        colorScheme="teal"
+                        bgColor="teal.600"
+                        // color="teal.900"
+                        _hover={{ bg: 'teal.500' }}
+                        size="lg"
+                        height="60px"
+                        minW="xs"
+                        boxShadow="lg"
+                        fontSize="4xl"
+                        borderRadius="full">
+                        {userAddress ? mintText() : 'Connect Wallet'}
+                    </Button>
+                ) : (
+                    <Text fontSize={[24, 24, 36]} color="white">
+                        {`${userName}'s Birthblock (#${userTokenId}) has been minted. `}
+                        <Link isExternal href={openseaLink(userTokenId)}>
+                            View on Opensea <ExternalLinkIcon />
+                        </Link>
+                    </Text>
+                )}
                 {textUnderButton()}
             </VStack>
+            <Box px={8} py={20} width="fit-content" margin="auto" maxW={maxW}>
+                <Heading as="h1" fontSize={['24', '24', '36']} textAlign="center">
+                    {bottomSectonHeading}
+                </Heading>
+                <Text mt={4} fontWeight="light" maxW="xl">
+                    {bottomSectionText}
+                </Text>
+            </Box>
         </Box>
     );
 }

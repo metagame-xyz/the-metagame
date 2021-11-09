@@ -13,7 +13,7 @@ function Navbar(props) {
     const { userName, openWeb3Modal } = useEthereum();
 
     return (
-        <Flex width="100%" borderBottom="1px" borderColor="black">
+        <Flex width="100%" bgColor="transparent" boxShadow="md">
             <Stack
                 direction={['column', 'column', 'row', 'row']}
                 as="nav"
@@ -23,14 +23,14 @@ function Navbar(props) {
                 align="center"
                 p={4}
                 {...props}>
-                <HStack align="center" spacing={4} pr={2}>
-                    <Logo boxSize={12} />
-                    <Heading as="h1" fontSize="40px">
+                <HStack align="center" spacing={2} pr={2}>
+                    <Logo boxSize={10} />
+                    <Heading as="h1" fontSize="34px">
                         Birthblock
                     </Heading>
                 </HStack>
                 <Spacer />
-                <HStack align="center" spacing={4}>
+                <HStack align="center" spacing={[4, 4, 5, 6]}>
                     <Twitter />
                     <Opensea />
                     <Etherscan />
@@ -43,8 +43,9 @@ function Navbar(props) {
                             onClick={openWeb3Modal}
                             fontWeight="normal"
                             colorScheme="teal"
+                            bg="teal.700"
                             size="lg"
-                            boxShadow="dark-lg"
+                            boxShadow="lg"
                             fontSize="2xl"
                             borderRadius="full">
                             Connect

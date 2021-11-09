@@ -1387,10 +1387,20 @@
     "@ethersproject/properties" "^5.5.0"
     "@ethersproject/strings" "^5.5.0"
 
+"@fontsource/courier-prime@^4.5.0":
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/courier-prime/-/courier-prime-4.5.0.tgz#049de98b6d4f7b32ffeaa1cab0387a0fc03b1fc3"
+  integrity sha512-pSm4w52hWo460nZCuluVW4uZl1f0V9IE426hKoSt1yTWFbbQ1qRJw1w0Z53hQo9BdBoH7YJLOaKOqbkgxyyI5g==
+
 "@fontsource/lato@^4.5.0":
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/@fontsource/lato/-/lato-4.5.0.tgz#c248b083be330daafade76995fed9088d5b76c04"
   integrity sha512-Y1qluoF+5b2U6MWcEz70+euZwl4TEV+9v7nZCmuRgNHb5McYc3VmbNmYNEiLsnb1HHwlAHA70P/LktP9EJ61ag==
+
+"@fontsource/major-mono-display@^4.5.0":
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/major-mono-display/-/major-mono-display-4.5.0.tgz#3987b98e881a0a223959b148c23e7c6859d9314e"
+  integrity sha512-0V2opdpyQMgEZ8e16CMrlP/SzuyI9CAoFsx7W94L05Jeg7DBh1NzIAGRYWcea5jVg9phvcUi+qRka4mEhfYvAA==
 
 "@hapi/accept@5.0.2":
   version "5.0.2"

@@ -1,16 +1,5 @@
 import { ExternalLinkIcon } from '@chakra-ui/icons';
-import {
-    Box,
-    Button,
-    Container,
-    Flex,
-    Heading,
-    Link,
-    SimpleGrid,
-    Stack,
-    Text,
-    VStack,
-} from '@chakra-ui/react';
+import { Box, Button, Heading, Link, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import { parseEther } from '@ethersproject/units';
 import { BigNumber, Contract } from 'ethers';
 import Image from 'next/image';
@@ -37,7 +26,7 @@ const text3 =
     'Part of the infant category of earned NFTs where you earn attributes based on your actions. The older your wallet, the bigger your tree.';
 const bottomSectonHeading = 'The Meta Game';
 const bottomSectionText =
-    'Birthblock is the first NFT in a infinite series of achievements you earn by playing a game many of us are already playing whether we know it or not: The Meta Game. These earned achievements will allow access to private spaces gated by shared experiences. Each achievement will contribute to leveling up your character.';
+    'Birthblock is the first NFT in an infinite series of achievements you earn by playing a game many of us are already playing whether we know it or not: The Meta Game. These earned achievements will allow access to private spaces gated by shared experiences. Each achievement will contribute to leveling up your character.';
 
 function About({ heading, text }) {
     return (

@@ -21,13 +21,7 @@ const theme = extendTheme({
     },
     colors: {
         white: '#E6FFFA',
-        black: '#000',
         teal: {
-            // 100: '#B2F5EA', // rgb(178, 245, 234)
-            // 300: '#7ED6D6', // rgb(126, 214, 214)
-            // 400: '#00ADAB', // rgb(0, 173, 171)
-            // 500: '#007B7A',
-            900: 'rgb(29, 64, 68)',
             '100opaque': 'rgb(178, 245, 234,.92)',
             '700opaque': 'rgb(40, 94, 97, .7)',
         },

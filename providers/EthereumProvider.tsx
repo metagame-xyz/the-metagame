@@ -64,6 +64,7 @@ async function openWeb3ModalGenerator(
     setUserAddress,
     setEnsName,
     setUserName,
+    setAvatarUrl,
     toast,
 ) {
     const web3Modal = new Web3Modal({
@@ -78,6 +79,7 @@ async function openWeb3ModalGenerator(
         let userAddress: string = null;
         let ensName: string = null;
         let userName: string = null;
+        let avatarUrl: string = null;
 
         try {
             const ethersProvider = new Web3Provider(providerFromModal);
@@ -100,6 +102,12 @@ async function openWeb3ModalGenerator(
                 userAddress = await signer.getAddress();
                 console.log('accounts:', userAddress);
                 ensName = await ethersProvider.lookupAddress(userAddress);
+                if (ensName) {
+                    const ensResolver = await ethersProvider.getResolver(ensName);
+                    avatarUrl = await ensResolver.getText('avatar');
+                    console.log('avatar:', avatarUrl);
+                }
+
                 userName = ensName || getTruncatedAddress(userAddress);
                 console.log('userName:', userName);
             }
@@ -114,6 +122,7 @@ async function openWeb3ModalGenerator(
             setUserAddress(userAddress);
             setEnsName(ensName);
             setUserName(userName);
+            setAvatarUrl(avatarUrl);
         }
     }
 
@@ -146,9 +155,6 @@ async function openWeb3ModalGenerator(
             debug({ error });
             updateVariables(providerFromModal);
         });
-
-        // const web3 = web3Var();
-        // web3.setProvider(providerVar());
     } catch (error) {
         // error seems to be undefined when the user rejects connecting to metamask
         console.log('WEB3 MODAL ERROR:', error);
@@ -162,6 +168,7 @@ function EthereumProvider(props): JSX.Element {
     const [userAddress, setUserAddress] = useState<string>();
     const [ensName, setEnsName] = useState<string>('');
     const [userName, setUserName] = useState<string>('');
+    const [avatarUrl, setAvatarUrl] = useState<string>('');
 
     function setInitialProvider() {
         setProvider(defaultProvider);
@@ -181,10 +188,11 @@ function EthereumProvider(props): JSX.Element {
             setUserAddress,
             setEnsName,
             setUserName,
+            setAvatarUrl,
             toast,
         );
 
-    const variables = { provider, signer, userAddress, ensName, userName };
+    const variables = { provider, signer, userAddress, ensName, userName, avatarUrl };
     const functions = { openWeb3Modal, toast };
 
     const value = { ...variables, ...functions };

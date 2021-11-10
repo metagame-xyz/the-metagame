@@ -3,7 +3,8 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { ioredisClient, isValidEventForwarderSignature, logger } from '@utils';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    if (req.method !== 'GET') {
+    if (req.method !== 'POST') {
+        console.log('Invalid request method');
         return res.status(404).send({ error: '404' });
     }
 

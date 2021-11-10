@@ -32,7 +32,7 @@ export default function Footer(props) {
                     <TwelveCircles boxSize={8} color="white" />
                     {/* pt=1 cuz this font sits too high */}
                     <Center fontFamily="courier prime" pt={1} fontSize={['sm', 'md', 'xl', 'xl']}>
-                        The Meta Game
+                        The Metagame
                     </Center>
                 </Stack>
                 <Stack
@@ -41,9 +41,9 @@ export default function Footer(props) {
                     align="center"
                     justify="right"
                     color="teal.100">
-                    <Twitter boxSize={[6, 8]} _hover={hover} />
-                    <Opensea boxSize={[6, 8]} _hover={hover} />
-                    <Etherscan boxSize={[6, 8]} _hover={hover} />
+                    <Twitter boxSize={[6, 8]} _hover={hover} boxShadow={''} />
+                    <Opensea boxSize={[6, 8]} _hover={hover} boxShadow={''} />
+                    <Etherscan boxSize={[6, 8]} _hover={hover} boxShadow={''} />
                 </Stack>
             </Grid>
         </Flex>

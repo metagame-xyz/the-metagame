@@ -23,7 +23,6 @@ export function generateSVG(metadata: Metadata): string {
     /**************/
     /* Tree Trunk */
     /**************/
-    
 
     const maxRings = Math.floor(CONTRACT_BIRTHBLOCK / 10 ** 5);
     const rings = Math.floor(blockAge / 10 ** 5);
@@ -32,7 +31,7 @@ export function generateSVG(metadata: Metadata): string {
 
     // pick color
     const hue = Math.round((rings / maxRings) * 360); // 360 hues
-    const hslString = (saturation: number) => `hsl(${hue}, ${saturation}%, 72%)`;
+    const reverseHue = Math.abs(hue - 180);
 
     const treeSvgArray = [];
     // draw rings
@@ -99,14 +98,11 @@ export function generateSVG(metadata: Metadata): string {
         const xCoord = cos * totalSpace + canvasDiameter / 2;
         const yCoord = sin * totalSpace + canvasDiameter / 2;
 
-        const reverseHue = Math.abs(hue - 180);
-
         timeGradientArr.push(`<radialGradient id="${measurement}">`);
         timeGradientArr.push(`<stop offset="0%" stop-color="hsl(${reverseHue}, 48%, ${l}%)"/>`);
         timeGradientArr.push(
             `<stop offset="100%" stop-color="hsl(${reverseHue + 120}, 48%, ${l}%)"/>`,
         );
-
         timeGradientArr.push(`</radialGradient>`);
 
         return `<circle cx="${xCoord}" cy="${yCoord}" r="${radius}" fill="url(#${measurement})"/>`;

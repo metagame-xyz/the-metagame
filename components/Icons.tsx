@@ -19,7 +19,7 @@ function IconLink({ Icon, url, ...props }) {
 }
 
 const etherscanUrl = `https://${etherscanNetworkString}etherscan.io/address/${CONTRACT_ADDRESS}`;
-const twitterUrl = 'https://twitter.com/brennerspear';
+const twitterUrl = 'https://twitter.com/The_Metagame';
 const openseaUrl = `https://testnets.opensea.io/collection/birthblock-ywaqkwbxvq`;
 
 const EtherscanIcon = (props) => (

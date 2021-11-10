@@ -15,7 +15,7 @@ import { debug } from '@utils/frontend';
 import Birthblock from '../birthblock.json';
 import BirthblockImage from '../images/example-birthblock.svg';
 
-const heading1 = 'Fair';
+const heading1 = 'Minted Fairly';
 const text1 =
     'Unlimited total mints with one mint per wallet. No rush to mint, no gas wars, and open to everyone.';
 const heading2 = 'Naturally Scarce';
@@ -24,9 +24,9 @@ const text2 =
 const heading3 = 'Earned';
 const text3 =
     'Part of the infant category of earned NFTs where you earn attributes based on your actions. The older your wallet, the bigger your tree.';
-const bottomSectonHeading = 'The Meta Game';
+const bottomSectonHeading = 'The Metagame';
 const bottomSectionText =
-    'Birthblock is the first NFT in an infinite series of achievements you earn by playing a game many of us are already playing whether we know it or not: The Meta Game. These earned achievements will allow access to private spaces gated by shared experiences. Each achievement will contribute to leveling up your character.';
+    'Birthblock is the first NFT in an infinite series of achievements you earn by playing a game many of us are already playing whether we know it or not: The Metagame. These earned achievements will allow access to private spaces gated by shared experiences. Each achievement will contribute to leveling up your character. Follow along: ';
 
 function About({ heading, text }) {
     return (
@@ -238,12 +238,21 @@ function Home() {
                         {userAddress ? mintText() : 'Connect Wallet'}
                     </Button>
                 ) : (
-                    <Text fontSize={[24, 24, 36]} color="white">
-                        {`${userName}'s Birthblock (#${userTokenId}) has been minted. `}
-                        <Link isExternal href={openseaLink(userTokenId)}>
-                            View on Opensea <ExternalLinkIcon />
-                        </Link>
-                    </Text>
+                    <Box fontSize={[24, 24, 36]} color="white">
+                        <Text>{`${userName}'s Birthblock (#${userTokenId}) has been minted.`}</Text>
+                        <Button
+                            colorScheme="teal"
+                            color="white"
+                            variant="outline"
+                            _hover={{ bgColor: 'teal.600' }}
+                            _active={{ bgColor: 'teal.500' }}
+                            mt={2}
+                            size="lg"
+                            rightIcon={<ExternalLinkIcon />}
+                            onClick={() => window.open(openseaLink(userTokenId))}>
+                            View on Opensea
+                        </Button>
+                    </Box>
                 )}
                 {textUnderButton()}
             </VStack>
@@ -253,6 +262,9 @@ function Home() {
                 </Heading>
                 <Text mt={4} fontWeight="light" maxW="xl">
                     {bottomSectionText}
+                    <Link isExternal href={'https://twitter.com/The_Metagame'}>
+                        @The_Metagame
+                    </Link>
                 </Text>
             </Box>
         </Box>

@@ -61,7 +61,7 @@ export function generateSVG(metadata: Metadata): string {
         },
         hour: {
             radiusBase: 1.5,
-            max: 24,
+            max: 12,
             colorLightness: 60,
         },
         minute: {

@@ -1,7 +1,6 @@
 import { ChakraProvider, extendTheme, Flex } from '@chakra-ui/react';
 import '@fontsource/courier-prime';
 import '@fontsource/lato';
-import '@fontsource/major-mono-display';
 import type { AppProps } from 'next/app';
 
 import Layout from '@components/Layout';

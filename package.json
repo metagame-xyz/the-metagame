@@ -15,7 +15,6 @@
         "@emotion/styled": "^11",
         "@fontsource/courier-prime": "^4.5.0",
         "@fontsource/lato": "^4.5.0",
-        "@fontsource/major-mono-display": "^4.5.0",
         "@walletconnect/web3-provider": "^1.6.6",
         "crypto": "^1.0.1",
         "ethers": "^5.5.1",
@@ -27,7 +26,6 @@
         "pino-logflare": "^0.3.12",
         "react": "17.0.2",
         "react-dom": "17.0.2",
-        "swr": "^1.0.1",
         "web3": "^1.6.0",
         "web3modal": "^1.9.4"
     },

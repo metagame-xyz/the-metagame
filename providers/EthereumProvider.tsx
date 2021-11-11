@@ -16,6 +16,7 @@ import { debug, getTruncatedAddress } from '@utils/frontend';
 import rainbowLogo from '../images/rainbow.png';
 
 export const ethersNetworkString = NETWORK == 'ethereum' ? 'homestead' : NETWORK;
+export const web3ModalString = NETWORK == 'ethereum' ? 'mainnet' : NETWORK;
 
 export const wrongNetworkToast = {
     title: 'Wrong Network.',
@@ -68,7 +69,7 @@ async function openWeb3ModalGenerator(
     toast,
 ) {
     const web3Modal = new Web3Modal({
-        network: NETWORK, // optional
+        network: web3ModalString, // optional
         cacheProvider: false, // optional TODO true or ternary
         providerOptions, // required
     });

@@ -56,7 +56,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const zodiacSign = zodiac(dateObj.day, dateObj.month);
 
     const metadata: Metadata = {
-        name: `${minterAddress.substr(0, 6)}'s Birthblock: ${birthblock} `,
+        name: `${minterAddress.substr(0, 6)}'s Birthblock`,
         description: `A ${dateObj.year} ${zodiacSign} address born at ${shortTime}. It's grown ${treeRingsLevel} rings.`,
         image: `https://${VERCEL_URL}/api/v1/image/${tokenId}`,
         external_url: `https://${VERCEL_URL}/birthblock/${tokenId}`,

@@ -138,7 +138,7 @@ function Home() {
 
         setMinting(true);
         const birthblockContractWritable = birthblockContract.connect(signer);
-        const value = freeMintsLeft ? '0' : parseEther('0.01');
+        const value = parseEther('0.01');
         try {
             const data = await birthblockContractWritable.mint({ value });
             const moreData = await data.wait();

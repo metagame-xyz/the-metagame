@@ -63,6 +63,7 @@ function Home() {
     let [userTokenId, setUserTokenId] = useState<number>(null);
 
     let [freeMintsLeft, setFreeMintsLeft] = useState<number>(null);
+    let [mintCount, setMintCount] = useState<number>(null);
     let [freeMints, _setFreeMints] = useState<number>(144);
 
     const freeMintsRef = React.useRef<number>(freeMints);
@@ -104,6 +105,7 @@ function Home() {
                 console.log('via load');
                 const mintCount: BigNumber = await birthblockContract.mintedCount();
                 const freeMints: BigNumber = await birthblockContract.freeMints();
+                setMintCount(mintCount.toNumber());
                 setFreeMints(freeMints.toNumber());
                 setFreeMintsLeft(freeMints.toNumber() - mintCount.toNumber());
             } catch (error) {
@@ -184,7 +186,7 @@ function Home() {
                         0.01 ETH to mint
                     </Text>
                     <Text fontWeight="light" fontSize={['sm', 'md']} color="white">
-                        {`${11} Birthblocks have been minted`}
+                        {`${mintCount} Birthblocks have been minted`}
                     </Text>
                 </div>
             );

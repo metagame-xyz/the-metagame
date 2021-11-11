@@ -53,6 +53,8 @@ function openseaLink(tokenId: number) {
     return `https://${network}opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId}`;
 }
 
+const blackholeAddress = '0x0000000000000000000000000000000000000000';
+
 function Home() {
     const { provider, signer, userAddress, userName, openWeb3Modal, toast } = useEthereum();
 
@@ -79,7 +81,10 @@ function Home() {
             let tokenId = null;
             try {
                 if (userAddress) {
-                    const filter = birthblockContract.filters.Mint(userAddress);
+                    const filter = birthblockContract.filters.Transfer(
+                        blackholeAddress,
+                        userAddress,
+                    );
                     const [event] = await birthblockContract.queryFilter(filter); // get first event, should only be one
                     if (event) {
                         tokenId = event.args[1].toNumber();

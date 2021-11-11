@@ -2,12 +2,12 @@ import NextHead from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { VERCEL_URL } from '@utils/constants';
+import { WEBSITE_URL } from '@utils/constants';
 
 /**
  * Constants & Helpers
  */
-export const WEBSITE_HOST_URL = VERCEL_URL;
+export const WEBSITE_HOST_URL = WEBSITE_URL;
 
 /**
  * Prop Types

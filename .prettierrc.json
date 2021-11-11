@@ -4,5 +4,16 @@
     "printWidth": 100,
     "singleQuote": true,
     "jsxBracketSameLine": true,
-    "trailingComma": "all"
+    "trailingComma": "all",
+    "importOrder": [
+        "<THIRD_PARTY_MODULES>",
+        "^@api/(.*)$",
+        "^@providers/(.*)$",
+        "^@components/(.*)$",
+        "^@utils(.*)$",
+        "^[./]"
+    ],
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true,
+    "importOrderCaseInsensitive": true
 }

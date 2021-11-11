@@ -87,7 +87,7 @@ function Home() {
                     );
                     const [event] = await birthblockContract.queryFilter(filter); // get first event, should only be one
                     if (event) {
-                        tokenId = event.args[1].toNumber();
+                        tokenId = event.args[2].toNumber();
                     }
                 }
             } catch (error) {

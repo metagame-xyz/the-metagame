@@ -103,11 +103,8 @@ function Home() {
 
     // Mint Count
     useEffect(() => {
-        console.log('subscribe effect');
-
         async function getMintedCount() {
             try {
-                console.log('via load');
                 const mintCount: BigNumber = await birthblockContract.mintedCount();
                 const freeMints: BigNumber = await birthblockContract.freeMints();
                 setMintCount(mintCount.toNumber());
@@ -121,16 +118,13 @@ function Home() {
 
         birthblockContract.removeAllListeners();
 
-        birthblockContract.on('Mint', (address: string, tokenId: BigNumber) => {
-            console.log('via subscribe');
-
-            debug({ address });
-            debug({ tokenId });
-            console.log('freeMints', freeMintsRef.current);
-            console.log('tokenId', tokenId.toNumber());
-            console.log('math', freeMints - tokenId.toNumber());
-            setFreeMintsLeft(freeMintsRef.current - tokenId.toNumber());
-        });
+        birthblockContract.on(
+            'Transfer',
+            (fromAddress: string, toAddress: string, tokenId: BigNumber) => {
+                setMintCount(tokenId.toNumber());
+                setFreeMintsLeft(freeMintsRef.current - tokenId.toNumber());
+            },
+        );
     }, []);
 
     const mint = async () => {
@@ -141,17 +135,15 @@ function Home() {
         }
 
         setMinting(true);
-        console.log('contract address:', CONTRACT_ADDRESS);
         const birthblockContractWritable = birthblockContract.connect(signer);
         const value = freeMintsLeft ? '0' : parseEther('0.01');
         try {
             const data = await birthblockContractWritable.mint({ value });
             const moreData = await data.wait();
-            debug({ moreData });
-            const [_, address, tokenId] = moreData.events.find((e) => (e.event = 'Mint')).args;
-            console.log('minted', address, tokenId);
+            const [_, fromAddress, toAddress, tokenId] = moreData.events.find(
+                (e) => (e.event = 'Transfer'),
+            ).args;
             setUserTokenId(tokenId.toNumber());
-
             setMinting(false);
             setMinted(true);
         } catch (error) {

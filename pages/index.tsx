@@ -142,7 +142,7 @@ function Home() {
         try {
             const data = await birthblockContractWritable.mint({ value });
             const moreData = await data.wait();
-            const [_, fromAddress, toAddress, tokenId] = moreData.events.find(
+            const [fromAddress, toAddress, tokenId] = moreData.events.find(
                 (e) => (e.event = 'Transfer'),
             ).args;
             setUserTokenId(tokenId.toNumber());

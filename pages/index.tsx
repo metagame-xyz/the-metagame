@@ -121,8 +121,10 @@ function Home() {
         birthblockContract.on(
             'Transfer',
             (fromAddress: string, toAddress: string, tokenId: BigNumber) => {
-                setMintCount(tokenId.toNumber());
-                setFreeMintsLeft(freeMintsRef.current - tokenId.toNumber());
+                if (fromAddress === blackholeAddress) {
+                    setMintCount(tokenId.toNumber());
+                    setFreeMintsLeft(freeMintsRef.current - tokenId.toNumber());
+                }
             },
         );
     }, []);

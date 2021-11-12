@@ -1,3 +1,4 @@
+import { getDefaultProvider } from '@ethersproject/providers';
 import { commify, formatUnits } from '@ethersproject/units';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
@@ -11,7 +12,7 @@ import {
     timestampToDate,
     zodiac,
 } from '@utils';
-import { CONTRACT_BIRTHBLOCK, WEBSITE_URL } from '@utils/constants';
+import { CONTRACT_BIRTHBLOCK, INFURA_ID, NETWORK, WEBSITE_URL } from '@utils/constants';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     logger.info(req.body);
@@ -55,8 +56,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const shortTime = formatDateObjToShortTime(dateObj);
     const zodiacSign = zodiac(dateObj.day, dateObj.month);
 
+    const ethersNetworkString = NETWORK == 'ethereum' ? 'homestead' : NETWORK;
+    const defaultProvider = getDefaultProvider(ethersNetworkString, { infura: INFURA_ID });
+    const ensName = await defaultProvider.lookupAddress(minterAddress);
+    const userName = ensName || minterAddress.substr(0, 6);
+
     const metadata: Metadata = {
-        name: `${minterAddress.substr(0, 6)}'s Birthblock`,
+        name: `${userName}'s Birthblock`,
         description: `A ${dateObj.year} ${zodiacSign} address born at ${shortTime}. It's grown ${treeRingsLevel} rings.`,
         image: `https://${WEBSITE_URL}/api/v1/image/${tokenId}`,
         external_url: `https://${WEBSITE_URL}/birthblock/${tokenId}`,

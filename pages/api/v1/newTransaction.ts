@@ -36,7 +36,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const { minterAddress, tokenId } = req.body;
 
-    const { status, message, result } = await getOldestTransaction(minterAddress);
+    let status, message, result;
+    try {
+        ({ status, message, result } = await getOldestTransaction(minterAddress));
+    } catch (error) {
+        logger.error({ error });
+        return res.status(500).send({ error });
+    }
 
     // check that etherscan API returned successfully
     if (status != 1) {
@@ -58,7 +64,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const ethersNetworkString = NETWORK == 'ethereum' ? 'homestead' : NETWORK;
     const defaultProvider = getDefaultProvider(ethersNetworkString, { infura: INFURA_ID });
-    const ensName = await defaultProvider.lookupAddress(minterAddress);
+
+    let ensName = null;
+    try {
+        ensName = await defaultProvider.lookupAddress(minterAddress);
+    } catch (error) {
+        logger.error({ error });
+        logger.error({ message: 'ensName lookup failed' });
+    }
     const userName = ensName || minterAddress.substr(0, 6);
 
     const metadata: Metadata = {
@@ -78,14 +91,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         treeRingsLevel,
     };
 
-    // index by wallet address
-    await ioredisClient.hset(minterAddress, { tokenId, metadata: JSON.stringify(metadata) });
+    try {
+        // index by wallet address
+        await ioredisClient.hset(minterAddress, { tokenId, metadata: JSON.stringify(metadata) });
+        logger.info({
+            message: `Successfully indexed metadata by wallet address ${minterAddress}`,
+        });
+    } catch (error) {
+        logger.error({ error });
+        return res.status(500).send({ message: 'ioredis error', error });
+    }
 
-    // index by tokenId
-    await ioredisClient.hset(tokenId, {
-        address: minterAddress,
-        metadata: JSON.stringify(metadata),
-    });
+    try {
+        // index by tokenId
+        await ioredisClient.hset(tokenId, {
+            address: minterAddress,
+            metadata: JSON.stringify(metadata),
+        });
+        logger.info({ message: `Successfully indexed metadata by tokenId ${tokenId}` });
+    } catch (error) {
+        logger.error({ error });
+        return res.status(500).send({ message: 'ioredis error 2', error });
+    }
 
     res.status(200).send({ minterAddress, tokenId });
 }

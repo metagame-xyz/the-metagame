@@ -44,6 +44,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(500).send({ error });
     }
 
+    logger.info({ lastStepFinished: 'getOldestTransaction' });
+
     // check that etherscan API returned successfully
     if (status != 1) {
         logger.error({ error: 'Etherscan error getOldestTransaction', message });
@@ -72,6 +74,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         logger.error({ error });
         logger.error({ message: 'ensName lookup failed' });
     }
+
+    logger.info({ lastStepFinished: 'get ENS' });
+
     const userName = ensName || minterAddress.substr(0, 6);
 
     const metadata: Metadata = {
@@ -102,6 +107,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(500).send({ message: 'ioredis error', error });
     }
 
+    logger.info({ lastStepFinished: 'redis write indexed by wallet address' });
+
     try {
         // index by tokenId
         await ioredisClient.hset(tokenId, {
@@ -113,6 +120,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         logger.error({ error });
         return res.status(500).send({ message: 'ioredis error 2', error });
     }
+
+    logger.info({ lastStepFinished: 'redis write indexed by tokenId' });
 
     res.status(200).send({ minterAddress, tokenId });
 }

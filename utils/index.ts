@@ -26,7 +26,6 @@ const fetchOptions = {
 export const fetcher = (url: string) => fetch(url, fetchOptions).then((r: any) => r.json());
 
 export const isValidEventForwarderSignature = (request: NextApiRequest) => {
-    console.log('body:', request.body);
     const token = EVENT_FORWARDER_AUTH_TOKEN;
     const headers = request.headers;
     const signature = headers['x-event-forwarder-signature'];

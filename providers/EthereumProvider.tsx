@@ -10,7 +10,7 @@ import { Signer } from 'ethers';
 import { createContext, useContext, useEffect, useState } from 'react';
 import Web3Modal from 'web3modal';
 
-import { INFURA_ID, NETWORK } from '@utils/constants';
+import { INFURA_PROJECT_ID, ALCHEMY_PROJECT_ID, NETWORK } from '@utils/constants';
 import { debug, getTruncatedAddress } from '@utils/frontend';
 
 import rainbowLogo from '../images/rainbow.png';
@@ -27,7 +27,7 @@ export const wrongNetworkToast = {
     isClosable: true,
 };
 
-const defaultProvider = getDefaultProvider(ethersNetworkString, { infura: INFURA_ID });
+const defaultProvider = getDefaultProvider(ethersNetworkString, { infura: INFURA_PROJECT_ID, alchemy: ALCHEMY_PROJECT_ID });
 
 const EthereumContext = createContext(undefined);
 
@@ -40,7 +40,7 @@ const providerOptions = {
         },
         package: WalletConnectProvider,
         options: {
-            infuraId: INFURA_ID, // required
+            infuraId: INFURA_PROJECT_ID, // required
         },
         connector: async (ProviderPackage, options) => {
             const provider = new ProviderPackage(options);
@@ -53,7 +53,7 @@ const providerOptions = {
     walletconnect: {
         package: WalletConnectProvider,
         options: {
-            infuraId: INFURA_ID, // required
+            infuraId: INFURA_PROJECT_ID, // required
         },
     },
 };

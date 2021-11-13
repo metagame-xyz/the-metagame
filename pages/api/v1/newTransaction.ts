@@ -12,7 +12,13 @@ import {
     timestampToDate,
     zodiac,
 } from '@utils';
-import { CONTRACT_BIRTHBLOCK, INFURA_ID, NETWORK, WEBSITE_URL } from '@utils/constants';
+import {
+    ALCHEMY_PROJECT_ID,
+    CONTRACT_BIRTHBLOCK,
+    INFURA_PROJECT_ID,
+    NETWORK,
+    WEBSITE_URL,
+} from '@utils/constants';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     logger.info(req.body);
@@ -65,7 +71,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const zodiacSign = zodiac(dateObj.day, dateObj.month);
 
     const ethersNetworkString = NETWORK == 'ethereum' ? 'homestead' : NETWORK;
-    const defaultProvider = getDefaultProvider(ethersNetworkString, { infura: INFURA_ID });
+    const defaultProvider = getDefaultProvider(ethersNetworkString, {
+        infura: INFURA_PROJECT_ID,
+        alchemy: ALCHEMY_PROJECT_ID,
+    });
 
     let ensName = null;
     try {

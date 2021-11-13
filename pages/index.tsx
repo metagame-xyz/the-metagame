@@ -66,13 +66,7 @@ function Home() {
 
     let [freeMintsLeft, setFreeMintsLeft] = useState<number>(null);
     let [mintCount, setMintCount] = useState<number>(null);
-    let [freeMints, _setFreeMints] = useState<number>(144);
-
-    const freeMintsRef = React.useRef<number>(freeMints);
-    const setFreeMints = (value: number) => {
-        freeMintsRef.current = value;
-        _setFreeMints(value);
-    };
+    let [freeMints, setFreeMints] = useState<number>(144);
 
     useEffect(() => {
         console.log('getUserMintedTokenId');
@@ -106,27 +100,29 @@ function Home() {
         async function getMintedCount() {
             try {
                 const mintCount: BigNumber = await birthblockContract.mintedCount();
-                const freeMints: BigNumber = await birthblockContract.freeMints();
+                // const freeMints: BigNumber = await birthblockContract.freeMints();
                 setMintCount(mintCount.toNumber());
-                setFreeMints(freeMints.toNumber());
-                setFreeMintsLeft(freeMints.toNumber() - mintCount.toNumber());
+                // setFreeMints(freeMints.toNumber());
+                setFreeMintsLeft(freeMints - mintCount.toNumber());
             } catch (error) {
                 debug({ error });
             }
         }
         getMintedCount();
 
-        birthblockContract.removeAllListeners();
+        // just turn off listener for now
 
-        birthblockContract.on(
-            'Transfer',
-            (fromAddress: string, toAddress: string, tokenId: BigNumber) => {
-                if (fromAddress === blackholeAddress) {
-                    setMintCount(tokenId.toNumber());
-                    setFreeMintsLeft(freeMintsRef.current - tokenId.toNumber());
-                }
-            },
-        );
+        // birthblockContract.removeAllListeners();
+
+        // birthblockContract.on(
+        //     'Transfer',
+        //     (fromAddress: string, toAddress: string, tokenId: BigNumber) => {
+        //         if (fromAddress === blackholeAddress) {
+        //             setMintCount(tokenId.toNumber());
+        //             setFreeMintsLeft(freeMints - tokenId.toNumber());
+        //         }
+        //     },
+        // );
     }, []);
 
     const mint = async () => {
@@ -138,7 +134,7 @@ function Home() {
 
         setMinting(true);
         const birthblockContractWritable = birthblockContract.connect(signer);
-        const value = parseEther('0.01');
+        const value = parseEther('0.01'); // switched to hardcoded, this should be a ternary
         try {
             const data = await birthblockContractWritable.mint({ value });
             const moreData = await data.wait();
@@ -172,12 +168,12 @@ function Home() {
     const textUnderButton = () => {
         if (userTokenId) {
             return <></>;
-        } else if (freeMintsLeft === null || freeMintsLeft > 0) {
-            return (
-                <Text fontWeight="light" fontSize={['2xl', '3xl']} color="white">
-                    {`${freeMintsLeft || '?'}/${freeMints} free mints left`}
-                </Text>
-            );
+            // } else if (freeMintsLeft === null || freeMintsLeft > 0) {
+            //     return (
+            //         <Text fontWeight="light" fontSize={['2xl', '3xl']} color="white">
+            //             {`${freeMintsLeft || '?'}/${freeMints} free mints left`}
+            //         </Text>
+            //     );
         } else {
             return (
                 <div>

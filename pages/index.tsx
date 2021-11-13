@@ -180,9 +180,11 @@ function Home() {
                     <Text fontWeight="light" fontSize={['xl', '2xl']} color="white">
                         0.01 ETH to mint
                     </Text>
-                    <Text fontWeight="light" fontSize={['sm', 'md']} color="white">
-                        {`${mintCount} Birthblocks have been minted`}
-                    </Text>
+                    {mintCount && (
+                        <Text fontWeight="light" fontSize={['sm', 'md']} color="white">
+                            {`${mintCount} Birthblocks have been minted`}
+                        </Text>
+                    )}
                 </div>
             );
         }

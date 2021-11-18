@@ -115,13 +115,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             address: minterAddress,
             metadata: JSON.stringify(metadata),
         });
-        logger.info({ message: `Successfully indexed metadata by tokenId ${tokenId}` });
     } catch (error) {
         logger.error({ error });
         return res.status(500).send({ message: 'ioredis error 2', error });
     }
 
-    logger.info({ lastStepFinished: 'redis write indexed by tokenId' });
-
-    res.status(200).send({ minterAddress, tokenId, ensName });
+    // res.status(504).end();
+    res.status(200).send({
+        minterAddress,
+        tokenId,
+        ensName,
+        status: 1,
+        message: 'success',
+        result: { minterAddress, tokenId, ensName },
+    });
 }

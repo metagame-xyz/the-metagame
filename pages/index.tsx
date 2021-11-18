@@ -134,6 +134,7 @@ function Home() {
 
         setMinting(true);
         const birthblockContractWritable = birthblockContract.connect(signer);
+        // const value = freeMintsLeft > 0 ? '0' : parseEther('0.01');
         const value = parseEther('0.01'); // switched to hardcoded, this should be a ternary
         try {
             const data = await birthblockContractWritable.mint({ value });

@@ -1,28 +1,11 @@
 import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document';
 
 import { GOOGLE_ANALYTICS_ID, WEBSITE_URL } from '@utils/constants';
-
-/**
- * Prop Types
- */
-export interface MetaProps {
-    description?: string;
-    image?: string;
-    title: string;
-    type?: string;
-}
-
-const meta: MetaProps = {
-    title: 'Birthblock',
-    description: 'A NFT created using the data from your first Ethereum transaction',
-    image: `https://${WEBSITE_URL}/images/site-preview.png`,
-    type: 'website',
-};
+import { headMetadata as meta } from '@utils/content';
 
 class MyDocument extends Document {
     static async getInitialProps(ctx: DocumentContext) {
         const initialProps = await Document.getInitialProps(ctx);
-        console.log('env', process.env.VERCEL_ENV);
         return initialProps;
     }
 
@@ -31,10 +14,10 @@ class MyDocument extends Document {
             <Html>
                 <Head>
                     <meta content={meta.description} name="description" />
-                    <meta property="og:url" content={`${WEBSITE_URL}`} />
-                    <link rel="canonical" href={`${WEBSITE_URL}`} />
+                    <meta property="og:url" content={WEBSITE_URL} />
+                    <link rel="canonical" href={WEBSITE_URL} />
                     <meta property="og:type" content={meta.type} />
-                    <meta property="og:site_name" content="Birthblock.art" />
+                    <meta property="og:site_name" content={WEBSITE_URL} />
                     <meta property="og:description" content={meta.description} />
                     <meta property="og:title" content={meta.title} />
                     <meta property="og:image" content={meta.image} />

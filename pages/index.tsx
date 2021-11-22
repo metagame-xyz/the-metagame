@@ -11,23 +11,11 @@ import { ethersNetworkString, useEthereum, wrongNetworkToast } from '@providers/
 import { maxW } from '@components/Layout';
 
 import { CONTRACT_ADDRESS, NETWORK } from '@utils/constants';
+import { copy } from '@utils/content';
 import { debug } from '@utils/frontend';
 
 import Birthblock from '../birthblock.json';
 import BirthblockImage from '../images/example-birthblock.svg';
-
-const heading1 = 'Minted Fairly';
-const text1 =
-    'Unlimited total mints with one mint per wallet. No rush to mint, no gas wars, and open to everyone.';
-const heading2 = 'Naturally Scarce';
-const text2 =
-    'The number of possible Birthblock NFTs with 100+ rings is set by existing on-chain data instead of by an artificial limit.';
-const heading3 = 'Earned';
-const text3 =
-    'Part of the infant category of earned NFTs where you earn attributes based on your actions. The older your wallet, the bigger your tree.';
-const bottomSectonHeading = 'The Metagame';
-const bottomSectionText =
-    'Birthblock is the first NFT in an infinite series of achievements you earn by playing a game many of us are already playing whether we know it or not: The Metagame. These earned achievements will allow access to private spaces gated by shared experiences. Each achievement will contribute to leveling up your character. Follow along: ';
 
 function About({ heading, text }) {
     return (
@@ -183,7 +171,7 @@ function Home() {
                     </Text>
                     {mintCount && (
                         <Text fontWeight="light" fontSize={['sm', 'md']} color="white">
-                            {`${mintCount} Birthblocks have been minted`}
+                            {`${mintCount} ${copy.title}s have been minted`}
                         </Text>
                     )}
                 </div>
@@ -194,19 +182,18 @@ function Home() {
     return (
         <Box align="center">
             <Head>
-                <title>Birthblock</title>
+                <title>{copy.title}</title>
             </Head>
             <Box px={8} pt={8} width="fit-content" mx="auto" maxW={maxW}>
                 <Heading as="h1" fontSize={[54, 72, 96]} textAlign="center" color="teal.900">
-                    Birthblock
+                    {copy.title}
                 </Heading>
                 <Text fontSize={[16, 22, 30]} fontWeight="light" maxW={['container.md']}>
-                    An NFT with art and attributes based on the data from your first transaction on
-                    Ethereum
+                    {copy.heroSubheading}
                 </Text>
                 <Image
                     src={BirthblockImage.src}
-                    alt="birthblock image"
+                    alt={`${copy.nameLowercase} image`}
                     width="432px"
                     height="432px"
                 />
@@ -214,9 +201,9 @@ function Home() {
 
             <Box px={8} py={8} width="fit-content" margin="auto" maxW={maxW}>
                 <SimpleGrid columns={[1, 1, 1, 3]} align="center" spacing={16}>
-                    <About heading={heading1} text={text1} />
-                    <About heading={heading2} text={text2} />
-                    <About heading={heading3} text={text3} />
+                    <About heading={copy.heading1} text={copy.text1} />
+                    <About heading={copy.heading2} text={copy.text2} />
+                    <About heading={copy.heading3} text={copy.text3} />
                 </SimpleGrid>
             </Box>
 
@@ -242,7 +229,7 @@ function Home() {
                     </Button>
                 ) : (
                     <Box fontSize={[24, 24, 36]} color="white">
-                        <Text>{`${userName}'s Birthblock (#${userTokenId}) has been minted.`}</Text>
+                        <Text>{`${userName}'s ${copy.title} (#${userTokenId}) has been minted.`}</Text>
                         <Button
                             colorScheme="teal"
                             color="white"
@@ -261,10 +248,10 @@ function Home() {
             </VStack>
             <Box px={8} py={20} width="fit-content" margin="auto" maxW={maxW}>
                 <Heading as="h1" fontSize={['24', '24', '36']} textAlign="center">
-                    {bottomSectonHeading}
+                    {copy.bottomSectonHeading}
                 </Heading>
                 <Text mt={4} fontWeight="light" maxW="xl">
-                    {bottomSectionText}
+                    {copy.bottomSectionText}
                     <Link isExternal href={'https://twitter.com/The_Metagame'}>
                         @The_Metagame
                     </Link>

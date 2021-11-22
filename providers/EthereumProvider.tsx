@@ -10,6 +10,7 @@ import { Signer } from 'ethers';
 import { createContext, useContext, useEffect, useState } from 'react';
 import Web3Modal, { getProviderInfo } from 'web3modal';
 
+import { networkStrings } from '@utils';
 import {
     ALCHEMY_PROJECT_ID,
     connect_button_clicked,
@@ -22,19 +23,16 @@ import { debug, event, EventParams, getTruncatedAddress } from '@utils/frontend'
 
 import rainbowLogo from '../images/rainbow.png';
 
-export const ethersNetworkString = NETWORK == 'ethereum' ? 'homestead' : NETWORK;
-export const web3ModalString = NETWORK == 'ethereum' ? 'mainnet' : NETWORK;
-
 export const wrongNetworkToast = {
     title: 'Wrong Network.',
-    description: `You must be on ${ethersNetworkString} to mint`,
+    description: `You must be on ${networkStrings.ethers} to mint`,
     status: 'warning',
     position: 'top',
     duration: 4000,
     isClosable: true,
 };
 
-const defaultProvider = getDefaultProvider(ethersNetworkString, {
+const defaultProvider = getDefaultProvider(networkStrings.ethers, {
     infura: INFURA_PROJECT_ID,
     alchemy: ALCHEMY_PROJECT_ID,
 });
@@ -81,7 +79,7 @@ async function openWeb3ModalGenerator(
     buttonLocation,
 ) {
     const web3Modal = new Web3Modal({
-        network: web3ModalString, // optional
+        network: networkStrings.web3Modal, // optional
         cacheProvider: false, // optional TODO true or ternary
         providerOptions, // required
         theme: 'dark',
@@ -101,7 +99,7 @@ async function openWeb3ModalGenerator(
             eventParams.network = network.name;
 
             // check if network is correct for the given env (prod vs dev)
-            if (network.name !== ethersNetworkString) {
+            if (network.name !== networkStrings.ethers) {
                 toast(wrongNetworkToast);
                 event('Wrong Network', eventParams);
                 throw new Error('Wrong Network');

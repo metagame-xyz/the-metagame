@@ -15,6 +15,44 @@ import {
     REDIS_URL,
 } from './constants';
 
+type NetworkStrings = {
+    alchemy: string;
+    ethers: string;
+    etherscan: string;
+    etherscanAPI: string;
+    opensea: string;
+    openseaAPI: string;
+    web3Modal: string;
+};
+
+function getNetworkString(network: string): NetworkStrings {
+    switch (network.toLowerCase()) {
+        case 'ethereum':
+            return {
+                alchemy: 'eth-mainnet.',
+                ethers: 'homestead',
+                etherscan: '',
+                etherscanAPI: 'api.',
+                opensea: '',
+                openseaAPI: 'api.',
+                web3Modal: 'mainnet',
+            };
+
+        default:
+            return {
+                alchemy: `eth-${network}.`,
+                ethers: network,
+                etherscan: `${network}.`,
+                etherscanAPI: `api-${network}.`,
+                opensea: 'testnets.',
+                openseaAPI: `${network}-api.`, // rinkeby only for now
+                web3Modal: network,
+            };
+    }
+}
+
+export const networkStrings = getNetworkString(NETWORK);
+
 const fetchOptions = {
     retry: 12,
     pause: 2000,
@@ -64,11 +102,9 @@ export const logger = pino(
 
 export const localLogger = pino({}, stream);
 
-export const etherscanApiNetworkString = NETWORK.toLowerCase() == 'ethereum' ? '' : `-${NETWORK}`;
-
 export const getOldestTransaction = async (address: string) =>
     await fetcher(
-        `https://api${etherscanApiNetworkString}.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=999999999&sort=asc&page=1&offset=1&apikey=${ETHERSCAN_API_KEY}`,
+        `https://${networkStrings.etherscanAPI}etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=999999999&sort=asc&page=1&offset=1&apikey=${ETHERSCAN_API_KEY}`,
     );
 
 export const timestampToDate = (ts: number): Record<string, number> => {

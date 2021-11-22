@@ -1,9 +1,9 @@
 import { Icon, Link } from '@chakra-ui/react';
 import React from 'react';
 
+import { networkStrings } from '@utils';
 import { CONTRACT_ADDRESS } from '@utils/constants';
 import { copy } from '@utils/content';
-import { etherscanNetworkString } from '@utils/frontend';
 
 function IconLink({ Icon, url, ...props }) {
     return (
@@ -19,7 +19,7 @@ function IconLink({ Icon, url, ...props }) {
     );
 }
 
-const etherscanUrl = `https://${etherscanNetworkString}etherscan.io/address/${CONTRACT_ADDRESS}`;
+const etherscanUrl = `https://${networkStrings.etherscan}etherscan.io/address/${CONTRACT_ADDRESS}`;
 const twitterUrl = 'https://twitter.com/The_Metagame';
 const openseaUrl = `https://opensea.io/collection/${copy.nameLowercase}`;
 

@@ -6,11 +6,12 @@ import Head from 'next/head';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
-import { ethersNetworkString, useEthereum, wrongNetworkToast } from '@providers/EthereumProvider';
+import { useEthereum, wrongNetworkToast } from '@providers/EthereumProvider';
 
 import { maxW } from '@components/Layout';
 
-import { CONTRACT_ADDRESS, NETWORK } from '@utils/constants';
+import { networkStrings } from '@utils';
+import { CONTRACT_ADDRESS } from '@utils/constants';
 import { copy } from '@utils/content';
 import { debug } from '@utils/frontend';
 
@@ -37,9 +38,8 @@ const toastErrorData = (title: string, description: string) => ({
     isClosable: true,
 });
 
-function openseaLink(tokenId: number) {
-    const network = NETWORK == 'ethereum' ? '' : 'testnets.';
-    return `https://${network}opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId}`;
+function openseaLink(tokenId: number): string {
+    return `https://${networkStrings.opensea}opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId}`;
 }
 
 const blackholeAddress = '0x0000000000000000000000000000000000000000';
@@ -115,7 +115,7 @@ function Home() {
 
     const mint = async () => {
         const network = await provider.getNetwork();
-        if (network.name != ethersNetworkString) {
+        if (network.name != networkStrings.ethers) {
             toast(wrongNetworkToast);
             return;
         }

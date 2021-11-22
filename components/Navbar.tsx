@@ -15,10 +15,6 @@ import { useEthereum } from '@providers/EthereumProvider';
 
 import { Etherscan, Logo, Opensea, Twitter } from '@components/Icons';
 
-import { NETWORK } from '@utils/constants';
-
-export const etherscanNetworkString = NETWORK.toLowerCase() == 'ethereum' ? '' : `${NETWORK}.`;
-
 function Navbar(props) {
     const { userName, openWeb3Modal, avatarUrl } = useEthereum();
 

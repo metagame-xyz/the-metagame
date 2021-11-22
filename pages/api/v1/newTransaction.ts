@@ -9,6 +9,7 @@ import {
     isValidEventForwarderSignature,
     logger,
     Metadata,
+    networkStrings,
     timestampToDate,
     zodiac,
 } from '@utils';
@@ -68,8 +69,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const shortTime = formatDateObjToShortTime(dateObj);
     const zodiacSign = zodiac(dateObj.day, dateObj.month);
 
-    const ethersNetworkString = NETWORK == 'ethereum' ? 'homestead' : NETWORK;
-    const defaultProvider = getDefaultProvider(ethersNetworkString, {
+    const defaultProvider = getDefaultProvider(networkStrings.ethers, {
         infura: INFURA_PROJECT_ID,
         alchemy: ALCHEMY_PROJECT_ID,
     });

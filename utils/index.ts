@@ -11,47 +11,9 @@ import {
     EVENT_FORWARDER_AUTH_TOKEN,
     LOGFLARE_API_KEY,
     LOGFLARE_SOURCE_UUID,
-    NETWORK,
+    networkStrings,
     REDIS_URL,
 } from './constants';
-
-type NetworkStrings = {
-    alchemy: string;
-    ethers: string;
-    etherscan: string;
-    etherscanAPI: string;
-    opensea: string;
-    openseaAPI: string;
-    web3Modal: string;
-};
-
-function getNetworkString(network: string): NetworkStrings {
-    switch (network.toLowerCase()) {
-        case 'ethereum':
-            return {
-                alchemy: 'eth-mainnet.',
-                ethers: 'homestead',
-                etherscan: '',
-                etherscanAPI: 'api.',
-                opensea: '',
-                openseaAPI: 'api.',
-                web3Modal: 'mainnet',
-            };
-
-        default:
-            return {
-                alchemy: `eth-${network}.`,
-                ethers: network,
-                etherscan: `${network}.`,
-                etherscanAPI: `api-${network}.`,
-                opensea: 'testnets.',
-                openseaAPI: `${network}-api.`, // rinkeby only for now
-                web3Modal: network,
-            };
-    }
-}
-
-export const networkStrings = getNetworkString(NETWORK);
 
 const fetchOptions = {
     retry: 12,

@@ -9,7 +9,6 @@ import {
     isValidEventForwarderSignature,
     logger,
     Metadata,
-    networkStrings,
     timestampToDate,
     zodiac,
 } from '@utils';
@@ -17,7 +16,7 @@ import {
     ALCHEMY_PROJECT_ID,
     CONTRACT_BIRTHBLOCK,
     INFURA_PROJECT_ID,
-    NETWORK,
+    networkStrings,
     WEBSITE_URL,
 } from '@utils/constants';
 

@@ -10,12 +10,12 @@ import { Signer } from 'ethers';
 import { createContext, useContext, useEffect, useState } from 'react';
 import Web3Modal, { getProviderInfo } from 'web3modal';
 
-import { networkStrings } from '@utils';
 import {
     ALCHEMY_PROJECT_ID,
     connect_button_clicked,
     INFURA_PROJECT_ID,
     NETWORK,
+    networkStrings,
     wallet_provider_clicked,
     wallet_provider_connected,
 } from '@utils/constants';
@@ -67,6 +67,27 @@ const providerOptions = {
     },
 };
 
+// Teal 50
+// #E6FFFA rgba(230, 255, 250, 1)
+// Teal 100
+// #B2F5EA rgba(178, 245, 234, 1)
+// Teal 200
+// #81E6D9 rgba(129, 230, 217, 1)
+// Teal 300
+// #4FD1C5 rgba(79, 209, 197, 1)
+// Teal 400
+// #38B2AC rgba(56, 178, 172, 1)
+// Teal 500
+// #319795 rgba(49, 151, 149, 1)
+// Teal 600
+// #2C7A7B rgba(44, 122, 123, 1)
+// Teal 700
+// #285E61 rgba(40, 94, 97, 1)
+// Teal 800
+// #234E52 rgba(35, 78, 82, 1)
+// Teal 900
+// #1D4044 rgba(29, 64, 68, 1)
+
 //web3Var: ReactiveVar<Web3>
 async function openWeb3ModalGenerator(
     setProvider,
@@ -82,7 +103,13 @@ async function openWeb3ModalGenerator(
         network: networkStrings.web3Modal, // optional
         cacheProvider: false, // optional TODO true or ternary
         providerOptions, // required
-        theme: 'dark',
+        // theme: {
+        //     background: 'rgba(230, 255, 250, 1)',
+        //     main: 'rgba(129, 230, 217, 1)',
+        //     secondary: 'rgba(49, 151, 149, 1)',
+        //     border: 'rgba(29, 64, 68, 1)',
+        //     hover: 'rgba(40, 94, 97, 1)',
+        // },
     });
 
     async function updateVariables(providerFromModal, eventParams) {

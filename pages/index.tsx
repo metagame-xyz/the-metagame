@@ -10,8 +10,7 @@ import { useEthereum, wrongNetworkToast } from '@providers/EthereumProvider';
 
 import { maxW } from '@components/Layout';
 
-import { networkStrings } from '@utils';
-import { CONTRACT_ADDRESS } from '@utils/constants';
+import { CONTRACT_ADDRESS, networkStrings } from '@utils/constants';
 import { copy } from '@utils/content';
 import { debug } from '@utils/frontend';
 

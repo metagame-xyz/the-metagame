@@ -1,8 +1,7 @@
 import { Icon, Link } from '@chakra-ui/react';
 import React from 'react';
 
-import { networkStrings } from '@utils';
-import { CONTRACT_ADDRESS } from '@utils/constants';
+import { CONTRACT_ADDRESS, networkStrings } from '@utils/constants';
 import { copy } from '@utils/content';
 
 function IconLink({ Icon, url, ...props }) {

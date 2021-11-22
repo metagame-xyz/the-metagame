@@ -136,21 +136,17 @@ async function openWeb3ModalGenerator(
             setAvatarUrl(avatarUrl);
             eventParams = { ...eventParams, hasEns: !!ensName, hasEnsAvatar: !!avatarUrl };
             event(wallet_provider_connected, eventParams);
-            console.log('wallet provider connected');
         }
     }
 
     try {
-        console.log('Connect Button', buttonLocation);
         let eventParams: EventParams = { buttonLocation, network: NETWORK };
         event(connect_button_clicked, eventParams);
-        console.log('connect button clicked');
 
         const providerFromModal = await web3Modal.connect();
         const { id: connectionType, name: connectionName } = getProviderInfo(providerFromModal);
         eventParams = { ...eventParams, connectionType, connectionName };
         event(wallet_provider_clicked, eventParams);
-        console.log('wallet provider clicked');
 
         await updateVariables(providerFromModal, eventParams);
         // Subscribe to accounts change

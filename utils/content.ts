@@ -9,8 +9,9 @@ export interface MetaProps {
 
 export const headMetadata: MetaProps = {
     title: 'Birthblock',
-    description: 'A NFT created using the data from your first Ethereum transaction',
-    image: `https://${WEBSITE_URL}/images/site-preview.png`,
+    description:
+        'An NFT with art and attributes based on the data from your first transaction on Ethereum',
+    image: `https://${WEBSITE_URL}/site-preview.png`,
     type: 'website',
 };
 

@@ -16,16 +16,19 @@ class MyDocument extends Document {
                     <meta content={meta.description} name="description" />
                     <meta property="og:url" content={WEBSITE_URL} />
                     <link rel="canonical" href={WEBSITE_URL} />
-                    <meta property="og:type" content={meta.type} />
-                    <meta property="og:site_name" content={WEBSITE_URL} />
-                    <meta property="og:description" content={meta.description} />
+                    <meta property="og:site_name" content={meta.title} />
+
                     <meta property="og:title" content={meta.title} />
+                    <meta property="og:description" content={meta.description} />
+                    <meta property="og:type" content={meta.type} />
                     <meta property="og:image" content={meta.image} />
-                    <meta name="twitter:card" content="summary_large_image" />
-                    <meta name="twitter:site" content="@the_metagame" />
+
                     <meta name="twitter:title" content={meta.title} />
                     <meta name="twitter:description" content={meta.description} />
                     <meta name="twitter:image" content={meta.image} />
+                    <meta name="twitter:image:alt" content={meta.title} />
+                    <meta name="twitter:card" content="summary_large_image" />
+                    <meta name="twitter:site" content="@the_metagame" />
                     <script
                         async
                         src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`}

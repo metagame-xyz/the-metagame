@@ -1,4 +1,3 @@
-import { ChevronDownIcon, EditIcon } from '@chakra-ui/icons';
 import {
     Avatar,
     Box,
@@ -7,7 +6,6 @@ import {
     Heading,
     HStack,
     Spacer,
-    Stack,
     Text,
     useBreakpointValue,
 } from '@chakra-ui/react';
@@ -58,7 +56,7 @@ function Navbar(props) {
                         </Box>
                     ) : (
                         <Button
-                            onClick={openWeb3Modal}
+                            onClick={() => openWeb3Modal('Navbar')}
                             fontWeight="normal"
                             colorScheme="teal"
                             bg="teal.700"

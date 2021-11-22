@@ -31,3 +31,14 @@ export function debug(varObj: object): void {
         console.log(`${str}:`, varObj[str]);
     });
 }
+
+export const event = (action: string, params: Object) => {
+    window.gtag('event', action, params);
+};
+
+export type EventParams = {
+    network?: string;
+    buttonLocation?: string;
+    connectionType?: string;
+    connectionName?: string;
+};

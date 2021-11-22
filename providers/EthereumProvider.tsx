@@ -8,10 +8,17 @@ import {
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { Signer } from 'ethers';
 import { createContext, useContext, useEffect, useState } from 'react';
-import Web3Modal from 'web3modal';
+import Web3Modal, { getProviderInfo } from 'web3modal';
 
-import { INFURA_PROJECT_ID, ALCHEMY_PROJECT_ID, NETWORK } from '@utils/constants';
-import { debug, getTruncatedAddress } from '@utils/frontend';
+import {
+    ALCHEMY_PROJECT_ID,
+    connect_button_clicked,
+    INFURA_PROJECT_ID,
+    NETWORK,
+    wallet_provider_clicked,
+    wallet_provider_connected,
+} from '@utils/constants';
+import { debug, event, EventParams, getTruncatedAddress } from '@utils/frontend';
 
 import rainbowLogo from '../images/rainbow.png';
 
@@ -27,7 +34,10 @@ export const wrongNetworkToast = {
     isClosable: true,
 };
 
-const defaultProvider = getDefaultProvider(ethersNetworkString, { infura: INFURA_PROJECT_ID, alchemy: ALCHEMY_PROJECT_ID });
+const defaultProvider = getDefaultProvider(ethersNetworkString, {
+    infura: INFURA_PROJECT_ID,
+    alchemy: ALCHEMY_PROJECT_ID,
+});
 
 const EthereumContext = createContext(undefined);
 
@@ -44,6 +54,7 @@ const providerOptions = {
         },
         connector: async (ProviderPackage, options) => {
             const provider = new ProviderPackage(options);
+            event('Rainbow Connector Selected', { network: options.network });
 
             await provider.enable();
 
@@ -67,14 +78,16 @@ async function openWeb3ModalGenerator(
     setUserName,
     setAvatarUrl,
     toast,
+    buttonLocation,
 ) {
     const web3Modal = new Web3Modal({
         network: web3ModalString, // optional
         cacheProvider: false, // optional TODO true or ternary
         providerOptions, // required
+        theme: 'dark',
     });
 
-    async function updateVariables(providerFromModal) {
+    async function updateVariables(providerFromModal, eventParams) {
         let provider: BaseProvider = defaultProvider;
         let signer: JsonRpcSigner = null;
         let userAddress: string = null;
@@ -85,32 +98,29 @@ async function openWeb3ModalGenerator(
         try {
             const ethersProvider = new Web3Provider(providerFromModal);
             const network = await ethersProvider.getNetwork();
+            eventParams.network = network.name;
 
             // check if network is correct for the given env (prod vs dev)
             if (network.name !== ethersNetworkString) {
                 toast(wrongNetworkToast);
+                event('Wrong Network', eventParams);
                 throw new Error('Wrong Network');
             }
 
             const accounts = await ethersProvider.listAccounts();
-            debug({ accounts });
 
             // check if there is an account
             if (accounts.length) {
                 provider = ethersProvider;
                 signer = ethersProvider.getSigner();
-                debug({ signer });
                 userAddress = await signer.getAddress();
-                console.log('accounts:', userAddress);
                 ensName = await ethersProvider.lookupAddress(userAddress);
                 if (ensName) {
                     const ensResolver = await ethersProvider.getResolver(ensName);
                     avatarUrl = await ensResolver.getText('avatar');
-                    console.log('avatar:', avatarUrl);
                 }
 
                 userName = ensName || getTruncatedAddress(userAddress);
-                console.log('userName:', userName);
             }
         } catch (error) {
             console.log('UPDATE PROVIDER VARIABLES ERROR');
@@ -124,23 +134,35 @@ async function openWeb3ModalGenerator(
             setEnsName(ensName);
             setUserName(userName);
             setAvatarUrl(avatarUrl);
+            eventParams = { ...eventParams, hasEns: !!ensName, hasEnsAvatar: !!avatarUrl };
+            event(wallet_provider_connected, eventParams);
+            console.log('wallet provider connected');
         }
     }
 
     try {
-        const providerFromModal = await web3Modal.connect();
+        console.log('Connect Button', buttonLocation);
+        let eventParams: EventParams = { buttonLocation, network: NETWORK };
+        event(connect_button_clicked, eventParams);
+        console.log('connect button clicked');
 
-        await updateVariables(providerFromModal);
+        const providerFromModal = await web3Modal.connect();
+        const { id: connectionType, name: connectionName } = getProviderInfo(providerFromModal);
+        eventParams = { ...eventParams, connectionType, connectionName };
+        event(wallet_provider_clicked, eventParams);
+        console.log('wallet provider clicked');
+
+        await updateVariables(providerFromModal, eventParams);
         // Subscribe to accounts change
         providerFromModal.on('accountsChanged', async (accounts: string[]) => {
             console.log('accountsChanged');
-            await updateVariables(providerFromModal);
+            await updateVariables(providerFromModal, eventParams);
         });
 
         // Subscribe to chainId change
         providerFromModal.on('chainChanged', async (chainId: number) => {
             debug({ chainId });
-            await updateVariables(providerFromModal);
+            await updateVariables(providerFromModal, eventParams);
             // window.location.reload();
         });
 
@@ -154,9 +176,10 @@ async function openWeb3ModalGenerator(
         providerFromModal.on('disconnect', (error: { code: number; message: string }) => {
             console.log('provider fromModal disconnected');
             debug({ error });
-            updateVariables(providerFromModal);
+            updateVariables(providerFromModal, eventParams);
         });
     } catch (error) {
+        event('Web3Modal closed by user', { network: NETWORK, buttonLocation });
         // error seems to be undefined when the user rejects connecting to metamask
         console.log('WEB3 MODAL ERROR:', error);
     }
@@ -182,7 +205,7 @@ function EthereumProvider(props): JSX.Element {
         setInitialized(true);
     }, []);
 
-    const openWeb3Modal = async () =>
+    const openWeb3Modal = async (buttonLocation: string) =>
         await openWeb3ModalGenerator(
             setProvider,
             setSigner,
@@ -191,6 +214,7 @@ function EthereumProvider(props): JSX.Element {
             setUserName,
             setAvatarUrl,
             toast,
+            buttonLocation,
         );
 
     const variables = { provider, signer, userAddress, ensName, userName, avatarUrl };

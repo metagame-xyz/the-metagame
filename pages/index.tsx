@@ -2,6 +2,7 @@ import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { Box, Button, Heading, Link, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import { parseEther } from '@ethersproject/units';
 import { BigNumber, Contract } from 'ethers';
+import Head from 'next/head';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
@@ -69,7 +70,6 @@ function Home() {
     let [freeMints, setFreeMints] = useState<number>(144);
 
     useEffect(() => {
-        console.log('getUserMintedTokenId');
         async function getUserMintedTokenId() {
             // userAddress has changed. TokenId defaults to null
             let tokenId = null;
@@ -193,6 +193,9 @@ function Home() {
 
     return (
         <Box align="center">
+            <Head>
+                <title>Birthblock</title>
+            </Head>
             <Box px={8} pt={8} width="fit-content" mx="auto" maxW={maxW}>
                 <Heading as="h1" fontSize={[54, 72, 96]} textAlign="center" color="teal.900">
                     Birthblock
@@ -220,7 +223,7 @@ function Home() {
             <VStack justifyContent="center" spacing={4} px={4} py={8} bgColor="teal.700">
                 {!minted && !userTokenId ? (
                     <Button
-                        onClick={userAddress ? mint : openWeb3Modal}
+                        onClick={userAddress ? mint : () => openWeb3Modal('Main Page Section')}
                         isLoading={minting}
                         loadingText="Minting..."
                         isDisabled={minted}

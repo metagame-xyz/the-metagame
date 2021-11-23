@@ -12,7 +12,7 @@ import { maxW } from '@components/Layout';
 
 import { CONTRACT_ADDRESS, networkStrings } from '@utils/constants';
 import { copy } from '@utils/content';
-import { debug } from '@utils/frontend';
+import { debug, event } from '@utils/frontend';
 
 import Birthblock from '../birthblock.json';
 import BirthblockImage from '../images/example-birthblock.svg';
@@ -44,7 +44,8 @@ function openseaLink(tokenId: number): string {
 const blackholeAddress = '0x0000000000000000000000000000000000000000';
 
 function Home() {
-    const { provider, signer, userAddress, userName, openWeb3Modal, toast } = useEthereum();
+    const { provider, signer, userAddress, userName, eventParams, openWeb3Modal, toast } =
+        useEthereum();
 
     const birthblockContract = new Contract(CONTRACT_ADDRESS, Birthblock.abi, provider);
 
@@ -113,8 +114,10 @@ function Home() {
     }, []);
 
     const mint = async () => {
+        event('Mint Button Clicked', eventParams);
         const network = await provider.getNetwork();
         if (network.name != networkStrings.ethers) {
+            event('Mint Attempt on Wrong Network', eventParams);
             toast(wrongNetworkToast);
             return;
         }
@@ -132,10 +135,17 @@ function Home() {
             setUserTokenId(tokenId.toNumber());
             setMinting(false);
             setMinted(true);
+            event('Mint Success', eventParams);
         } catch (error) {
             // const { reason, code, error, method, transaction } = error
             setMinting(false);
             if (error?.error?.message) {
+                const eventParamsWithError = {
+                    ...eventParams,
+                    errorMessage: error.error.message,
+                    errorReason: error.reason,
+                };
+                event('Mint Error', eventParamsWithError);
                 toast(toastErrorData(error.reason, error.error.message));
             }
         }

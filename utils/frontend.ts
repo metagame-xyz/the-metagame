@@ -11,7 +11,7 @@ export function debug(varObj: object): void {
     });
 }
 
-export const event = (action: string, params: Object) => {
+export const event = (action: string, params?: Object) => {
     window.gtag('event', action, params);
 };
 
@@ -20,4 +20,6 @@ export type EventParams = {
     buttonLocation?: string;
     connectionType?: string;
     connectionName?: string;
+    errorReason?: string;
+    errorMessage?: string;
 };

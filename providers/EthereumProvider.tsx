@@ -73,7 +73,6 @@ const teal800 = 'rgba(35, 78, 82, 1)';
 const teal800Opaque = 'rgba(35, 78, 82, 0.5)';
 const teal900 = 'rgba(29, 64, 68, 1)';
 
-//web3Var: ReactiveVar<Web3>
 async function openWeb3ModalGenerator(
     setProvider,
     setSigner,
@@ -81,6 +80,7 @@ async function openWeb3ModalGenerator(
     setEnsName,
     setUserName,
     setAvatarUrl,
+    setEventParams,
     toast,
     buttonLocation,
 ) {
@@ -145,6 +145,7 @@ async function openWeb3ModalGenerator(
             setUserName(userName);
             setAvatarUrl(avatarUrl);
             eventParams = { ...eventParams, hasEns: !!ensName, hasEnsAvatar: !!avatarUrl };
+            setEventParams(eventParams);
             event(wallet_provider_connected, eventParams);
         }
     }
@@ -199,6 +200,7 @@ function EthereumProvider(props): JSX.Element {
     const [ensName, setEnsName] = useState<string>('');
     const [userName, setUserName] = useState<string>('');
     const [avatarUrl, setAvatarUrl] = useState<string>('');
+    const [eventParams, setEventParams] = useState<EventParams>({});
 
     function setInitialProvider() {
         setProvider(defaultProvider);
@@ -219,11 +221,12 @@ function EthereumProvider(props): JSX.Element {
             setEnsName,
             setUserName,
             setAvatarUrl,
+            setEventParams,
             toast,
             buttonLocation,
         );
 
-    const variables = { provider, signer, userAddress, ensName, userName, avatarUrl };
+    const variables = { provider, signer, userAddress, ensName, userName, avatarUrl, eventParams };
     const functions = { openWeb3Modal, toast };
 
     const value = { ...variables, ...functions };

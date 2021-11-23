@@ -14,14 +14,24 @@ const theme = extendTheme({
     styles: {
         global: {
             'html, body': {
-                color: 'teal.900',
+                color: 'brand.900',
             },
         },
     },
     colors: {
-        white: '#E6FFFA',
-        teal: {
-            '100opaque': 'rgb(178, 245, 234,.92)',
+        white: '#FAF5FF',
+        brand: {
+            '50': '#FAF5FF',
+            '100': '#E9D8FD',
+            '100opaque': 'rgba(233, 216, 253, 0.92)',
+            '200': '#D6BCFA',
+            '300': '#B794F4',
+            '400': '#9F7AEA',
+            '500': '#805AD5',
+            '600': '#6B46C1',
+            '700': '#553C9A',
+            '800': '#44337A',
+            '900': '#322659',
         },
     },
     fonts: {
@@ -29,8 +39,6 @@ const theme = extendTheme({
         body: 'Lato',
     },
 });
-
-// --chakra-colors-teal-100: #B2F5EA; rgb(178, 245, 234)
 
 const bgSize = ['100px', '120px', '220px', '300px'];
 
@@ -51,7 +59,7 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
                         bgPosition={'right 0px top -70px'}
                         bgSize={bgSize}
                         bgRepeat="no-repeat repeat">
-                        <Flex bgColor="teal.100opaque" width="100%">
+                        <Flex bgColor="brand.100opaque" width="100%">
                             <Layout>
                                 <Component {...pageProps} />
                             </Layout>

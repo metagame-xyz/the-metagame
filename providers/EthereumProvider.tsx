@@ -67,11 +67,11 @@ const providerOptions = {
     },
 };
 
-const teal50 = 'rgba(230, 255, 250, 1)';
-const teal100 = 'rgba(178, 245, 234, 1)';
-const teal800 = 'rgba(35, 78, 82, 1)';
-const teal800Opaque = 'rgba(35, 78, 82, 0.5)';
-const teal900 = 'rgba(29, 64, 68, 1)';
+const brand50 = 'rgb(250, 245, 255)';
+const brand100 = 'rgb(233, 216, 253)';
+const brand800 = 'rgb(68, 51, 122)';
+const brand800Opaque = 'rgba(68, 51, 122,0.5)';
+const brand900 = ' rgb(50, 38, 89)';
 
 async function openWeb3ModalGenerator(
     setProvider,
@@ -89,11 +89,11 @@ async function openWeb3ModalGenerator(
         cacheProvider: false, // optional TODO true or ternary
         providerOptions, // required
         theme: {
-            background: teal900,
-            main: teal50,
-            secondary: teal100,
-            border: teal800Opaque,
-            hover: teal800,
+            background: brand900,
+            main: brand50,
+            secondary: brand100,
+            border: brand800Opaque,
+            hover: brand800,
         },
     });
 

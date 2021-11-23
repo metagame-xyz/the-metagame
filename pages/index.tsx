@@ -194,7 +194,7 @@ function Home() {
                 <title>{copy.title}</title>
             </Head>
             <Box px={8} pt={8} width="fit-content" mx="auto" maxW={maxW}>
-                <Heading as="h1" fontSize={[54, 72, 96]} textAlign="center" color="teal.900">
+                <Heading as="h1" fontSize={[54, 72, 96]} textAlign="center" color="brand.900">
                     {copy.title}
                 </Heading>
                 <Text fontSize={[16, 22, 30]} fontWeight="light" maxW={['container.md']}>
@@ -216,7 +216,7 @@ function Home() {
                 </SimpleGrid>
             </Box>
 
-            <VStack justifyContent="center" spacing={4} px={4} py={8} bgColor="teal.700">
+            <VStack justifyContent="center" spacing={4} px={4} py={8} bgColor="brand.700">
                 {!minted && !userTokenId ? (
                     <Button
                         onClick={userAddress ? mint : () => openWeb3Modal('Main Page Section')}
@@ -224,10 +224,10 @@ function Home() {
                         loadingText="Minting..."
                         isDisabled={minted}
                         fontWeight="normal"
-                        colorScheme="teal"
-                        bgColor="teal.600"
-                        // color="teal.900"
-                        _hover={{ bg: 'teal.500' }}
+                        colorScheme="brand"
+                        bgColor="brand.600"
+                        // color="brand.900"
+                        _hover={{ bg: 'brand.500' }}
                         size="lg"
                         height="60px"
                         minW="xs"
@@ -240,11 +240,11 @@ function Home() {
                     <Box fontSize={[24, 24, 36]} color="white">
                         <Text>{`${userName}'s ${copy.title} (#${userTokenId}) has been minted.`}</Text>
                         <Button
-                            colorScheme="teal"
+                            colorScheme="brand"
                             color="white"
                             variant="outline"
-                            _hover={{ bgColor: 'teal.600' }}
-                            _active={{ bgColor: 'teal.500' }}
+                            _hover={{ bgColor: 'brand.600' }}
+                            _active={{ bgColor: 'brand.500' }}
                             mt={2}
                             size="lg"
                             rightIcon={<ExternalLinkIcon />}

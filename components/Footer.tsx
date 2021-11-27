@@ -39,7 +39,7 @@ export default function Footer(props) {
                     direction={'row'}
                     spacing={2}
                     align="center"
-                    justify="right"
+                    justify="flex-end"
                     color="brand.100">
                     <Twitter boxSize={[6, 8]} _hover={hover} boxShadow={''} />
                     <Opensea boxSize={[6, 8]} _hover={hover} boxShadow={''} />

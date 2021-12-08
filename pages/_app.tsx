@@ -14,23 +14,31 @@ const theme = extendTheme({
     styles: {
         global: {
             'html, body': {
-                color: 'teal.900',
+                color: '#FAF5FF',
             },
         },
     },
     colors: {
-        white: '#E6FFFA',
-        teal: {
-            '100opaque': 'rgb(178, 245, 234,.92)',
+        white: '#FAF5FF',
+        brand: {
+            '50': '#F0F0F4',
+            '100': '#D6D6E0',
+            '200': '#BCBCCD',
+            '300': '#A2A2B9',
+            '400': '#8888A5',
+            '500': '#6E6E91',
+            '600': '#585874',
+            '700': '#424257',
+            '800': '#2C2C3A',
+            '900': '#16161D', // rgba(22, 22, 26, 0.9)
+            '100opaque': 'rgba(22, 22, 26, 0.9)',
         },
     },
     fonts: {
-        heading: 'Lato',
-        body: 'Lato',
+        heading: 'Courier Prime, Courier, monospace',
+        body: 'Courier Prime, Courier, monospace',
     },
 });
-
-// --chakra-colors-teal-100: #B2F5EA; rgb(178, 245, 234)
 
 const bgSize = ['100px', '120px', '220px', '300px'];
 
@@ -38,25 +46,10 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
     return (
         <ChakraProvider theme={theme}>
             <EthereumProvider>
-                <Flex
-                    backgroundImage={leftBg.src}
-                    bgBlendMode="overlay"
-                    bgPosition={'left 0px top -70px'}
-                    bgSize={bgSize}
-                    width="100%"
-                    bgRepeat="no-repeat repeat">
-                    <Flex
-                        backgroundImage={rightBg.src}
-                        width="100%"
-                        bgPosition={'right 0px top -70px'}
-                        bgSize={bgSize}
-                        bgRepeat="no-repeat repeat">
-                        <Flex bgColor="teal.100opaque" width="100%">
-                            <Layout>
-                                <Component {...pageProps} />
-                            </Layout>
-                        </Flex>
-                    </Flex>
+                <Flex bgColor="brand.900" width="100%" minH="100vh">
+                    <Layout>
+                        <Component {...pageProps} />
+                    </Layout>
                 </Flex>
             </EthereumProvider>
         </ChakraProvider>

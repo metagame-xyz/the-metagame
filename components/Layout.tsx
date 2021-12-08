@@ -16,7 +16,6 @@ export default function Layout(props) {
                 {props.children}
             </Box>
             <Spacer />
-            <Footer maxW={maxW} />
         </Flex>
     );
 }

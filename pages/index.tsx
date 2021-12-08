@@ -1,38 +1,76 @@
 import { ExternalLinkIcon } from '@chakra-ui/icons';
-import { Box, Button, Heading, Link, SimpleGrid, Spacer, Text, VStack } from '@chakra-ui/react';
+import {
+    Box,
+    Button,
+    Heading,
+    Link,
+    ResponsiveValue,
+    SimpleGrid,
+    Spacer,
+    Text,
+    VStack,
+} from '@chakra-ui/react';
 import { parseEther } from '@ethersproject/units';
 import { BigNumber, Contract } from 'ethers';
 import Head from 'next/head';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
+import Countdown, { zeroPad } from 'react-countdown';
+import { BeatLoader } from 'react-spinners';
 
 import { useEthereum, wrongNetworkToast } from '@providers/EthereumProvider';
 
+import { TwitterLogo } from '@components/Icons';
 import { maxW } from '@components/Layout';
 
-import { CONTRACT_ADDRESS, networkStrings } from '@utils/constants';
+import { BIRTHBLOCK_CONTRACT_ADDRESS, networkStrings } from '@utils/constants';
 import { copy } from '@utils/content';
 import { debug, event } from '@utils/frontend';
 
 import Birthblock from '../birthblock.json';
 import BirthblockLogo from '../images/birthblockLogo.png';
 import Logo from '../images/logo.png';
-import TokenGardenLogo from '../images/tokenGardenLogo2.png';
+import QuestionMark from '../images/questionMark.png';
+import TokenGardenLogo from '../images/tokenGardenLogo.png';
 
-function About({ heading, text, image }) {
-    const imgSize = '144px';
-    return (
-        <VStack maxW={['sm', 'md', 'md', 'full']}>
-            <Box>
-                <Image src={image.src} alt={heading} width={imgSize} height={imgSize} />
-            </Box>
-            <Box fontSize="24px">
-                <Heading>{heading}</Heading>
-            </Box>
-            <Text align={['center', 'center', 'center', 'left']}>{text}</Text>
-        </VStack>
-    );
-}
+type About = {
+    maxW: string[];
+    fontSize: string;
+    align: ResponsiveValue<'left' | 'center' | 'right'>;
+    imgSize: string;
+};
+
+const about: About = {
+    maxW: ['sm', 'md', 'md', 'full'],
+    fontSize: '24px',
+    align: ['center', 'center', 'center', 'left'],
+    imgSize: '144px',
+};
+
+// Renderer callback with condition
+const countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
+    const dayStr = (d) => {
+        if (d === 1) {
+            return `${d} day `;
+        } else if (d === 0) {
+            return '';
+        } else {
+            return `${d} days `;
+        }
+    };
+    if (completed) {
+        // Render a completed state
+        return <span>Token Garden is live!</span>;
+    } else {
+        // Render a countdown
+        return (
+            <span>
+                {dayStr(days)}
+                {zeroPad(hours)}h {zeroPad(minutes)}m {zeroPad(seconds)}s
+            </span>
+        );
+    }
+};
 
 const toastErrorData = (title: string, description: string) => ({
     title,
@@ -44,26 +82,24 @@ const toastErrorData = (title: string, description: string) => ({
 });
 
 function openseaLink(tokenId: number): string {
-    return `https://${networkStrings.opensea}opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId}`;
+    return `https://${networkStrings.opensea}opensea.io/assets/${BIRTHBLOCK_CONTRACT_ADDRESS}/${tokenId}`;
 }
 
-const blackholeAddress = '0x0000000000000000000000000000000000000000';
+const birthblockUrl = 'https://www.birthblock.art';
 
 function Home() {
-    const { provider, signer, userAddress, userName, eventParams, openWeb3Modal, toast } =
-        useEthereum();
+    const { provider } = useEthereum();
 
-    const birthblockContract = new Contract(CONTRACT_ADDRESS, Birthblock.abi, provider);
+    const birthblockContract = new Contract(BIRTHBLOCK_CONTRACT_ADDRESS, Birthblock.abi, provider);
 
-    let [mintCount, setMintCount] = useState<number>(null);
-    let [freeMints, setFreeMints] = useState<number>(144);
+    let [birthblockMintCount, setBirthblockMintCount] = useState<number>(null);
 
     // Mint Count
     useEffect(() => {
         async function getMintedCount() {
             try {
-                const mintCount: BigNumber = await birthblockContract.mintedCount();
-                setMintCount(mintCount.toNumber());
+                const birthblockMintCount: BigNumber = await birthblockContract.mintedCount();
+                setBirthblockMintCount(birthblockMintCount.toNumber());
             } catch (error) {
                 debug({ error });
             }
@@ -98,19 +134,76 @@ function Home() {
             </Box>
             <Box px={8} py={8} width="fit-content" margin="auto" maxW={maxW}>
                 <SimpleGrid columns={[1, 1, 1, 3]} align="center" spacingX={24} spacingY={12}>
-                    <About heading={copy.heading1} text={copy.text1} image={BirthblockLogo} />
-                    <About heading={copy.heading2} text={copy.text2} image={TokenGardenLogo} />
-                    <About heading={copy.heading3} text={copy.text3} image={TokenGardenLogo} />
+                    <VStack maxW={about.maxW}>
+                        <Box>
+                            <Link isExternal href={birthblockUrl}>
+                                <Image
+                                    src={BirthblockLogo.src}
+                                    alt={copy.heading1}
+                                    width={about.imgSize}
+                                    height={about.imgSize}
+                                />
+                            </Link>
+                        </Box>
+                        <Box fontSize={about.fontSize}>
+                            <Link isExternal href={birthblockUrl}>
+                                <Heading>{copy.heading1}</Heading>
+                            </Link>
+                        </Box>
+                        {!birthblockMintCount ? (
+                            <BeatLoader color={'#FAF5FF'} size={8} speedMultiplier={0.5} />
+                        ) : (
+                            <Text align={about.align}>
+                                {birthblockMintCount} Birthblocks minted
+                            </Text>
+                        )}
+                        <Text align={about.align}>
+                            <Link isExternal href={birthblockUrl}>
+                                {copy.text1} <ExternalLinkIcon />
+                            </Link>
+                        </Text>
+                    </VStack>
+                    <VStack maxW={about.maxW}>
+                        <Box>
+                            <Image
+                                src={TokenGardenLogo.src}
+                                alt={copy.heading2}
+                                width={about.imgSize}
+                                height={about.imgSize}
+                            />
+                        </Box>
+                        <Box fontSize={about.fontSize}>
+                            <Heading>{copy.heading2}</Heading>
+                        </Box>
+                        <Text fontWeight="bold" align={about.align}>
+                            {copy.text2}
+                        </Text>
+                        <Countdown date={1639692000000} renderer={countdownRenderer} />
+                    </VStack>
+                    <VStack maxW={about.maxW}>
+                        <Box>
+                            <Image
+                                src={QuestionMark.src}
+                                alt={copy.heading3}
+                                width={about.imgSize}
+                                height={about.imgSize}
+                            />
+                        </Box>
+                        <Box fontSize={about.fontSize}>
+                            <Heading>{copy.heading3}</Heading>
+                        </Box>
+                    </VStack>
                 </SimpleGrid>
             </Box>
-            <Box px={8} pt={8} pb={20} width="fit-content" margin="auto" maxW={maxW}>
+            <Box p={8} width="fit-content" margin="auto" maxW={maxW}>
                 <Text mt={4} fontWeight="light" maxW="xl">
-                    {copy.bottomSectionText}
                     <Link isExternal href={'https://twitter.com/The_Metagame'}>
-                        @The_Metagame
+                        {copy.bottomSectionText}
+                        <TwitterLogo boxSize={4} />
                     </Link>
                 </Text>
             </Box>
+            <Spacer />
         </Box>
     );
 }

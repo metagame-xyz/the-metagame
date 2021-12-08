@@ -20,9 +20,9 @@ export const copy = {
     heading1: 'Birthblock',
     text1: 'mint page',
     heading2: 'Token Garden',
-    text2: 'countdown',
-    heading3: '?',
-    text3: 'Jan 2022',
+    text2: 'Minting opens Dec 16th 5pm EST',
+    heading3: 'Jan 2022',
+    // text3: 'Jan 2022',
     heroSubheading:
         'You’re playing it right now. We are building infrastructure for on-chain achievements.',
     heroSubheading2: 'Phase One: 3 earned NFTs',

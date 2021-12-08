@@ -29,7 +29,7 @@ function Navbar(props) {
                 justify="center"
                 align="center"
                 p={4}
-                h="72px"
+                h="56px"
                 {...props}></HStack>
         </Flex>
     );

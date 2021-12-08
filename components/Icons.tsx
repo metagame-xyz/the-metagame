@@ -1,7 +1,7 @@
 import { Icon, Link } from '@chakra-ui/react';
 import React from 'react';
 
-import { CONTRACT_ADDRESS, networkStrings } from '@utils/constants';
+import { BIRTHBLOCK_CONTRACT_ADDRESS, networkStrings } from '@utils/constants';
 import { copy } from '@utils/content';
 
 function IconLink({ Icon, url, ...props }) {
@@ -27,7 +27,7 @@ export const TwitterLogo = (props) => (
     </Icon>
 );
 
-const etherscanUrl = `https://${networkStrings.etherscan}etherscan.io/address/${CONTRACT_ADDRESS}`;
+const etherscanUrl = `https://${networkStrings.etherscan}etherscan.io/address/${BIRTHBLOCK_CONTRACT_ADDRESS}`;
 const twitterUrl = 'https://twitter.com/The_Metagame';
 const openseaUrl = `https://opensea.io/collection/${copy.nameLowercase}`;
 

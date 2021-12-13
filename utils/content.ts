@@ -23,8 +23,8 @@ export const copy = {
     text2: 'Minting opens Dec 16th 5pm EST',
     heading3: 'Jan 2022',
     // text3: 'Jan 2022',
-    heroSubheading:
-        'You’re playing it right now. We are building infrastructure for on-chain achievements.',
-    heroSubheading2: 'Phase One: 3 earned NFTs',
+    heroSubheading: `You’re playing it right now.`,
+    heroSubheading2: `We are building infrastructure for on-chain achievements.`,
+    heroSubheading3: 'Phase One: 3 earned NFTs',
     bottomSectionText: 'Follow along ',
 };

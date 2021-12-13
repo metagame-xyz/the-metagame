@@ -2,6 +2,7 @@ import { ExternalLinkIcon } from '@chakra-ui/icons';
 import {
     Box,
     Button,
+    Flex,
     Heading,
     Link,
     ResponsiveValue,
@@ -47,6 +48,8 @@ const about: About = {
     imgSize: '144px',
 };
 
+const logoSize = '100px';
+
 // Renderer callback with condition
 const countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
     const dayStr = (d) => {
@@ -64,7 +67,7 @@ const countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
     } else {
         // Render a countdown
         return (
-            <span>
+            <span style={{ color: '#D6BCFA' }}>
                 {dayStr(days)}
                 {zeroPad(hours)}h {zeroPad(minutes)}m {zeroPad(seconds)}s
             </span>
@@ -107,33 +110,42 @@ function Home() {
         getMintedCount();
     }, []);
 
-    const logoSize = '144px';
-
     return (
         <Box align="center">
             <Image src={Logo.src} alt="Logo" width={logoSize} height={logoSize} />
             <Head>
                 <title>{copy.title}</title>
             </Head>
-            <Box px={8} pt={4} pb={8} width="fit-content" mx="auto" maxW={maxW}>
-                <Heading as="h1" fontSize={[54, 72, 96]} textAlign="center">
+            <Box px={8} pb={8} width="fit-content" mx="auto" maxW={maxW}>
+                <Text
+                    lineHeight="shorter"
+                    fontSize={[44, 54, 90]}
+                    textAlign="center"
+                    fontFamily={'Courier Prime'}>
                     {copy.title}
-                </Heading>
-                <Text fontSize={[16, 22, 30]} fontWeight="light" maxW={['container.lg']}>
+                </Text>
+                <Text
+                    fontSize={[16, 22, 24]}
+                    fontWeight="light"
+                    maxW={['container.lg']}
+                    letterSpacing="-1px"
+                    lineHeight="taller">
                     {copy.heroSubheading}
+                    <Text>{copy.heroSubheading2}</Text>
                 </Text>
             </Box>
             <Box width="fit-content" margin="auto" maxW={maxW}>
                 <Text
-                    fontSize={[16, 22, 30]}
+                    fontSize={[16, 22, 24]}
                     pb={[0, 0, 0, 8]}
                     fontWeight="light"
                     maxW={['container.lg']}>
-                    {copy.heroSubheading2}
+                    {copy.heroSubheading3}
                 </Text>
             </Box>
-            <Box px={8} py={8} width="fit-content" margin="auto" maxW={maxW}>
+            <Box px={8} py={4} width="fit-content" margin="auto" maxW={maxW}>
                 <SimpleGrid columns={[1, 1, 1, 3]} align="center" spacingX={24} spacingY={12}>
+                    {/**** BIRTHBLOCK ****/}
                     <VStack maxW={about.maxW}>
                         <Box>
                             <Link isExternal href={birthblockUrl}>
@@ -147,7 +159,9 @@ function Home() {
                         </Box>
                         <Box fontSize={about.fontSize}>
                             <Link isExternal href={birthblockUrl}>
-                                <Heading>{copy.heading1}</Heading>
+                                <Text fontFamily={'Courier Prime'} fontSize={'4xl'}>
+                                    {copy.heading1}
+                                </Text>
                             </Link>
                         </Box>
                         {!birthblockMintCount ? (
@@ -158,11 +172,12 @@ function Home() {
                             </Text>
                         )}
                         <Text align={about.align}>
-                            <Link isExternal href={birthblockUrl}>
+                            <Link isExternal href={birthblockUrl} color={'teal.200'}>
                                 {copy.text1} <ExternalLinkIcon />
                             </Link>
                         </Text>
                     </VStack>
+                    {/**** TOKEN GARDEN ****/}
                     <VStack maxW={about.maxW}>
                         <Box>
                             <Image
@@ -173,13 +188,14 @@ function Home() {
                             />
                         </Box>
                         <Box fontSize={about.fontSize}>
-                            <Heading>{copy.heading2}</Heading>
+                            <Text fontFamily={'Courier Prime'} fontSize={'4xl'}>
+                                {copy.heading2}
+                            </Text>
                         </Box>
-                        <Text fontWeight="bold" align={about.align}>
-                            {copy.text2}
-                        </Text>
+                        <Text align={about.align}>{copy.text2}</Text>
                         <Countdown date={1639692000000} renderer={countdownRenderer} />
                     </VStack>
+                    {/**** THIRD NFT ****/}
                     <VStack maxW={about.maxW}>
                         <Box>
                             <Image
@@ -190,20 +206,13 @@ function Home() {
                             />
                         </Box>
                         <Box fontSize={about.fontSize}>
-                            <Heading>{copy.heading3}</Heading>
+                            <Text fontFamily={'Courier Prime'} fontSize={'4xl'}>
+                                {copy.heading3}
+                            </Text>
                         </Box>
                     </VStack>
                 </SimpleGrid>
             </Box>
-            <Box p={8} width="fit-content" margin="auto" maxW={maxW}>
-                <Text mt={4} fontWeight="light" maxW="xl">
-                    <Link isExternal href={'https://twitter.com/The_Metagame'}>
-                        {copy.bottomSectionText}
-                        <TwitterLogo boxSize={4} />
-                    </Link>
-                </Text>
-            </Box>
-            <Spacer />
         </Box>
     );
 }

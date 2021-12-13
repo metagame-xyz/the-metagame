@@ -16,6 +16,7 @@ export default function Layout(props) {
                 {props.children}
             </Box>
             <Spacer />
+            <Footer />
         </Flex>
     );
 }

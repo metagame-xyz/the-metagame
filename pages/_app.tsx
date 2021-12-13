@@ -1,6 +1,6 @@
 import { ChakraProvider, extendTheme, Flex } from '@chakra-ui/react';
 import '@fontsource/courier-prime';
-import '@fontsource/lato';
+import '@fontsource/source-code-pro';
 import type { AppProps } from 'next/app';
 
 import Layout from '@components/Layout';
@@ -15,6 +15,7 @@ const theme = extendTheme({
         global: {
             'html, body': {
                 color: '#FAF5FF',
+                letterSpacing: '-1px',
             },
         },
     },
@@ -36,7 +37,8 @@ const theme = extendTheme({
     },
     fonts: {
         heading: 'Courier Prime, Courier, monospace',
-        body: 'Courier Prime, Courier, monospace',
+        // body: 'Courier Prime, Courier, monospace',
+        body: 'Source Code Pro, monospace',
     },
 });
 
@@ -46,7 +48,7 @@ function App({ Component, pageProps }: AppProps): JSX.Element {
     return (
         <ChakraProvider theme={theme}>
             <EthereumProvider>
-                <Flex bgColor="brand.900" width="100%" minH="100vh">
+                <Flex bgColor="#0f0817" width="100%" minH="100vh">
                     <Layout>
                         <Component {...pageProps} />
                     </Layout>

@@ -182,7 +182,7 @@ function Home() {
                         <Text align={about.align}>{copy.text2}</Text>
                         <Countdown date={1639692000000} renderer={countdownRenderer} />
                     </VStack>
-                    {/**** THIRD NFT  ****/}
+                    {/**** THIRD NFT ****/}
                     <VStack maxW={about.maxW}>
                         <Box>
                             <Image

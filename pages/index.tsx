@@ -1,17 +1,5 @@
 import { ExternalLinkIcon } from '@chakra-ui/icons';
-import {
-    Box,
-    Button,
-    Flex,
-    Heading,
-    Link,
-    ResponsiveValue,
-    SimpleGrid,
-    Spacer,
-    Text,
-    VStack,
-} from '@chakra-ui/react';
-import { parseEther } from '@ethersproject/units';
+import { Box, Link, ResponsiveValue, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import { BigNumber, Contract } from 'ethers';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -19,9 +7,8 @@ import React, { useEffect, useState } from 'react';
 import Countdown, { zeroPad } from 'react-countdown';
 import { BeatLoader } from 'react-spinners';
 
-import { useEthereum, wrongNetworkToast } from '@providers/EthereumProvider';
+import { useEthereum } from '@providers/EthereumProvider';
 
-import { TwitterLogo } from '@components/Icons';
 import { maxW } from '@components/Layout';
 
 import { BIRTHBLOCK_CONTRACT_ADDRESS, networkStrings } from '@utils/constants';

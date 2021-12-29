@@ -20,7 +20,7 @@ export const copy = {
     heading1: 'Birthblock',
     text1: 'mint page',
     heading2: 'Token Garden',
-    text2: 'Minting opens Dec 28th 8pm EST',
+    text2: 'Minting opens Jan 4th 6pm EST',
     heading3: 'Jan 2022',
     // text3: 'Jan 2022',
     heroSubheading: `You’re playing it right now.`,

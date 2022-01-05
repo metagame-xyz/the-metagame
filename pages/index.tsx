@@ -76,6 +76,7 @@ function openseaLink(tokenId: number): string {
 }
 
 const birthblockUrl = 'https://www.birthblock.art';
+const tokengardenUrl = 'https://www.tokengarden.art';
 
 function Home() {
     const { provider } = useEthereum();
@@ -167,20 +168,28 @@ function Home() {
                     {/**** TOKEN GARDEN ****/}
                     <VStack maxW={about.maxW}>
                         <Box>
-                            <Image
-                                src={TokenGardenLogo.src}
-                                alt={copy.heading2}
-                                width={about.imgSize}
-                                height={about.imgSize}
-                            />
+                            <Link isExternal href={tokengardenUrl}>
+                                <Image
+                                    src={TokenGardenLogo.src}
+                                    alt={copy.heading2}
+                                    width={about.imgSize}
+                                    height={about.imgSize}
+                                />
+                            </Link>
                         </Box>
                         <Box fontSize={about.fontSize}>
-                            <Text fontFamily={'Courier Prime'} fontSize={'4xl'}>
-                                {copy.heading2}
-                            </Text>
+                            <Link isExternal href={tokengardenUrl}>
+                                <Text fontFamily={'Courier Prime'} fontSize={'4xl'}>
+                                    {copy.heading2}
+                                </Text>
+                            </Link>
                         </Box>
                         <Text align={about.align}>{copy.text2}</Text>
-                        <Countdown date={1641340800000} renderer={countdownRenderer} />
+                        <Text align={about.align}>
+                            <Link isExternal href={tokengardenUrl} color={'purple.200'}>
+                                {copy.text1} <ExternalLinkIcon />
+                            </Link>
+                        </Text>
                     </VStack>
                     {/**** THIRD NFT ****/}
                     <VStack maxW={about.maxW}>

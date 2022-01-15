@@ -11,7 +11,11 @@ import { useEthereum } from '@providers/EthereumProvider';
 
 import { maxW } from '@components/Layout';
 
-import { BIRTHBLOCK_CONTRACT_ADDRESS, networkStrings } from '@utils/constants';
+import {
+    BIRTHBLOCK_CONTRACT_ADDRESS,
+    networkStrings,
+    TOKEN_GARDEN_CONTRACT_ADDRESS,
+} from '@utils/constants';
 import { copy } from '@utils/content';
 import { debug, event } from '@utils/frontend';
 
@@ -82,8 +86,14 @@ function Home() {
     const { provider } = useEthereum();
 
     const birthblockContract = new Contract(BIRTHBLOCK_CONTRACT_ADDRESS, Birthblock.abi, provider);
+    const tokenGardenContract = new Contract(
+        TOKEN_GARDEN_CONTRACT_ADDRESS,
+        Birthblock.abi,
+        provider,
+    );
 
     let [birthblockMintCount, setBirthblockMintCount] = useState<number>(null);
+    let [tokenGardenMintCount, setTokenGardenMintCount] = useState<number>(null);
 
     // Mint Count
     useEffect(() => {
@@ -91,6 +101,9 @@ function Home() {
             try {
                 const birthblockMintCount: BigNumber = await birthblockContract.mintedCount();
                 setBirthblockMintCount(birthblockMintCount.toNumber());
+
+                const tokenGardenMintCount: BigNumber = await tokenGardenContract.mintedCount();
+                setTokenGardenMintCount(tokenGardenMintCount.toNumber());
             } catch (error) {
                 debug({ error });
             }
@@ -184,10 +197,16 @@ function Home() {
                                 </Text>
                             </Link>
                         </Box>
-                        <Text align={about.align}>{copy.text2}</Text>
+                        {!tokenGardenMintCount ? (
+                            <BeatLoader color={'#FAF5FF'} size={8} speedMultiplier={0.5} />
+                        ) : (
+                            <Text align={about.align}>
+                                {tokenGardenMintCount} Token Gardens minted
+                            </Text>
+                        )}
                         <Text align={about.align}>
                             <Link isExternal href={tokengardenUrl} color={'purple.200'}>
-                                {copy.text1} <ExternalLinkIcon />
+                                {copy.text2} <ExternalLinkIcon />
                             </Link>
                         </Text>
                     </VStack>

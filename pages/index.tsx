@@ -100,9 +100,8 @@ function Home() {
         async function getMintedCount() {
             try {
                 const birthblockMintCount: BigNumber = await birthblockContract.mintedCount();
-                setBirthblockMintCount(birthblockMintCount.toNumber());
-
                 const tokenGardenMintCount: BigNumber = await tokenGardenContract.mintedCount();
+                setBirthblockMintCount(birthblockMintCount.toNumber());
                 setTokenGardenMintCount(tokenGardenMintCount.toNumber());
             } catch (error) {
                 debug({ error });

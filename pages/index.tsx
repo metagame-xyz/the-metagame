@@ -21,6 +21,7 @@ import { debug, event } from '@utils/frontend';
 
 import Birthblock from '../birthblock.json';
 import BirthblockLogo from '../images/birthblockLogo.png';
+import HeartbeatLogo from '../images/heartbeatLogo.png';
 import Logo from '../images/logo.png';
 import QuestionMark from '../images/questionMark.png';
 import TokenGardenLogo from '../images/tokenGardenLogo.png';
@@ -54,11 +55,11 @@ const countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
     };
     if (completed) {
         // Render a completed state
-        return <span>Token Garden is live!</span>;
+        return <span style={{ color: '#FBB6CE' }}>Heartbeat is live!</span>;
     } else {
         // Render a countdown
         return (
-            <span style={{ color: '#D6BCFA' }}>
+            <span style={{ color: '#FBB6CE' }}>
                 {dayStr(days)}
                 {zeroPad(hours)}h {zeroPad(minutes)}m {zeroPad(seconds)}s
             </span>
@@ -213,7 +214,7 @@ function Home() {
                     <VStack maxW={about.maxW}>
                         <Box>
                             <Image
-                                src={QuestionMark.src}
+                                src={HeartbeatLogo.src}
                                 alt={copy.heading3}
                                 width={about.imgSize}
                                 height={about.imgSize}
@@ -224,6 +225,8 @@ function Home() {
                                 {copy.heading3}
                             </Text>
                         </Box>
+                        <Text align={about.align}> {copy.text3}</Text>
+                        <Countdown date={1643317200000} renderer={countdownRenderer} />
                     </VStack>
                 </SimpleGrid>
             </Box>

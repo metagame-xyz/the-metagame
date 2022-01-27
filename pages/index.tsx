@@ -82,6 +82,7 @@ function openseaLink(tokenId: number): string {
 
 const birthblockUrl = 'https://www.birthblock.art';
 const tokengardenUrl = 'https://www.tokengarden.art';
+const heartbeatUrl = 'https://heartbeat.themetagame.xyz/';
 
 function Home() {
     const { provider } = useEthereum();
@@ -226,7 +227,9 @@ function Home() {
                             </Text>
                         </Box>
                         <Text align={about.align}> {copy.text3}</Text>
-                        <Countdown date={1643317200000} renderer={countdownRenderer} />
+                        <Link isExternal href={heartbeatUrl} color={'pink.200'}>
+                            {'Heartbeat is live!'} <ExternalLinkIcon />
+                        </Link>
                     </VStack>
                 </SimpleGrid>
             </Box>

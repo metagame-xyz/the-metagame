@@ -13,6 +13,7 @@ import { maxW } from '@components/Layout';
 
 import {
     BIRTHBLOCK_CONTRACT_ADDRESS,
+    HEARTBEAT_CONTRACT_ADDRESS,
     networkStrings,
     TOKEN_GARDEN_CONTRACT_ADDRESS,
 } from '@utils/constants';
@@ -88,6 +89,7 @@ function Home() {
     const { provider } = useEthereum();
 
     const birthblockContract = new Contract(BIRTHBLOCK_CONTRACT_ADDRESS, Birthblock.abi, provider);
+    const heartbeatContract = new Contract(HEARTBEAT_CONTRACT_ADDRESS, Birthblock.abi, provider);
     const tokenGardenContract = new Contract(
         TOKEN_GARDEN_CONTRACT_ADDRESS,
         Birthblock.abi,
@@ -96,6 +98,7 @@ function Home() {
 
     let [birthblockMintCount, setBirthblockMintCount] = useState<number>(null);
     let [tokenGardenMintCount, setTokenGardenMintCount] = useState<number>(null);
+    let [heartbeatMintCount, setHeartbeatMintCount] = useState<number>(null);
 
     // Mint Count
     useEffect(() => {
@@ -103,8 +106,10 @@ function Home() {
             try {
                 const birthblockMintCount: BigNumber = await birthblockContract.mintedCount();
                 const tokenGardenMintCount: BigNumber = await tokenGardenContract.mintedCount();
+                const heartbeatMintCount: BigNumber = await heartbeatContract.mintedCount();
                 setBirthblockMintCount(birthblockMintCount.toNumber());
                 setTokenGardenMintCount(tokenGardenMintCount.toNumber());
+                setHeartbeatMintCount(heartbeatMintCount.toNumber());
             } catch (error) {
                 debug({ error });
             }
@@ -226,7 +231,11 @@ function Home() {
                                 {copy.heading3}
                             </Text>
                         </Box>
-                        <Text align={about.align}> {copy.text3}</Text>
+                        {!heartbeatMintCount ? (
+                            <BeatLoader color={'#FFF5F7'} size={8} speedMultiplier={0.5} />
+                        ) : (
+                            <Text align={about.align}>{heartbeatMintCount} Heartbeats minted</Text>
+                        )}
                         <Link isExternal href={heartbeatUrl} color={'pink.200'}>
                             {'Heartbeat is live!'} <ExternalLinkIcon />
                         </Link>

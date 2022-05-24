@@ -22,9 +22,9 @@ export const copy = {
     heading2: 'Token Garden',
     text2: 'mint page',
     heading3: 'Heartbeat',
-    text3: 'Minting opens Jan 27th at 4pm ET',
+    text3: 'mint page',
     heroSubheading: `You’re playing it right now.`,
-    heroSubheading2: `We are building infrastructure for on-chain achievements.`,
+    heroSubheading2: `Infrastructure for fun, aesthetically pleasing earned NFTs by using your on-chain and off-chain activity.`,
     heroSubheading3: 'Phase One: 3 earned NFTs',
     bottomSectionText: 'Follow along ',
 };

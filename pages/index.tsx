@@ -138,7 +138,9 @@ function Home() {
                     letterSpacing="-1px"
                     lineHeight="taller">
                     {copy.heroSubheading}
-                    <Text>{copy.heroSubheading2}</Text>
+                    <Text>
+                        {`Infrastructure for aesthetically pleasing NFTs earned by your on-chain and off-chain activity.`}
+                    </Text>
                 </Text>
             </Box>
             <Box width="fit-content" margin="auto" maxW={maxW}>
@@ -237,10 +239,28 @@ function Home() {
                             <Text align={about.align}>{heartbeatMintCount} Heartbeats minted</Text>
                         )}
                         <Link isExternal href={heartbeatUrl} color={'pink.200'}>
-                            {'Heartbeat is live!'} <ExternalLinkIcon />
+                            {copy.text3} <ExternalLinkIcon />
                         </Link>
                     </VStack>
                 </SimpleGrid>
+            </Box>
+            <Box width="fit-content" margin="auto" maxW={maxW} pt={16}>
+                <Text
+                    fontSize={[16, 22, 24]}
+                    pb={[0, 0, 0, 8]}
+                    fontWeight="light"
+                    maxW={['container.lg']}>
+                    {`Phase Two: Human Readable Web3 Activity`}
+                </Text>
+                <Text
+                    fontSize={[14, 16, 18]}
+                    pb={[0, 0, 0, 8]}
+                    fontWeight="light"
+                    maxW={['container.lg']}>
+                    <Link isExternal href={`https://b.mirror.xyz`}>
+                        {`Coming June 2022. Read more on Mirror`} <ExternalLinkIcon />
+                    </Link>
+                </Text>
             </Box>
         </Box>
     );

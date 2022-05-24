@@ -8,15 +8,15 @@ export interface MetaProps {
 }
 
 export const headMetadata: MetaProps = {
-    title: 'The Metagame',
+    title: 'Metagame',
     description: 'Infrastructure For earned NFTs',
     image: `https://${WEBSITE_URL}/site-preview.png`,
     type: 'website',
 };
 
 export const copy = {
-    title: 'The Metagame',
-    nameLowercase: 'the-metagame',
+    title: 'Metagame',
+    nameLowercase: 'metagame',
     heading1: 'Birthblock',
     text1: 'mint page',
     heading2: 'Token Garden',

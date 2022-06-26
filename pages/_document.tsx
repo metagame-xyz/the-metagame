@@ -28,7 +28,7 @@ class MyDocument extends Document {
                     <meta name="twitter:image" content={meta.image} />
                     <meta name="twitter:image:alt" content={meta.title} />
                     <meta name="twitter:card" content="summary_large_image" />
-                    <meta name="twitter:site" content="@the_metagame" />
+                    <meta name="twitter:site" content="@metagame" />
                     <script
                         async
                         src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`}

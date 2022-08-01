@@ -5,9 +5,6 @@ import type { AppProps } from 'next/app';
 
 import Layout from '@components/Layout';
 
-import leftBg from '../images/left-bg.png';
-import rightBg from '../images/right-bg.png';
-import EthereumProvider from '../providers/EthereumProvider';
 import '../styles/globals.css';
 
 const theme = extendTheme({
@@ -47,13 +44,11 @@ const bgSize = ['100px', '120px', '220px', '300px'];
 function App({ Component, pageProps }: AppProps): JSX.Element {
     return (
         <ChakraProvider theme={theme}>
-            <EthereumProvider>
-                <Flex bgColor="#0f0817" width="100%" minH="100vh">
-                    <Layout>
-                        <Component {...pageProps} />
-                    </Layout>
-                </Flex>
-            </EthereumProvider>
+            <Flex bgColor="#0f0817" width="100%" minH="100vh">
+                <Layout>
+                    <Component {...pageProps} />
+                </Layout>
+            </Flex>
         </ChakraProvider>
     );
 }

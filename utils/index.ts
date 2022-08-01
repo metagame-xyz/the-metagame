@@ -104,7 +104,7 @@ export const formatDateObjToShortTime = (dateObj: Record<string, number>): strin
 
 // returns the zodiac sign according to day and month ( https://coursesweb.net/javascript/zodiac-signs_cs )
 export const zodiac = (day: number, month: number) => {
-    var zodiac = [
+    const zodiac = [
         '',
         'Capricorn',
         'Aquarius',
@@ -120,7 +120,7 @@ export const zodiac = (day: number, month: number) => {
         'Sagittarius',
         'Capricorn',
     ];
-    var last_day = ['', 19, 18, 20, 20, 21, 21, 22, 22, 21, 22, 21, 20, 19];
+    const last_day = ['', 19, 18, 20, 20, 21, 21, 22, 22, 21, 22, 21, 20, 19];
     return day > last_day[month] ? zodiac[month * 1 + 1] : zodiac[month];
 };
 

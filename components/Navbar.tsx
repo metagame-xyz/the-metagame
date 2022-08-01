@@ -11,13 +11,9 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import { useEthereum } from '@providers/EthereumProvider';
-
 import { Etherscan, Logo, Opensea, Twitter } from '@components/Icons';
 
 function Navbar(props) {
-    const { userName, openWeb3Modal, avatarUrl } = useEthereum();
-
     const showName = useBreakpointValue({ base: false, md: true });
 
     return (
@@ -30,7 +26,8 @@ function Navbar(props) {
                 align="center"
                 p={4}
                 h="56px"
-                {...props}></HStack>
+                {...props}
+            ></HStack>
         </Flex>
     );
 }

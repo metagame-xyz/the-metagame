@@ -298,18 +298,9 @@ function Home() {
                 >
                     Minting opens August 3rd at 3pm EST
                 </Text>
-                <Link isExternal href={heartbeatUrl} color={'#C84414'}>
+                {/* <Link isExternal href={logbookUrl} color={'#C84414'}>
                     {copy.text3} <ExternalLinkIcon />
-                </Link>
-                {/* <Text
-                    fontSize={[14, 16, 18]}
-                    pb={[0, 0, 0, 8]}
-                    fontWeight="light"
-                    maxW={['container.lg']}>
-                    <Link isExternal href={`https://b.mirror.xyz`}>
-                        {`Coming June 2022. Read more on Mirror`} <ExternalLinkIcon />
-                    </Link>
-                </Text> */}
+                </Link> */}
             </Box>
         </Box>
     );

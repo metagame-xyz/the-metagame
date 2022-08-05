@@ -142,8 +142,7 @@ function Home() {
                     lineHeight="shorter"
                     fontSize={[44, 54, 90]}
                     textAlign="center"
-                    fontFamily={'Courier Prime'}
-                >
+                    fontFamily={'Courier Prime'}>
                     {copy.title}
                 </Text>
                 <Text
@@ -151,8 +150,7 @@ function Home() {
                     fontWeight="light"
                     maxW={['container.lg']}
                     letterSpacing="-1px"
-                    lineHeight="taller"
-                >
+                    lineHeight="taller">
                     {copy.heroSubheading}
                     <Text>
                         {`Infrastructure for aesthetically pleasing NFTs earned by your on-chain and off-chain activity.`}
@@ -164,8 +162,7 @@ function Home() {
                     fontSize={[16, 22, 24]}
                     pb={[0, 0, 0, 8]}
                     fontWeight="light"
-                    maxW={['container.lg']}
-                >
+                    maxW={['container.lg']}>
                     {copy.heroSubheading3}
                 </Text>
             </Box>
@@ -266,8 +263,7 @@ function Home() {
                     fontSize={[16, 22, 24]}
                     pb={[0, 0, 0, 8]}
                     fontWeight="light"
-                    maxW={['container.lg']}
-                >
+                    maxW={['container.lg']}>
                     {`Phase Two: Human Readable Web3 Activity`}
                 </Text>
                 <Box w="600px">
@@ -279,13 +275,11 @@ function Home() {
                     pb={[0, 0, 0, 6]}
                     fontWeight="light"
                     fontStyle={'italic'}
-                    maxW={['container.lg']}
-                >
+                    maxW={['container.lg']}>
                     Powered by{' '}
                     <Link
                         isExternal
-                        href={`https://twitter.com/BrennerSpear/status/1552091025887281152`}
-                    >
+                        href={`https://twitter.com/BrennerSpear/status/1552091025887281152`}>
                         evm-translator
                     </Link>
                 </Text>
@@ -294,13 +288,12 @@ function Home() {
                     fontSize={[14, 16, 18]}
                     // pb={[0, 0, 0, 8]}
                     fontWeight="light"
-                    maxW={['container.lg']}
-                >
-                    Minting opens August 3rd at 3pm EST
+                    maxW={['container.lg']}>
+                    Minting is open now!
                 </Text>
-                {/* <Link isExternal href={logbookUrl} color={'#C84414'}>
+                <Link isExternal href={logbookUrl} color={'#C84414'}>
                     {copy.text3} <ExternalLinkIcon />
-                </Link> */}
+                </Link>
             </Box>
         </Box>
     );

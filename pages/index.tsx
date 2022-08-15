@@ -266,7 +266,7 @@ function Home() {
                     maxW={['container.lg']}>
                     {`Phase Two: Human Readable Web3 Activity`}
                 </Text>
-                <Box w="600px">
+                <Box w={['275px', '400px', '600px']}>
                     <Image src={'/assets/logbookLogo.svg'} alt="Logbook Logo" />
                 </Box>
                 <Text
